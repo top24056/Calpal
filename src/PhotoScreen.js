@@ -3,7 +3,8 @@ import {
     AppRegistry,
     View,
     Text,
-    StyleSheet
+    StyleSheet,
+    StatusBar
 } from 'react-native';
 
 
@@ -15,6 +16,8 @@ const styles = StyleSheet.create({
 })
 
 export default class PhotoScreen extends React.Component{
+
+    
     render(){
         return(
             <View style = {styles.container}>

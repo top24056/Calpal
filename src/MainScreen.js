@@ -5,7 +5,8 @@ import {
     Text,
     StyleSheet,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    StatusBar
 } from 'react-native';
 import PercentageCircle from 'react-native-percentage-circle';
 
@@ -125,7 +126,7 @@ export default class MainScreen extends React.Component{
 
         return(
             <View style = {styles.container}>
-
+                <StatusBar backgroundColor = "#0094ff"/>
                 <View style = {styles.circle}>
                     <View style = {styles.boxname}>
                         <Image source = {require('../img/Name.png')}/>

@@ -4,20 +4,27 @@ import {
     AppRegistry,
     View
 } from 'react-native';
-import MainScreen from '../src/MainScreen';
+
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import MainScreen from '../src/MainScreen';
 import PhotoScreen from '../src/PhotoScreen';
+import ProfileScreen from '../src/ProfileScreen';
 export default TabNavigator(
+
     {
+        Photo : {
+            screen : PhotoScreen
+        },
         Main : {
             screen : MainScreen
         },
-        Photo : {
-            screen : PhotoScreen
-        }
+        Profile : {
+            screen : ProfileScreen
+        },
     },
     {
         navigationOptions : ({ navigation }) => ({
+            
             tabBarIcon : ({ focused , tintColor }) => {
                 const { routeName } = navigation.state;
                 let iconName;
@@ -27,7 +34,10 @@ export default TabNavigator(
                 else if(routeName === 'Photo'){
                     iconName = 'photo-camera'
                 }
-                return <Icon name = {iconName} size = {25} color = {"#0094ff"} />
+                else if(routeName === 'Profile'){
+                    iconName = 'person'
+                }
+                return <Icon name = {iconName} size = {25} color = {tintColor} />
             }
         }),
         tabBarOptions : {

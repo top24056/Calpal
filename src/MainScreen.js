@@ -61,7 +61,17 @@ const styles = StyleSheet.create({
         flex : 1,
         justifyContent : 'center',
         alignItems : 'center',
-        backgroundColor : 'blue'
+        // backgroundColor : 'blue'
+    },
+    boxcircle : {
+        flex : 2.5,
+        // justifyContent : 'center',
+        alignItems : 'center',
+    },
+    boxname : {
+        flex : 1,
+        justifyContent : 'center',
+        alignItems : 'center'
     }
     
     
@@ -117,22 +127,28 @@ export default class MainScreen extends React.Component{
             <View style = {styles.container}>
 
                 <View style = {styles.circle}>
-                    <PercentageCircle 
-                        radius = {80} 
-                        percent = {50} 
-                        color={"#ffffff"} 
-                        borderWidth = {4} 
-                        bgcolor = {"#0094ff"} 
-                        innerColor = {"#0094ff"} 
-                        duration = {500} 
-                        animationType = 'Quad.easeInOut'>
+                    <View style = {styles.boxname}>
+                        <Image source = {require('../img/Name.png')}/>
+                    </View>
+                    <View style = {styles.boxcircle}>
+                        <PercentageCircle 
+                            radius = {80} 
+                            percent = {50} 
+                            color={"#ffffff"} 
+                            borderWidth = {4} 
+                            bgcolor = {"#0094ff"} 
+                            innerColor = {"#0094ff"} 
+                            duration = {500} 
+                            animationType = 'Quad.easeInOut'>
 
-                        <Text style = {{color : 'white'}}>
-                            <Text style = {{fontSize : 24}}>1950 / </Text><Text style = {{fontSize : 14}}>3850</Text>
-                        </Text>
-                        <Text style = {{color : 'white' , fontSize : 15}}>KCal</Text>
-                        
-                    </PercentageCircle>
+                            <Text style = {{color : 'white'}}>
+                                <Text style = {{fontSize : 24}}>1950 / </Text><Text style = {{fontSize : 14}}>3850</Text>
+                            </Text>
+                            <Text style = {{color : 'white' , fontSize : 15}}>KCal</Text>
+                            
+                        </PercentageCircle>
+                    </View>
+                    
                 </View>
 
 
@@ -146,12 +162,13 @@ export default class MainScreen extends React.Component{
                             <Text style = {{color : '#858787', fontSize : 18}}>Add! Breakfast</Text>
                             <Text style = {{color : '#858787', fontSize : 12}}>Recommend Calrories : 388 KCal</Text>
                         </View>
+
                         <View style = {styles.boxadd}>
-                            <TouchableOpacity onPress = {() =>{this.props.navigation.navigate('Photo')}} style = {{ backgroundColor : 'red'}}>
-                                <View style = {{flex : 1 ,justifyContent : 'center',alignItems : 'center'}}>
+                            <TouchableOpacity onPress = {() =>{this.props.navigation.navigate('Photo')}}>
+                                <View style = {{justifyContent : 'center' ,alignItems : 'center' ,padding : 20}}>
                                     <Image source = {require('../img/add.png')} style = {{width : 16, height : 16}}/>
                                 </View>
-                                
+        
                             </TouchableOpacity>
                         </View>
 
@@ -168,7 +185,9 @@ export default class MainScreen extends React.Component{
                         </View>
                         <View style = {styles.boxadd}>
                             <TouchableOpacity onPress = {() =>{this.props.navigation.navigate('Photo')}}>
-                                <Image source = {require('../img/add.png')} style = {{width : 16, height : 16}}/>
+                                <View style = {{justifyContent : 'center' ,alignItems : 'center' ,padding : 20}}>
+                                    <Image source = {require('../img/add.png')} style = {{width : 16, height : 16}}/>
+                                </View>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -184,7 +203,9 @@ export default class MainScreen extends React.Component{
                         </View>
                         <View style = {styles.boxadd}>
                             <TouchableOpacity onPress = {() =>{this.props.navigation.navigate('Photo')}}>
-                                <Image source = {require('../img/add.png')} style = {{width : 16, height : 16}}/>
+                                <View style = {{justifyContent : 'center' ,alignItems : 'center' ,padding : 20}}>
+                                    <Image source = {require('../img/add.png')} style = {{width : 16, height : 16}}/>
+                                </View>
                             </TouchableOpacity>
                         </View>
                     </View>

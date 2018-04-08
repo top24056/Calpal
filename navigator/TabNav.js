@@ -7,13 +7,15 @@ import {
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MainScreen from '../src/MainScreen';
-import PhotoScreen from '../src/PhotoScreen';
+import CameraScreen from '../src/CameraScreen';
 import ProfileScreen from '../src/ProfileScreen';
-export default TabNavigator(
+import StackNav from './StackNav';
+import ImageScreen from '../src/ImageScreen';
 
+export default TabNavigator(
     {
         Photo : {
-            screen : PhotoScreen
+            screen : StackNav
         },
         Main : {
             screen : MainScreen
@@ -21,6 +23,7 @@ export default TabNavigator(
         Profile : {
             screen : ProfileScreen
         },
+        
     },
     {
         navigationOptions : ({ navigation }) => ({

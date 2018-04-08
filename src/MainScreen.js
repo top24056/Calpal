@@ -42,11 +42,16 @@ const styles = StyleSheet.create({
     },
     boxwater : {
         flex : 1,
-        flexDirection : 'row',
+        flexDirection : 'column',
         marginLeft : 10,
         marginRight : 10,
         marginTop : 10,
         marginBottom : 10,
+        backgroundColor : 'white',
+        shadowColor: '#303838',
+        shadowOffset: { width: 0, height: 5 },
+        shadowRadius: 10,
+        shadowOpacity: 0.35,
     },
     boximg : {
         flex : 1,
@@ -73,6 +78,17 @@ const styles = StyleSheet.create({
         flex : 1,
         justifyContent : 'center',
         alignItems : 'center'
+    },
+    boxcup : {
+        flex : 2,
+        flexDirection : 'row'
+    },
+    boxtextcount : {
+        flex : 0.5,
+        flexDirection : 'row',
+        justifyContent : 'flex-end',
+        paddingTop : 5,
+        paddingRight : 5
     }
     
     
@@ -114,7 +130,8 @@ export default class MainScreen extends React.Component{
                             copyObject[k.toString()] = 0.1
                         }
                         this.setState({
-                            colorwater : copyObject
+                            colorwater : copyObject,
+                            count : i+1
                         })
                     }}>
                         <Image source = {require('../img/water-glasess.png')} style = {{ width : 45 , height : 45}} opacity = {this.state.colorwater[i.toString()]}/>
@@ -213,7 +230,16 @@ export default class MainScreen extends React.Component{
 
 
                     <View style = {styles.boxwater}>
-                        { imgwater }
+                        <View style = {styles.boxtextcount}>
+                            <Text style = {{fontSize : 11,color : '#bcbcbc'}}>
+                                <Text>{this.state.count}</Text>
+                                <Text> Cups</Text>
+                            </Text>
+                        </View>
+                        <View style = {styles.boxcup}>
+                            { imgwater }
+                        </View>
+                    
                     </View>
 
                 </View>

@@ -8,11 +8,10 @@ import {
     TouchableHighlight,
     TouchableOpacity,
     Image,
+    Platform
 } from 'react-native';
 import {RNCamera} from 'react-native-camera';
-import Imagescreen from './ImageScreen';
 import Spinner from 'react-native-loading-spinner-overlay';
-
 
 
 const styles = StyleSheet.create({
@@ -21,7 +20,7 @@ const styles = StyleSheet.create({
     },
     preview : {
         flex: 1,
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         alignItems: 'center'
     },
     boxcamera : {
@@ -48,8 +47,16 @@ const styles = StyleSheet.create({
         borderRadius : 140/2,
         backgroundColor : '#0094ff',
         padding : 5
+    },
+    framecamera : {
+        borderColor : 'white',
+        borderWidth : 1,
+        height : 250,
+        width : 250,
     }
 })
+
+const normalRatio = "16:9";
 
 export default class PhotoScreen extends React.Component{
 
@@ -57,12 +64,39 @@ export default class PhotoScreen extends React.Component{
         super(props);
         this.state = {
             path : null,
+            ratio : null,
         };
     }
 
+    prepareRatio = async function(){
+        if(Platform.OS === 'android' && this.cam){
+            const ratios = await this.cam.getSupportedRatioAsync();
+            console.log('asdfsadf')
+            let ratioinfunc = ratios.find((ratioinfunc) => ratioinfunc == normalRatio) || ratios[ratios.length - 1];
+            this.setState({
+                ratio : ratioinfunc
+            })
+        }
+    }
+
+    takePicture = async function(){
+        if(this.camera){
+            const options = {
+                quality : 1,
+                width : 500,
+                height : 500
+            };
+            const data = await this.camera.takePictureAsync(options);
+            // console.log(data);
+            this.props.navigation.navigate("Modal");
+            this.props.ImageAction(data);
+            console.log("store image = ",this.props.image.image_food)
+        }
+    }
 
     
     render(){
+
         return(
             <View style = {styles.container}>
                 <View style = {styles.boxcamera}>
@@ -70,11 +104,19 @@ export default class PhotoScreen extends React.Component{
                         ref = {ref => {
                             this.camera = ref;
                         }}
+                        onCameraReady = {this.prepareRatio}
                         style = {styles.preview}
                         type = {RNCamera.Constants.Type.back}
+                        // ratio = {this.state.ratio}
                         permissionDialogTitle = {'Permission to use Camera'}
                         permissionDialogMessage = {'We need your permission to use your camera phone'}
-                    />
+                    >
+
+                        <View style = {styles.framecamera}>
+                            
+                        </View>
+                    </RNCamera>
+                    
                 </View>
                 <View style = {styles.boxcapture}>
                     <TouchableOpacity onPress = {this.takePicture.bind(this)} activeOpacity = {0.1}>
@@ -83,25 +125,25 @@ export default class PhotoScreen extends React.Component{
                             </View>
                         </View>
                     </TouchableOpacity>
+                    {/* <Text>
+                        {this.props.image.image_food}
+                    </Text> */}
                 </View>
+                {/* <View style={ {flex: 1 } } >
+                    <Image 
+                        source={{
+                            isStatic: true,
+                            // uri: 'data:image/jpeg;base64,' + this.state.path}} 
+                            uri : this.state.path
+                        }}
+                        style={{
+                            height: 200, width:200
+                        }}
+                    />
+                </View> */}
             </View>
         );
     }
 
-    takePicture = async function(){
-        if(this.camera){
-            const options = {
-                quality : 1,
-                base64 : true,
-                width : 500
-            };
-            const data = await this.camera.takePictureAsync(options);
-            this.setState({
-                path : data.uri
-            })
-            console.log(data);
-            this.props.navigation.navigate("Modal");
-        }
-
-    }
+    
 }

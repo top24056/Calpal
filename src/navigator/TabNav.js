@@ -6,11 +6,11 @@ import {
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import MainScreen from '../src/MainScreen';
-import CameraScreen from '../src/CameraScreen';
-import ProfileScreen from '../src/ProfileScreen';
+import MainScreen from '../Components/MainScreen';
+import CameraScreen from '../Components/CameraScreen';
+import ProfileScreen from '../Components/ProfileScreen';
 import StackNav from './StackNav';
-import ImageScreen from '../src/ImageScreen';
+import ImageScreen from '../Components/ImageScreen';
 
 export default TabNavigator(
     {

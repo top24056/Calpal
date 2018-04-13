@@ -134,7 +134,7 @@ export default class MainScreen extends React.Component{
                             count : i+1
                         })
                     }}>
-                        <Image source = {require('../img/water-glasess.png')} style = {{ width : 45 , height : 45}} opacity = {this.state.colorwater[i.toString()]}/>
+                        <Image source = {require('../../img/water-glasess.png')} style = {{ width : 45 , height : 45}} opacity = {this.state.colorwater[i.toString()]}/>
                     </TouchableOpacity>
                 </View>
             )
@@ -143,10 +143,10 @@ export default class MainScreen extends React.Component{
 
         return(
             <View style = {styles.container}>
-                <StatusBar backgroundColor = "#0094ff"/>
+                <StatusBar backgroundColor = {'transparent'} translucent/>
                 <View style = {styles.circle}>
                     <View style = {styles.boxname}>
-                        <Image source = {require('../img/Name.png')}/>
+                        <Image source = {require('../../img/Name.png')}/>
                     </View>
                     <View style = {styles.boxcircle}>
                         <PercentageCircle 
@@ -174,7 +174,7 @@ export default class MainScreen extends React.Component{
 
                     <View style = {styles.box}>
                         <View style = {styles.boximg}>
-                            <Image source = {require('../img/breakfast.png')} style = {{width : 64, height : 64}}/>
+                            <Image source = {require('../../img/breakfast.png')} style = {{width : 64, height : 64}}/>
                         </View>
                         <View style = {styles.boxtext}>
                             <Text style = {{color : '#858787', fontSize : 18}}>Add! Breakfast</Text>
@@ -184,7 +184,7 @@ export default class MainScreen extends React.Component{
                         <View style = {styles.boxadd}>
                             <TouchableOpacity onPress = {() =>{this.props.navigation.navigate('Photo')}}>
                                 <View style = {{justifyContent : 'center' ,alignItems : 'center' ,padding : 20}}>
-                                    <Image source = {require('../img/add.png')} style = {{width : 16, height : 16}}/>
+                                    <Image source = {require('../../img/add.png')} style = {{width : 16, height : 16}}/>
                                 </View>
         
                             </TouchableOpacity>
@@ -195,7 +195,7 @@ export default class MainScreen extends React.Component{
 
                     <View style = {styles.box}>
                         <View style = {styles.boximg}>
-                            <Image source = {require('../img/rice.png') } style = {{width : 64, height : 64}}/>
+                            <Image source = {require('../../img/rice.png') } style = {{width : 64, height : 64}}/>
                         </View>
                         <View style = {styles.boxtext}>
                             <Text style = {{color : '#858787', fontSize : 18}}>Add! Lunch</Text>
@@ -204,7 +204,7 @@ export default class MainScreen extends React.Component{
                         <View style = {styles.boxadd}>
                             <TouchableOpacity onPress = {() =>{this.props.navigation.navigate('Photo')}}>
                                 <View style = {{justifyContent : 'center' ,alignItems : 'center' ,padding : 20}}>
-                                    <Image source = {require('../img/add.png')} style = {{width : 16, height : 16}}/>
+                                    <Image source = {require('../../img/add.png')} style = {{width : 16, height : 16}}/>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -213,7 +213,7 @@ export default class MainScreen extends React.Component{
 
                     <View style = {styles.box}>
                         <View style = {styles.boximg}>
-                            <Image source = {require('../img/fish.png')} style = {{width : 64, height : 64}}/>
+                            <Image source = {require('../../img/fish.png')} style = {{width : 64, height : 64}}/>
                         </View>
                         <View style = {styles.boxtext}>
                             <Text style = {{color : '#858787', fontSize : 18}}>Add! Dinner</Text>
@@ -222,7 +222,7 @@ export default class MainScreen extends React.Component{
                         <View style = {styles.boxadd}>
                             <TouchableOpacity onPress = {() =>{this.props.navigation.navigate('Photo')}}>
                                 <View style = {{justifyContent : 'center' ,alignItems : 'center' ,padding : 20}}>
-                                    <Image source = {require('../img/add.png')} style = {{width : 16, height : 16}}/>
+                                    <Image source = {require('../../img/add.png')} style = {{width : 16, height : 16}}/>
                                 </View>
                             </TouchableOpacity>
                         </View>

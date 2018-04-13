@@ -1,5 +1,5 @@
 import { AppRegistry } from 'react-native';
 import App from './App';
-import Main from './navigator/TabNav';
+import Main from './src/navigator/TabNav';
 
-AppRegistry.registerComponent('Calpal', () => Main);
+AppRegistry.registerComponent('Calpal', () => App);

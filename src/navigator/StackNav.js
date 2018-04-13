@@ -4,15 +4,16 @@ import {
     Text
 } from 'react-native';
 import {StackNavigator} from 'react-navigation';
-import ModalLoading from '../src/ModalLoading';
+import ModalLoading from '../Components/ModalLoading';
 // import MainScreen from '../src/MainScreen';
-import PhotoScreen from '../src/CameraScreen';
-import ImageScreen from '../src/ImageScreen';
+import CameraContainer from '../containers/CameraContainer';
+import ImageScreen from '../Components/ImageScreen';
+import ImageContainer from '../containers/ImageContainer';
 
 const StackNav = StackNavigator(
     {
         Photo : {
-            screen : PhotoScreen,
+            screen : CameraContainer,
             navigationOptions : ({navigation}) => ({
                 headerTransparent : true,
                 headerLeft : null
@@ -26,7 +27,7 @@ const StackNav = StackNavigator(
             })
         },
         Image : {
-            screen : ImageScreen,
+            screen : ImageContainer,
             navigationOptions : ({navigation}) => ({
                 headerTransparent : true,
                 headerLeft : null

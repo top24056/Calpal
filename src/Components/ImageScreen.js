@@ -4,7 +4,8 @@ import {
     View,
     Text,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    Image
 } from 'react-native';
 
 
@@ -12,7 +13,6 @@ const styles = StyleSheet.create({
     container : {
         flex : 1,
         flexDirection : 'column',
-
     },
     boximage : {
         flex : 1
@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
 })
 
 export default class ImageScreen extends React.Component{
+
     constructor(props){
         super(props)
         this.state = ({
@@ -51,13 +52,12 @@ export default class ImageScreen extends React.Component{
             ]
         })
     }
-    
-
     render(){
         var boxnamefood = [];
         for(let i = 0 ; i < 3 ; i++){
             boxnamefood.push(
-                <TouchableOpacity onPress = {() => {
+                <TouchableOpacity key = {i} onPress = {() => {
+                    console.log('in image : ',this.props.image.image_food)
                     this.props.navigation.navigate("Main");
                 }}>
                     <View style = {styles.boxtext}>
@@ -74,7 +74,16 @@ export default class ImageScreen extends React.Component{
         return(
             <View style = {styles.container}>
                 <View style = {styles.boximage}>
-
+                    <Image
+                        source = {{
+                            isStatic: true,
+                            uri : this.props.image.image_food
+                        }}
+                        style = {{
+                            height : 300,
+                            width : 500
+                        }}
+                    />
                 </View>
                 <View style = {styles.boxcontent}>
                     {boxnamefood}

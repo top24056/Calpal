@@ -28,6 +28,7 @@ export default class ModalLoading extends React.Component{
             this.setState({
                 visible: false
             });
+        
         }, 3000);
         this.props.navigation.navigate("Image");
       }

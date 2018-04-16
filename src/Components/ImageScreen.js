@@ -57,7 +57,8 @@ export default class ImageScreen extends React.Component{
         for(let i = 0 ; i < 3 ; i++){
             boxnamefood.push(
                 <TouchableOpacity key = {i} onPress = {() => {
-                    console.log('in image : ',this.props.image.image_food)
+                    this.props.FoodAction(this.state.nameFood[i]);
+                    // console.log('in image : ',this.props.image.image_food)
                     this.props.navigation.navigate("Main");
                 }}>
                     <View style = {styles.boxtext}>

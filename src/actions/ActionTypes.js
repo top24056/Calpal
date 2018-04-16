@@ -1,2 +1,3 @@
 export const ADD_IMAGE = "ADD_IMAGE";
-export const NAME_FOOD = "NAME_FOOD";
+export const DATA_FOOD = "DATA_FOOD";
+export const DATA_PROFILE = "DATA_PROFILE";

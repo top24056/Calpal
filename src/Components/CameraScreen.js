@@ -71,7 +71,6 @@ export default class PhotoScreen extends React.Component{
     prepareRatio = async function(){
         if(Platform.OS === 'android' && this.cam){
             const ratios = await this.cam.getSupportedRatioAsync();
-            console.log('asdfsadf')
             let ratioinfunc = ratios.find((ratioinfunc) => ratioinfunc == normalRatio) || ratios[ratios.length - 1];
             this.setState({
                 ratio : ratioinfunc
@@ -87,7 +86,6 @@ export default class PhotoScreen extends React.Component{
                 height : 500
             };
             const data = await this.camera.takePictureAsync(options);
-            // console.log(data);
             this.props.navigation.navigate("Modal");
             this.props.ImageAction(data);
             console.log("store image = ",this.props.image.image_food)

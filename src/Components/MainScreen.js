@@ -78,6 +78,7 @@ export default class MainScreen extends React.Component{
             photo : "You don't have photo",
             curtime : null,
             currentcal : 0,
+            percentCircle : 0,
             food:{
                 breakfast : {
                     name : "Add! Breakfast",
@@ -105,22 +106,6 @@ export default class MainScreen extends React.Component{
 
     }
 
-    componentWillReceiveProps(props){
-        if(props.food){
-            console.log("in main food")
-        }
-        if(props.profile){
-            console.log('in main profile')
-        }
-        let foodcopy = JSON.parse(JSON.stringify(this.state.food))
-        foodcopy.breakfast.name = props.food.name_food
-        foodcopy.breakfast.calpre = "Calories is : "+ props.food.cal_food + " KCal"
-        let sumcal = this.state.currentcal + props.food.cal_food
-        this.setState({
-            food : foodcopy,
-            currentcal : sumcal
-        })
-    }
     
     render(){
         // var imgwater = [];

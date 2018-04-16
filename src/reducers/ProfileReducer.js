@@ -5,14 +5,15 @@ import {
 
 const initState = {
     dataprofile : null,
-    sumcal : 0
+    sumcal : 0,
 }
 
 export default function (state = initState, action){
     switch(action.type){
         case DATA_PROFILE:
             return Object.assign({}, state,{
-                dataprofile : action.payload
+                dataprofile : action.payload,
+                sumcal : action.payload_cal
             })
         
         default : 

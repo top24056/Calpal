@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import MainScreen from '../Components/MainScreen';
+import MainAction from '../actions/MainAction';
 
 class MainContainer extends React.Component{
     render(){
@@ -19,4 +20,6 @@ function mapStateToProps(state){
 }
 
 
-export default connect(mapStateToProps)(MainContainer)
+export default connect(mapStateToProps,{
+    MainAction
+})(MainContainer)

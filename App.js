@@ -10,6 +10,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Provider } from 'react-redux'; 
 import Store from './src/Store';
 import TabNav from './src/navigator/TabNav';
+import LoginContainer from './src/containers/LoginContainer'
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -22,7 +23,7 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={Store}>
-
+        {/* <LoginContainer/> */}
         <TabNav />
 
       </Provider>

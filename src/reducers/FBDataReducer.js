@@ -1,35 +1,32 @@
 import {
-    DATA_PROFILE,
-    GET_FB_DATA,
-    
+    GET_FB_TOKEN,
+    GET_FB_DATA
 } from './../actions/ActionTypes';
 
 
 const initState = {
-    dataprofile : {
+    token : null,
+    data_profile : {
         name : "Guess",
         picture : {
             data : {
-                url : "https://gazettereview.com/wp-content/uploads/2016/03/facebook-avatar.jpg"
+                uri : "https://gazettereview.com/wp-content/uploads/2016/03/facebook-avatar.jpg"
             }
         }
-    },
-    sumcal : 0,
-    init_profile : null
+    }
 }
 
 export default function (state = initState, action){
     switch(action.type){
-        case DATA_PROFILE:
+        case GET_FB_TOKEN:
             return Object.assign({}, state,{
-                dataprofile : action.payload,
-                sumcal : action.payload_cal
+                token : action.payload,
             })
         case GET_FB_DATA:
             return Object.assign({}, state,{
-                dataprofile : action.payload,
+                data_profile : action.payload,
             })
-
+        
         default : 
             return state;
     }

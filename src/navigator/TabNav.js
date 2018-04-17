@@ -6,13 +6,10 @@ import {
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import MainScreen from '../Components/MainScreen';
 import MainContainer from '../containers/MainContainer';
-import CameraScreen from '../Components/CameraScreen';
-import ProfileScreen from '../Components/ProfileScreen';
 import StackNav from './StackNav';
-import ImageScreen from '../Components/ImageScreen';
 import ProfileContainer from '../containers/ProfileContainer';
+import LoginContainer from '../containers/LoginContainer';
 
 export default TabNavigator(
     {
@@ -25,6 +22,9 @@ export default TabNavigator(
         Profile : {
             screen : ProfileContainer
         },
+        // Login : {
+        //     screen : LoginContainer
+        // }
         
     },
     {

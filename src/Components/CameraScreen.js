@@ -123,9 +123,6 @@ export default class PhotoScreen extends React.Component{
                             </View>
                         </View>
                     </TouchableOpacity>
-                    {/* <Text>
-                        {this.props.image.image_food}
-                    </Text> */}
                 </View>
                 {/* <View style={ {flex: 1 } } >
                     <Image 

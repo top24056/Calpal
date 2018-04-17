@@ -1,14 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import MainScreen from '../Components/MainScreen';
-import MainAction from '../actions/MainAction';
+import LoginScreen from '../Components/LoginScreen';
 import GetFBAccessTokenAction from '../actions/GetFBAccessTokenAction.js'
 import GetFBDataAction from '../actions/GetFBDataAction'
 
-class MainContainer extends React.Component{
+class LoginContainer extends React.Component{
     render(){
         return (
-            <MainScreen {...this.props}/>
+            <LoginScreen {...this.props}/>
         )
     }
 }
@@ -16,15 +15,13 @@ class MainContainer extends React.Component{
 
 function mapStateToProps(state){
     return{
-        food : state.food,
-        profile : state.profile,
-        fb : state.fb
+        fb : state.fb,
+        profile : state.profile
     }
 }
 
 
 export default connect(mapStateToProps,{
-    MainAction,
     GetFBAccessTokenAction,
-    GetFBDataAction,
-})(MainContainer)
+    GetFBDataAction
+})(LoginContainer)

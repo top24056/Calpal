@@ -9,6 +9,13 @@ import {
     StatusBar
 } from 'react-native';
 import PercentageCircle from 'react-native-percentage-circle';
+import FBSDK ,{
+    LoginManager,
+    LoginButton,
+    AccessToken,
+    GraphRequest,
+    GraphRequestManager,
+} from 'react-native-fbsdk';
 
 
 
@@ -70,6 +77,8 @@ const styles = StyleSheet.create({
     
 })
 
+
+
 export default class MainScreen extends React.Component{
 
     constructor (props) {
@@ -79,6 +88,8 @@ export default class MainScreen extends React.Component{
             curtime : null,
             currentcal : 0,
             percentCircle : 0,
+            
+            profile : null,
             food:{
                 breakfast : {
                     name : "Add! Breakfast",
@@ -92,9 +103,50 @@ export default class MainScreen extends React.Component{
                     name : "Add Dinner",
                     calpre : "Recommend Calrories : 588 KCal"
                 }
-            }
+            },
         }
     }
+
+    _FBLogin(error, result){
+ 
+        if (error) {
+            alert("login has error: " + result.error);
+        }
+        else if (result.isCancelled) {
+            alert("login is cancelled.");
+        }
+        else {
+            AccessToken.getCurrentAccessToken().then((data) => {
+                let accessToken = data.accessToken
+                alert('Login Success')
+                this.props.GetFBAccessTokenAction(data)
+                const infoRequest = new GraphRequest(
+                    '/me',
+                    {
+                        accessToken : accessToken,
+                        parameters : {
+                            fields : {
+                                string : 'name,picture.type(large)'
+                            }
+                        }
+                    },
+                    (error,result) => {
+                        if (error) {
+                            console.log(error);
+                        }
+                        else {
+                            this.props.GetFBDataAction(result)
+                        }
+                    }
+                    // this._responseInfoCallback
+                );
+                let x = new GraphRequestManager().addRequest(infoRequest).start();
+            })
+        }
+    }
+
+    
+    
 
 
     componentDidMount(){
@@ -222,7 +274,15 @@ export default class MainScreen extends React.Component{
                     </View>
 
                     <View style = {styles.box}>
-
+                        <View style = {{flex :1 ,justifyContent: 'center',alignItems: 'center'}}>
+                            <LoginButton
+                                publishPermissions={["publish_actions"]}
+                                onLoginFinished={(error,result) => {
+                                    this._FBLogin(error,result)
+                                }}
+                                onLogoutFinished={() => alert("logout.")}
+                            />
+                        </View>
                     </View>
 
 

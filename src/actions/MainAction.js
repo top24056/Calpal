@@ -1,5 +1,5 @@
 import {
-    PERCENT
+    PERCENT,
 } from './ActionTypes'
 
 

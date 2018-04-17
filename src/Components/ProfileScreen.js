@@ -12,7 +12,10 @@ import { Sae  } from 'react-native-textinput-effects';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-material-dropdown';
 import { Avatar } from 'react-native-elements';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import FBSDK ,{
+    LoginManager
+} from 'react-native-fbsdk';
 
 const styles = StyleSheet.create({
     container : {
@@ -33,6 +36,8 @@ const styles = StyleSheet.create({
     },
     boxgraph : {
         flex : 1,
+        justifyContent : 'center',
+        alignItems : 'center',
     },
     boxicon : {
         flex : 0.5,
@@ -64,6 +69,7 @@ export default class ProfileScreen extends React.Component{
     constructor(props){
         super(props);
         this.state = {
+            profileimage : null,
             dataprofile : {
                 weight : null,
                 height : null,
@@ -73,12 +79,6 @@ export default class ProfileScreen extends React.Component{
         }
     }
 
-
-
-    componentDidUpdate(){
-        console.log(this.state.dataprofile)
-        
-    }
 
 
 
@@ -156,7 +156,7 @@ export default class ProfileScreen extends React.Component{
             }
         ];
 
-
+        
 
         return(
             <KeyboardAwareScrollView style={styles.container}>
@@ -167,11 +167,11 @@ export default class ProfileScreen extends React.Component{
                             <Avatar
                                 xlarge
                                 rounded
-                                source = {{uri : "https://s3-ap-southeast-1.amazonaws.com/calpal-seniorproject/ImageProfileTest/profileTest.jpg"}}
+                                source = {{uri : this.props.profile.dataprofile.picture.data.url}}
                             />
                         </View>
                         <View style = {{flex : 1,justifyContent : 'center',alignItems : 'center',margin : 10}}>
-                            <Text style = {{color : 'white',fontSize : 20}}>Toppy Peerapon</Text>
+                            <Text style = {{color : 'white',fontSize : 20}}>{this.props.profile.dataprofile.name}</Text>
                         </View>
                     </View>
                 </View>
@@ -244,7 +244,6 @@ export default class ProfileScreen extends React.Component{
                 </View>
 
                 <View style = {styles.boxgraph}>
-
                 </View>
 
             {/* </View> */}

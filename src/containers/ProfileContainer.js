@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ProfileScreen from '../Components/ProfileScreen';
-import ProfileAction from '../actions/ProfileAction';
-
+import GetInformationAction from '../actions/GetInformationAction';
 
 class ProfileContainer extends React.Component{
 
@@ -18,11 +17,11 @@ class ProfileContainer extends React.Component{
 
 function mapStateToProps(state){
     return {
-        profile : state.profile
-
+        infor : state.infor,
+        fb : state.fb
     }
 }
 
 export default connect(mapStateToProps,{
-    ProfileAction,
+    GetInformationAction,
 })(ProfileContainer)

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "386748363392",
+    "firebase_url": "https://calpal-4c837.firebaseio.com",
+    "project_id": "calpal-4c837",
+    "storage_bucket": "calpal-4c837.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:386748363392:android:c55e8598a122e13c",
+        "android_client_info": {
+          "package_name": "com.calpal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "386748363392-8aalusi76kge5dq7i6msj81bjr880040.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBek0JfQRMHfJ7ncRwoqXLLRJ8DgqeYduc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

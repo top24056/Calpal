@@ -6,7 +6,8 @@ import {
     StyleSheet,
     Image,
     TouchableOpacity,
-    StatusBar
+    StatusBar,
+    Button
 } from 'react-native';
 import PercentageCircle from 'react-native-percentage-circle';
 import FBSDK ,{
@@ -16,12 +17,14 @@ import FBSDK ,{
     GraphRequest,
     GraphRequestManager,
 } from 'react-native-fbsdk';
+import firebase from 'react-native-firebase';
 
 
 
 const styles = StyleSheet.create({
     container : {
         flex : 1,
+        backgroundColor : '#E8EAF6'
     },
     circle : {
         flex : 0.4,
@@ -32,7 +35,7 @@ const styles = StyleSheet.create({
     },
     content : {
         flex : 0.6,
-        backgroundColor : '#f4f9f9'
+        backgroundColor : 'rgba(0,0,0,.05)'
     },
     box : {
         flex : 1,
@@ -42,10 +45,10 @@ const styles = StyleSheet.create({
         marginTop : 10,
         marginBottom : 10,
         backgroundColor : 'white',
-        shadowColor: '#303838',
-        shadowOffset: { width: 0, height: 5 },
-        shadowRadius: 10,
-        shadowOpacity: 0.35,
+        shadowOpacity: 0.54,
+        shadowRadius: 1,
+        shadowOffset: { width: 0, height: 1 },
+        elevation: 1,
     },
     boximg : {
         flex : 1,
@@ -107,44 +110,86 @@ export default class MainScreen extends React.Component{
         }
     }
 
-    _FBLogin(error, result){
+    // _FBLogin(error, result){
  
-        if (error) {
-            alert("login has error: " + result.error);
-        }
-        else if (result.isCancelled) {
-            alert("login is cancelled.");
-        }
-        else {
-            AccessToken.getCurrentAccessToken().then((data) => {
-                let accessToken = data.accessToken
-                alert('Login Success')
-                this.props.GetFBAccessTokenAction(data)
-                const infoRequest = new GraphRequest(
-                    '/me',
-                    {
-                        accessToken : accessToken,
-                        parameters : {
-                            fields : {
-                                string : 'name,picture.type(large)'
+    //     if (error) {
+    //         alert("login has error: " + result.error);
+    //     }
+    //     else if (result.isCancelled) {
+    //         alert("login is cancelled.");
+    //     }
+    //     else {
+    //         AccessToken.getCurrentAccessToken().then((data) => {
+    //             let accessToken = data.accessToken
+    //             alert('Login Success')
+    //             this.props.GetFBAccessTokenAction(data)
+    //             const infoRequest = new GraphRequest(
+    //                 '/me',
+    //                 {
+    //                     accessToken : accessToken,
+    //                     parameters : {
+    //                         fields : {
+    //                             string : 'name,picture.type(large)'
+    //                         }
+    //                     }
+    //                 },
+    //                 (error,result) => {
+    //                     if (error) {
+    //                         console.log(error);
+    //                     }
+    //                     else {
+    //                         this.props.GetFBDataAction(result)
+    //                     }
+    //                 }
+    //                 // this._responseInfoCallback
+    //             );
+    //             let x = new GraphRequestManager().addRequest(infoRequest).start();
+    //         })
+    //     }
+    // }
+    handleFacebookLogin = () => {
+        LoginManager.logInWithReadPermissions(['public_profile', 'email', 'user_friends'])
+        .then((result) => {
+            if(result.isCancelled){
+                return Promise.reject(new Error('The user cancelled the request'));
+            }
+            else{
+                AccessToken.getCurrentAccessToken().then((data) => {
+                    let accessToken = data.accessToken
+                    alert('Login Success')
+                    this.props.GetFBAccessTokenAction(data)
+                    const infoRequest = new GraphRequest(
+                        '/me',
+                        {
+                            accessToken : accessToken,
+                            parameters : {
+                                fields : {
+                                    string : 'email,name,picture.type(large)'
+                                }
+                            }
+                        },
+                        (error,result) => {
+                            if (error) {
+                                console.log(error);
+                            }
+                            else {
+                                this.props.GetFBDataAction(result)
                             }
                         }
-                    },
-                    (error,result) => {
-                        if (error) {
-                            console.log(error);
-                        }
-                        else {
-                            this.props.GetFBDataAction(result)
-                        }
-                    }
-                    // this._responseInfoCallback
-                );
-                let x = new GraphRequestManager().addRequest(infoRequest).start();
-            })
-        }
+                    )
+                    let x = new GraphRequestManager().addRequest(infoRequest).start();
+                    const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
+                    console.log('credential : ',credential)
+                    return firebase.auth().signInAndRetrieveDataWithCredential(credential).then((result) => {
+                        this.props.GetUserFirebaseAction(result)
+                    })
+                    
+                },(error => {
+                    console.log('Some error');
+                }));
+            }
+        })
     }
-
     
     
 
@@ -160,31 +205,7 @@ export default class MainScreen extends React.Component{
 
     
     render(){
-        // var imgwater = [];
         
-        
-        // for (let i = 0 ; i < 8 ; i++){
-        //     imgwater.push(
-        //         <View key = {i} style = {styles.boximg}>
-        //             <TouchableOpacity onPress = {() => {
-        //                 let copyObject = Object.assign({}, this.state.colorwater)
-        //                 for (let j = i ; j >= 0 ; j -- ){
-        //                     copyObject[j.toString()] = 1
-        //                 }
-        //                 for (let k = i+1 ; k < 8 ; k++ ){
-        //                     copyObject[k.toString()] = 0.1
-        //                 }
-        //                 this.setState({
-        //                     colorwater : copyObject,
-        //                     count : i+1
-        //                 })
-        //             }}>
-        //                 <Image source = {require('../../img/water-glasess.png')} style = {{ width : 45 , height : 45}} opacity = {this.state.colorwater[i.toString()]}/>
-        //             </TouchableOpacity>
-        //         </View>
-        //     )
-        // }
-
 
         return(
             <View style = {styles.container}>
@@ -205,7 +226,7 @@ export default class MainScreen extends React.Component{
                             animationType = 'Quad.easeInOut'>
 
                             <Text style = {{color : 'white'}}>
-                                <Text style = {{fontSize : 24}}>{this.props.food.total_calperday} / </Text><Text style = {{fontSize : 14}}>3850</Text>
+                                <Text style = {{fontSize : 24}}>{this.props.food.total_calperday} / </Text><Text style = {{fontSize : 14}}>{this.props.infor.BMR}</Text>
                             </Text>
                             <Text style = {{color : 'white' , fontSize : 15}}>KCal</Text>
                             
@@ -275,12 +296,17 @@ export default class MainScreen extends React.Component{
 
                     <View style = {styles.box}>
                         <View style = {{flex :1 ,justifyContent: 'center',alignItems: 'center'}}>
-                            <LoginButton
+                            {/* <LoginButton
                                 publishPermissions={["publish_actions"]}
                                 onLoginFinished={(error,result) => {
                                     this._FBLogin(error,result)
                                 }}
                                 onLogoutFinished={() => alert("logout.")}
+                            /> */}
+                            <Button
+                                title="Continue with fb"
+                                color="#4267B2"
+                                onPress={this.handleFacebookLogin}
                             />
                         </View>
                     </View>

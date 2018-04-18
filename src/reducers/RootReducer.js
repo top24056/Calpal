@@ -1,14 +1,16 @@
 import {combineReducers} from 'redux';
 import CameraReducer from './CameraReducer';
 import FoodReducer from './FoodReducer';
-import ProfileReducer from './ProfileReducer'
+import InformationReducer from './InformationReducer';
 import MainReducer from './MainReducer';
 import FBDataReducer from './FBDataReducer';
+import FirebaseReducer from './FirebaseReducer';
 
 export default combineReducers({
     camera : CameraReducer,
     food : FoodReducer,
-    profile : ProfileReducer,
+    infor : InformationReducer,
     main : MainReducer,
-    fb : FBDataReducer
+    fb : FBDataReducer,
+    firebase : FirebaseReducer,
 });

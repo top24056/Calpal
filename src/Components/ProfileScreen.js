@@ -13,13 +13,17 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-material-dropdown';
 import { Avatar } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import {
+    RaisedTextButton
+} from 'react-native-material-buttons';
 import FBSDK ,{
     LoginManager
 } from 'react-native-fbsdk';
 
 const styles = StyleSheet.create({
     container : {
-        flex : 1
+        flex : 1,
+        backgroundColor : 'rgba(0,0,0,.05)',
     },
     boxprofile : {
         flex : 1,
@@ -33,6 +37,15 @@ const styles = StyleSheet.create({
     },
     boxcontent : {
         flex : 1,
+        margin : 10,
+        paddingLeft : 10,
+        paddingRight : 10,
+        backgroundColor : 'white',
+        shadowOpacity: 0.54,
+        shadowRadius: 1,
+        shadowOffset: { width: 0, height: 1 },
+        elevation: 1,
+        
     },
     boxgraph : {
         flex : 1,
@@ -48,9 +61,7 @@ const styles = StyleSheet.create({
     },
     boxtext : {
         flex : 2,
-        // backgroundColor : 'blue',
         justifyContent : 'center',
-        // alignItems : 'center'
     },
     card : {
         flex : 1,
@@ -70,17 +81,18 @@ export default class ProfileScreen extends React.Component{
         super(props);
         this.state = {
             profileimage : null,
-            dataprofile : {
+            information : {
                 weight : null,
                 height : null,
                 age : null,
-                sex : null
+                sex : null,
+                BMR : 0
             }
         }
     }
 
 
-
+ 
 
     render(){
 
@@ -97,12 +109,12 @@ export default class ProfileScreen extends React.Component{
                 inputStyle = {{color : '#0094ff'}}
                 keyboardType = 'numeric'
                 onChangeText = {(text) => {
-                    let dataprofilecopy = JSON.parse(JSON.stringify(this.state.dataprofile))
-                    dataprofilecopy.weight = text
+                    let informationcopy = JSON.parse(JSON.stringify(this.state.information))
+                    let x = Math.round(text)
+                    informationcopy.weight = x
                     this.setState({
-                        dataprofile : dataprofilecopy
+                        information : informationcopy
                     })
-                    this.props.ProfileAction(this.state.dataprofile);
                 }}
             />
         )
@@ -116,13 +128,14 @@ export default class ProfileScreen extends React.Component{
                 iconName={'pencil'}
                 iconColor={'#0094ff'}
                 inputStyle = {{color : '#0094ff'}}
+                keyboardType = "numeric"
                 onChangeText = {(text) => {
-                    let dataprofilecopy = JSON.parse(JSON.stringify(this.state.dataprofile))
-                    dataprofilecopy.height = text
+                    let informationcopy = JSON.parse(JSON.stringify(this.state.information))
+                    let x = Math.round(text)
+                    informationcopy.height = x
                     this.setState({
-                        dataprofile : dataprofilecopy
+                        information : informationcopy
                     })
-                    this.props.ProfileAction(this.state.dataprofile);
                 }}
             />
         )
@@ -136,13 +149,14 @@ export default class ProfileScreen extends React.Component{
                 iconName={'pencil'}
                 iconColor={'#0094ff'}
                 inputStyle = {{color : '#0094ff'}}
+                keyboardType = "numeric"
                 onChangeText = {(text) => {
-                    let dataprofilecopy = JSON.parse(JSON.stringify(this.state.dataprofile))
-                    dataprofilecopy.age = text
+                    let informationcopy = JSON.parse(JSON.stringify(this.state.information))
+                    let x = Math.round(text)
+                    informationcopy.age = x
                     this.setState({
-                        dataprofile : dataprofilecopy
+                        information : informationcopy
                     })
-                    this.props.ProfileAction(this.state.dataprofile);
                 }}
             />
         )
@@ -165,13 +179,13 @@ export default class ProfileScreen extends React.Component{
                     <View style = {styles.boxprofileimage}>
                         <View style = {{flex : 3,justifyContent : 'flex-end',alignItems : 'center',}}>
                             <Avatar
-                                xlarge
+                                large
                                 rounded
-                                source = {{uri : this.props.profile.dataprofile.picture.data.url}}
+                                source = {{uri : this.props.fb.data_profile.picture.data.url}}
                             />
                         </View>
                         <View style = {{flex : 1,justifyContent : 'center',alignItems : 'center',margin : 10}}>
-                            <Text style = {{color : 'white',fontSize : 20}}>{this.props.profile.dataprofile.name}</Text>
+                            <Text style = {{color : 'white',fontSize : 20}}>{this.props.fb.data_profile.name}</Text>
                         </View>
                     </View>
                 </View>
@@ -228,16 +242,37 @@ export default class ProfileScreen extends React.Component{
                                     textColor = '#0094ff'
                                     baseColor = '#0094ff'
                                     onChangeText = {(data) => {
-                                        let dataprofilecopy = JSON.parse(JSON.stringify(this.state.dataprofile))
-                                        dataprofilecopy.sex = data
+                                        let informationcopy = JSON.parse(JSON.stringify(this.state.information))
+                                        informationcopy.sex = data
                                         this.setState({
-                                            dataprofile : dataprofilecopy
+                                            information : informationcopy
                                         })
-                                        this.props.ProfileAction(this.state.dataprofile);
                                     }}
                                 />
                             </View>
                         </View>
+                        <View style = {{flex : 1,flexDirection : 'row',justifyContent : 'flex-end', margin : 5}}>
+                            <View style = {{margin : 5}}>
+                                <RaisedTextButton 
+                                    rippleDuration = {400} 
+                                    rippleOpacity={0.54} 
+                                    color='#0094ff' 
+                                    title = "Submit" 
+                                    titleColor = "white"
+                                    onPress = {() => {
+                                       
+                                        if(this.state.information.sex === 'male'){
+                                            this.state.information.BMR = 66 + (this.state.information.weight*13.7) + (5*this.state.information.height) - (6.8*this.state.information.age)
+                                        }
+                                        else if(this.state.information.sex === 'female'){
+                                            this.state.information.BMR = 66 + (this.state.information.weight*13.7) + (5*this.state.information.height) - (6.8*this.state.information.age)
+                                        }
+                                        this.props.GetInformationAction(this.state.information)
+                                    }}
+                                />
+                            </View>
+                        </View>
+
                         
                     </View>
                     

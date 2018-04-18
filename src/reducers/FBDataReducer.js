@@ -10,7 +10,7 @@ const initState = {
         name : "Guess",
         picture : {
             data : {
-                uri : "https://gazettereview.com/wp-content/uploads/2016/03/facebook-avatar.jpg"
+                url : "https://gazettereview.com/wp-content/uploads/2016/03/facebook-avatar.jpg"
             }
         }
     }

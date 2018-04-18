@@ -4,6 +4,7 @@ import MainScreen from '../Components/MainScreen';
 import MainAction from '../actions/MainAction';
 import GetFBAccessTokenAction from '../actions/GetFBAccessTokenAction.js'
 import GetFBDataAction from '../actions/GetFBDataAction'
+import GetUserFirebaseAction from '../actions/GetUserFirebaseAction.js'
 
 class MainContainer extends React.Component{
     render(){
@@ -17,8 +18,9 @@ class MainContainer extends React.Component{
 function mapStateToProps(state){
     return{
         food : state.food,
-        profile : state.profile,
-        fb : state.fb
+        fb : state.fb,
+        firebase : state.firebase,
+        infor : state.infor,
     }
 }
 
@@ -27,4 +29,5 @@ export default connect(mapStateToProps,{
     MainAction,
     GetFBAccessTokenAction,
     GetFBDataAction,
+    GetUserFirebaseAction
 })(MainContainer)

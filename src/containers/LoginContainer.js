@@ -16,7 +16,7 @@ class LoginContainer extends React.Component{
 function mapStateToProps(state){
     return{
         fb : state.fb,
-        profile : state.profile
+        // profile : state.profile
     }
 }
 

@@ -4,8 +4,18 @@ import {
 
 
 const initState = {
-    name_food : null,
-    cal_food : 0,
+    breakfast : {
+        name_food : null,
+        cal_food : 0,
+    },
+    lunch : {
+        name_food : null,
+        cal_food : 0,
+    },
+    dinner : {
+        name_food : null,
+        cal_food : 0,
+    },
     total_calperday : 0
 }
 

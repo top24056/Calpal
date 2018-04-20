@@ -15,6 +15,9 @@ import FBSDK ,{
     GraphRequestManager,
 } from 'react-native-fbsdk';
 import firebase from 'react-native-firebase';
+import {
+    SocialIcon
+} from 'react-native-elements';
 
 
 const styles = StyleSheet.create({
@@ -27,6 +30,7 @@ const styles = StyleSheet.create({
         flex : 1,
         justifyContent: 'center',
         alignItems: 'center',
+        // backgroundColor : 'red'
     },
     boxlogo : {
         flex : 5,
@@ -36,30 +40,54 @@ const styles = StyleSheet.create({
 })
 
 
-// const config = {
-//     apiKey : 'AIzaSyD7-HbA_VZGRbbIlm2gVinpmd32Z2XYjrA',
-//     authDomain : 'calpal-4c837.firebaseio.com/',
-//     databaseURL : 'https://calpal-4c837.firebaseio.com/'
-// }
-// const firebaseRef = firebase.initializeApp(config)
 
 export default class LoginScreen extends React.Component{
+
+    constructor(props){
+        super(props)
+        this.state = {
+            loading : false
+        }
+    }
+
     
     handleFacebookLogin = () => {
-        LoginManager.logInWithReadPermissions(['public_profile', 'email', 'user_friends'])
+        this.setState({
+            loading : true
+        })
+        LoginManager.logInWithReadPermissions(['public_profile', 'email', 'user_friends',])
         .then((result) => {
             if(result.isCancelled){
                 return Promise.reject(new Error('The user cancelled the request'));
             }
             else{
                 AccessToken.getCurrentAccessToken().then((data) => {
-                    console.log(data)
+                    let accessToken = data.accessToken
                     this.props.GetFBAccessTokenAction(data)
+                    const infoRequest = new GraphRequest(
+                        '/me',
+                        {
+                            accessToken : accessToken,
+                            parameters : {
+                                fields : {
+                                    string : 'email,name,picture.type(large)'
+                                }
+                            }
+                        },
+                        (error,result) => {
+                            if (error) {
+                                console.log(error);
+                            }
+                            else {
+                                this.props.GetFBDataAction(result)
+                            }
+                        }
+                    )
+                    let x = new GraphRequestManager().addRequest(infoRequest).start();
                     const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
-                    console.log('credential : ',credential)
                     return firebase.auth().signInAndRetrieveDataWithCredential(credential).then((result) => {
-                        console.log("result ",result)
-                        this.props.GetFBDataAction(result);
+                        this.props.GetUserFirebaseAction(result.user)
+                        this.props.navigation.navigate("Main");
                     })
                     
                 },(error => {
@@ -67,83 +95,10 @@ export default class LoginScreen extends React.Component{
                 }));
             }
         })
-        
-            // function (result) {
-            //     if (result.isCancelled) {
-            //         console.log('Login cancelled')
-            //     }
-            //     else {
-            //         console.log('Login success with permissions: ' + result.grantedPermissions.toString())
-            //         AccessToken.getCurrentAccessToken().then((data) =>{
-            //             console.log(data)
-            //             this.props.GetFBAccessTokenAction(data)
-            //         //     let accessToken = data.accessToken
-            //         //     const infoRequest = new GraphRequest(
-            //         //         '/me',
-            //         //         {
-            //         //             accessToken : accessToken,
-            //         //             parameters : {
-            //         //                 fields : {
-            //         //                     string : 'email,name,first_name,middle_name,last_name,picture.type(large)'
-            //         //                 }
-            //         //             }
-            //         //         }
-            //         //     ),
-            //         //     (error,result) => {
-            //         //         if (error) {
-            //         //             console.log(error);
-            //         //         }
-            //         //         else {
-            //         //             this.props.GetFBDataAction(result)
-            //         //         }
-            //         //     };
-            //         })
-            //     }
-            // },
-            // function (error) {
-            //     console.log('Login fail with error: ' + error)
-            // }
-        // )
     }
     
 
-    // _FBLogin(error, result){
- 
-    //     if (error) {
-    //         alert("login has error: " + result.error);
-    //     }
-    //     else if (result.isCancelled) {
-    //         alert("login is cancelled.");
-    //     }
-    //     else {
-    //         AccessToken.getCurrentAccessToken().then((data) => {
-    //             let accessToken = data.accessToken
-    //             alert('Login Success')
-    //             this.props.GetFBAccessTokenAction(data)
-    //             const infoRequest = new GraphRequest(
-    //                 '/me',
-    //                 {
-    //                     accessToken : accessToken,
-    //                     parameters : {
-    //                         fields : {
-    //                             string : 'email,name,first_name,middle_name,last_name,picture.type(large)'
-    //                         }
-    //                     }
-    //                 },
-    //                 (error,result) => {
-    //                     if (error) {
-    //                         console.log(error);
-    //                     }
-    //                     else {
-    //                         this.props.GetFBDataAction(result)
-    //                     }
-    //                 }
-    //                 // this._responseInfoCallback
-    //             );
-    //             let x = new GraphRequestManager().addRequest(infoRequest).start();
-    //         })
-    //     }
-    // }
+
 
     render(){
         return(
@@ -155,20 +110,15 @@ export default class LoginScreen extends React.Component{
                 </View>
                 
                 <View style = {styles.boxlogin}>
-                    {/* <LoginButton
-                        publishPermissions={["publish_actions"]}
-                        onLoginFinished={(error, result) => {
-                            this._FBLogin(error,result)
-                        }}
-                        onLogoutFinished={() => alert("logout.")}
-                    /> */}
-
-
-
-                    <Button
-                        title="Continue with fb"
-                        color="#4267B2"
+            
+                    <SocialIcon
+                        title = "Sign In With Facebook"
+                        button
+                        loading = {this.state.loading}
+                        type = "facebook"
+                        style = {{width : 300,height : 60}}
                         onPress={this.handleFacebookLogin}
+                        iconSize = {30}
                     />
                     
                 </View>

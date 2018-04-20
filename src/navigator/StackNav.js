@@ -33,13 +33,6 @@ const StackNav = StackNavigator(
                 headerLeft : null
             })
         },
-        // Main : {
-        //     screen : MainScreen,
-        //     navigationOptions : ({navigation}) => ({
-        //         headerTransparent : true,
-        //         headerLeft : null
-        //     })
-        // }
     },
     {
         initialRouteName : 'Photo',

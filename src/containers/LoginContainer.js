@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import LoginScreen from '../Components/LoginScreen';
 import GetFBAccessTokenAction from '../actions/GetFBAccessTokenAction.js'
 import GetFBDataAction from '../actions/GetFBDataAction'
-
+import GetUserFirebaseAction from '../actions/GetUserFirebaseAction.js'
 class LoginContainer extends React.Component{
     render(){
         return (
@@ -16,12 +16,14 @@ class LoginContainer extends React.Component{
 function mapStateToProps(state){
     return{
         fb : state.fb,
-        // profile : state.profile
+        firebase : state.firebase,
+        main : state.main
     }
 }
 
 
 export default connect(mapStateToProps,{
     GetFBAccessTokenAction,
-    GetFBDataAction
+    GetFBDataAction,
+    GetUserFirebaseAction
 })(LoginContainer)

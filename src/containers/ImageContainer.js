@@ -16,7 +16,7 @@ class ImageContainer extends React.Component{
 
 function mapStateToProps(state){
     return{
-        image : state.camera,
+        camera : state.camera,
         food : state.food
     }
 }

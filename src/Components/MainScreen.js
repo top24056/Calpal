@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
 
 
 export default class MainScreen extends React.Component{
-
+    
     constructor (props) {
         super(props)
         this.state = {
@@ -91,7 +91,6 @@ export default class MainScreen extends React.Component{
             curtime : null,
             currentcal : 0,
             percentCircle : 0,
-            
             profile : null,
             food:{
                 breakfast : {
@@ -109,107 +108,36 @@ export default class MainScreen extends React.Component{
             },
         }
     }
-
-    // _FBLogin(error, result){
- 
-    //     if (error) {
-    //         alert("login has error: " + result.error);
-    //     }
-    //     else if (result.isCancelled) {
-    //         alert("login is cancelled.");
-    //     }
-    //     else {
-    //         AccessToken.getCurrentAccessToken().then((data) => {
-    //             let accessToken = data.accessToken
-    //             alert('Login Success')
-    //             this.props.GetFBAccessTokenAction(data)
-    //             const infoRequest = new GraphRequest(
-    //                 '/me',
-    //                 {
-    //                     accessToken : accessToken,
-    //                     parameters : {
-    //                         fields : {
-    //                             string : 'name,picture.type(large)'
-    //                         }
-    //                     }
-    //                 },
-    //                 (error,result) => {
-    //                     if (error) {
-    //                         console.log(error);
-    //                     }
-    //                     else {
-    //                         this.props.GetFBDataAction(result)
-    //                     }
-    //                 }
-    //                 // this._responseInfoCallback
-    //             );
-    //             let x = new GraphRequestManager().addRequest(infoRequest).start();
-    //         })
-    //     }
-    // }
-    handleFacebookLogin = () => {
-        LoginManager.logInWithReadPermissions(['public_profile', 'email', 'user_friends'])
-        .then((result) => {
-            if(result.isCancelled){
-                return Promise.reject(new Error('The user cancelled the request'));
-            }
-            else{
-                AccessToken.getCurrentAccessToken().then((data) => {
-                    let accessToken = data.accessToken
-                    alert('Login Success')
-                    this.props.GetFBAccessTokenAction(data)
-                    const infoRequest = new GraphRequest(
-                        '/me',
-                        {
-                            accessToken : accessToken,
-                            parameters : {
-                                fields : {
-                                    string : 'email,name,picture.type(large)'
-                                }
-                            }
-                        },
-                        (error,result) => {
-                            if (error) {
-                                console.log(error);
-                            }
-                            else {
-                                this.props.GetFBDataAction(result)
-                            }
-                        }
-                    )
-                    let x = new GraphRequestManager().addRequest(infoRequest).start();
-                    const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
-                    console.log('credential : ',credential)
-                    return firebase.auth().signInAndRetrieveDataWithCredential(credential).then((result) => {
-                        this.props.GetUserFirebaseAction(result)
-                    })
-                    
-                },(error => {
-                    console.log('Some error');
-                }));
-            }
-        })
-    }
-    
     
 
 
     componentDidMount(){
-        setInterval( ()=>{
-            this.setState({
-                curtime : new Date().toLocaleString()
-            })
-        },1000)
+        firebase.database().goOnline();
 
+        let userId = firebase.auth().currentUser.uid
+
+        firebase.database().ref('users/' + userId).update({
+            name : this.props.fb.data_profile.name,
+            email: this.props.fb.data_profile.email,
+        });
+        
+        // firebase.storage().ref('users'+userId).child('/images/food')
+        
+
+
+    }
+
+    componentWillReceiveProps(props){
+        
     }
 
     
     render(){
-        
 
         return(
             <View style = {styles.container}>
-                <StatusBar backgroundColor = {'transparent'} translucent/>
+
+                <StatusBar backgroundColor = "#0094ff" barstyle = "light-content"/>
                 <View style = {styles.circle}>
                     <View style = {styles.boxname}>
                         <Image source = {require('../../img/Name.png')}/>
@@ -294,21 +222,9 @@ export default class MainScreen extends React.Component{
                         </View>
                     </View>
 
+                    
                     <View style = {styles.box}>
-                        <View style = {{flex :1 ,justifyContent: 'center',alignItems: 'center'}}>
-                            {/* <LoginButton
-                                publishPermissions={["publish_actions"]}
-                                onLoginFinished={(error,result) => {
-                                    this._FBLogin(error,result)
-                                }}
-                                onLogoutFinished={() => alert("logout.")}
-                            /> */}
-                            <Button
-                                title="Continue with fb"
-                                color="#4267B2"
-                                onPress={this.handleFacebookLogin}
-                            />
-                        </View>
+                    
                     </View>
 
 

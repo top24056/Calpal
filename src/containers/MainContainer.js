@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import MainScreen from '../Components/MainScreen';
-import MainAction from '../actions/MainAction';
+// import PercentAction from '../actions/MainAction';
 import GetFBAccessTokenAction from '../actions/GetFBAccessTokenAction.js'
 import GetFBDataAction from '../actions/GetFBDataAction'
 import GetUserFirebaseAction from '../actions/GetUserFirebaseAction.js'
@@ -26,7 +26,6 @@ function mapStateToProps(state){
 
 
 export default connect(mapStateToProps,{
-    MainAction,
     GetFBAccessTokenAction,
     GetFBDataAction,
     GetUserFirebaseAction

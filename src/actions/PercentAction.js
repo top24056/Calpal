@@ -3,8 +3,10 @@ import {
 } from './ActionTypes'
 
 
-export default function MainAction(){
+export default function PercentAction(){
     return (dispatch,getState) => {
+
+
         let percen = (getState().food.total_calperday/getState().profile.sumcal) * 100
 
 

@@ -1,5 +1,5 @@
 import {
-    PERCENT, LOGIN_FB
+    PERCENT
 } from './../actions/ActionTypes';
 
 
@@ -13,10 +13,6 @@ export default function (state = initState, action){
         case PERCENT:
             return Object.assign({}, state,{
                 percen : action.payload
-            })
-        case LOGIN_FB:
-            return Object.assign({}, state,{
-                login_press : action.payload
             })
         default : 
             return state;

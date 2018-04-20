@@ -12,6 +12,7 @@ import ProfileContainer from '../containers/ProfileContainer';
 import LoginContainer from '../containers/LoginContainer';
 
 export default TabNavigator(
+    
     {
         Photo : {
             screen : StackNav
@@ -22,9 +23,6 @@ export default TabNavigator(
         Profile : {
             screen : ProfileContainer
         },
-        // Login : {
-        //     screen : LoginContainer
-        // }
         
     },
     {
@@ -53,6 +51,7 @@ export default TabNavigator(
                 backgroundColor : 'white',
             }
         },
+
         initialRouteName: 'Main',
         tabBarComponent : TabBarBottom,
         tabBarPosition : 'bottom',

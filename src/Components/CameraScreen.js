@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import {RNCamera} from 'react-native-camera';
 import Spinner from 'react-native-loading-spinner-overlay';
+import firebase from 'react-native-firebase';
 
 
 const styles = StyleSheet.create({
@@ -82,13 +83,18 @@ export default class PhotoScreen extends React.Component{
         if(this.camera){
             const options = {
                 quality : 1,
-                width : 500,
-                height : 500
+                width : 2000,
+                height : 2000,
+                fixOrientation : true,
+                base64 : true
             };
+            console.log('ready')
             const data = await this.camera.takePictureAsync(options);
-            this.props.navigation.navigate("Modal");
             this.props.ImageAction(data);
-            console.log("store image = ",this.props.image.image_food)
+            
+            this.props.navigation.navigate("Modal");
+            
+            // console.log("store image = ",this.props.image.image_food)
         }
     }
 
@@ -105,7 +111,6 @@ export default class PhotoScreen extends React.Component{
                         onCameraReady = {this.prepareRatio}
                         style = {styles.preview}
                         type = {RNCamera.Constants.Type.back}
-                        // ratio = {this.state.ratio}
                         permissionDialogTitle = {'Permission to use Camera'}
                         permissionDialogMessage = {'We need your permission to use your camera phone'}
                     >
@@ -124,18 +129,6 @@ export default class PhotoScreen extends React.Component{
                         </View>
                     </TouchableOpacity>
                 </View>
-                {/* <View style={ {flex: 1 } } >
-                    <Image 
-                        source={{
-                            isStatic: true,
-                            // uri: 'data:image/jpeg;base64,' + this.state.path}} 
-                            uri : this.state.path
-                        }}
-                        style={{
-                            height: 200, width:200
-                        }}
-                    />
-                </View> */}
             </View>
         );
     }

@@ -7,7 +7,7 @@ export default function GetInformationAction(data){
 
         dispatch({
             type : GET_INFOR,
-            payload_sex : data.sex,
+            payload_gender : data.gender,
             payload_weight : data.weight,
             payload_height : data.height,
             payload_age : data.age,

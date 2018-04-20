@@ -5,7 +5,7 @@ import {
 
 const initState = {
     BMR : 0,
-    sex : null,
+    gender : null,
     height : null,
     weight : null,
     age : null,
@@ -15,7 +15,7 @@ export default function (state = initState, action){
     switch(action.type){
         case GET_INFOR:
             return Object.assign({}, state,{
-                sex : action.payload_sex,
+                gender : action.payload_gender,
                 height : action.payload_height,
                 weight : action.payload_weight,
                 age : action.payload_age,

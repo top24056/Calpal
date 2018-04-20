@@ -19,6 +19,7 @@ import {
 import FBSDK ,{
     LoginManager
 } from 'react-native-fbsdk';
+import firebase from 'react-native-firebase';
 
 const styles = StyleSheet.create({
     container : {
@@ -28,11 +29,22 @@ const styles = StyleSheet.create({
     boxprofile : {
         flex : 1,
         backgroundColor : '#0094ff',
-        flexDirection : 'column',
-        paddingTop : 18
+        flexDirection : 'row',
+        
     },
     boxprofileimage : {
+        flex : 1,
+        justifyContent : 'center',
+        alignItems : 'flex-start',
+        marginTop : 40,
+        marginLeft : 20,
+        marginBottom : 40,
+        // backgroundColor : 'red'
+    },
+    boxprofilecontent : {
         flex : 1.5,
+        flexDirection : 'column',
+        marginLeft : 20
         // backgroundColor : 'red'
     },
     boxcontent : {
@@ -85,12 +97,15 @@ export default class ProfileScreen extends React.Component{
                 weight : null,
                 height : null,
                 age : null,
-                sex : null,
+                gender : null,
                 BMR : 0
             }
         }
     }
 
+    componentDidMount(){
+        
+    }
 
  
 
@@ -137,6 +152,7 @@ export default class ProfileScreen extends React.Component{
                         information : informationcopy
                     })
                 }}
+                
             />
         )
 
@@ -161,7 +177,7 @@ export default class ProfileScreen extends React.Component{
             />
         )
 
-        const sex = [
+        const gender = [
             {
                 value : 'male',
             },
@@ -177,17 +193,30 @@ export default class ProfileScreen extends React.Component{
             {/* <View style = {styles.container}> */}
                 <View style = {styles.boxprofile}>
                     <View style = {styles.boxprofileimage}>
-                        <View style = {{flex : 3,justifyContent : 'flex-end',alignItems : 'center',}}>
-                            <Avatar
-                                large
-                                rounded
-                                source = {{uri : this.props.fb.data_profile.picture.data.url}}
-                            />
+                        <Avatar
+                            xlarge
+                            rounded
+                            source = {{uri : this.props.fb.data_profile.picture.data.url}}
+                        />
+                    </View>
+                    <View style = {styles.boxprofilecontent}>
+                        <View style = {{flex : 1,justifyContent : 'flex-start',alignItems : 'center',marginTop : 40}}>
+                            <Text style = {{color : 'white',fontSize : 20,fontWeight : 'bold'}}>{this.props.fb.data_profile.name}</Text>
                         </View>
-                        <View style = {{flex : 1,justifyContent : 'center',alignItems : 'center',margin : 10}}>
-                            <Text style = {{color : 'white',fontSize : 20}}>{this.props.fb.data_profile.name}</Text>
+                        <View style = {{flex : 1}}>
+                            <Text style = {{color : 'white',fontSize : 15}}>Weight : {this.props.infor.weight}</Text>
+                        </View>
+                        <View style = {{flex : 1}}>
+                            <Text style = {{color : 'white',fontSize : 15}}>Height : {this.props.infor.height}</Text>
+                        </View>
+                        <View style = {{flex : 1}}>
+                            <Text style = {{color : 'white',fontSize : 15}}>Age : {this.props.infor.age}</Text>
+                        </View>
+                        <View style = {{flex : 1}}>
+                            <Text style = {{color : 'white',fontSize : 15}}>Gender : {this.props.infor.gender}</Text>
                         </View>
                     </View>
+                    
                 </View>
 
                 
@@ -237,13 +266,13 @@ export default class ProfileScreen extends React.Component{
                             </View>
                             <View style = {styles.boxtext}>
                                 <Dropdown
-                                    label = 'Sex'
-                                    data = {sex}
+                                    label = 'Gender'
+                                    data = {gender}
                                     textColor = '#0094ff'
                                     baseColor = '#0094ff'
                                     onChangeText = {(data) => {
                                         let informationcopy = JSON.parse(JSON.stringify(this.state.information))
-                                        informationcopy.sex = data
+                                        informationcopy.gender = data
                                         this.setState({
                                             information : informationcopy
                                         })
@@ -260,14 +289,33 @@ export default class ProfileScreen extends React.Component{
                                     title = "Submit" 
                                     titleColor = "white"
                                     onPress = {() => {
-                                       
-                                        if(this.state.information.sex === 'male'){
-                                            this.state.information.BMR = 66 + (this.state.information.weight*13.7) + (5*this.state.information.height) - (6.8*this.state.information.age)
+
+                                        if(this.state.information.gender === 'male'){
+                                            let x = 66 + (this.state.information.weight*13.7) + (5*this.state.information.height) - (6.8*this.state.information.age)
+                                            let y = x * 1.375
+                                            let z = Math.ceil(y)
+                                            this.state.information.BMR = z
                                         }
-                                        else if(this.state.information.sex === 'female'){
-                                            this.state.information.BMR = 66 + (this.state.information.weight*13.7) + (5*this.state.information.height) - (6.8*this.state.information.age)
+                                        else if(this.state.information.gender === 'female'){
+                                            let x = 665 + (this.state.information.weight*9.6) + (1.8*this.state.information.height) - (4.7*this.state.information.age)
+                                            let y = x * 1.375
+                                            let z = Math.ceil(y)
+                                            this.state.information.BMR = z
                                         }
                                         this.props.GetInformationAction(this.state.information)
+                                        firebase.database().goOnline();
+                                        let userId = firebase.auth().currentUser.uid
+                                        let user = firebase.database().ref('users/' + userId);
+                                        let b = user.child('profile')
+                                        let valueprofile = {
+                                            'weight' : this.state.information.weight,
+                                            'height' : this.state.information.height,
+                                            'gender' : this.state.information.gender,
+                                            'age' : this.state.information.age,
+                                            'BMR' : this.state.information.BMR
+                                        };
+                                        user.child('profile').update(valueprofile)
+                                        
                                     }}
                                 />
                             </View>
@@ -279,6 +327,24 @@ export default class ProfileScreen extends React.Component{
                 </View>
 
                 <View style = {styles.boxgraph}>
+                    <TouchableOpacity
+                        onPress = {() => {
+                            console.log('pressmee')
+                            LoginManager.logOut()
+                            // LoginManager.getIntance().logOut()
+                            // LoginManager.logOut((error,data) => {
+
+                            //     console.log(data)
+                                // console.log("asd")
+                                // if(error){
+                                //     console.log("err",error)
+                                // }
+                                // LoginManager.getIntance().logOut()
+                            // })
+                        }}
+                    >
+                        <Text>logout</Text>
+                    </TouchableOpacity>
                 </View>
 
             {/* </View> */}

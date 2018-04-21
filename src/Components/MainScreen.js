@@ -7,7 +7,7 @@ import {
     Image,
     TouchableOpacity,
     StatusBar,
-    Button
+    Button,
 } from 'react-native';
 import PercentageCircle from 'react-native-percentage-circle';
 import FBSDK ,{
@@ -18,7 +18,10 @@ import FBSDK ,{
     GraphRequestManager,
 } from 'react-native-fbsdk';
 import firebase from 'react-native-firebase';
-
+import {
+    TextField
+} from 'react-native-material-textfield';
+import UUIDGenerator from 'react-native-uuid-generator';
 
 
 const styles = StyleSheet.create({
@@ -106,6 +109,7 @@ export default class MainScreen extends React.Component{
                     calpre : "Recommend Calrories : 588 KCal"
                 }
             },
+            isModalVisiable : false
         }
     }
     
@@ -120,15 +124,18 @@ export default class MainScreen extends React.Component{
             name : this.props.fb.data_profile.name,
             email: this.props.fb.data_profile.email,
         });
-        
-        // firebase.storage().ref('users'+userId).child('/images/food')
-        
 
-
+        
     }
 
     componentWillReceiveProps(props){
         
+    }
+
+    _toggleModal(){
+        this.setState({
+            isModalVisiable : !this.state.isModalVisiable
+        })
     }
 
     
@@ -224,7 +231,14 @@ export default class MainScreen extends React.Component{
 
                     
                     <View style = {styles.box}>
-                    
+                        <TouchableOpacity onPress = {()=> {
+                            this._toggleModal();
+                        }}>
+                            <Text>Show Modal</Text>
+                        </TouchableOpacity>
+
+
+                        
                     </View>
 
 

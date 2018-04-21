@@ -12,7 +12,15 @@ import {
     ShareDialog
 } from 'react-native-fbsdk';
 import firebase from 'react-native-firebase';
-
+import Modal from 'react-native-modal';
+import ModalWrapper from 'react-native-modal-wrapper';
+import {
+    TextField
+} from 'react-native-material-textfield';
+import {
+    RaisedTextButton
+} from 'react-native-material-buttons';
+import UUIDGenerator from 'react-native-uuid-generator';
 
 const styles = StyleSheet.create({
     container : {
@@ -63,7 +71,10 @@ export default class ImageScreen extends React.Component{
                     cal : 600
                 }
             ],
-            shareLinkContent: shareLinkContent
+            shareLinkContent: shareLinkContent,
+            isModalVisiable : false,
+            namenewfood : null,
+            random : null,
         })
     }
 
@@ -93,7 +104,44 @@ export default class ImageScreen extends React.Component{
       }
 
 
+    _toggleModal(){
+        this.setState({
+            isModalVisiable : !this.state.isModalVisiable
+        })
+    }
 
+
+
+    saveToStorageFirebase(){
+        console.log('Other image : ',this.props.camera.image_food)
+        const imagePath = this.props.camera.image_food
+        const ref = firebase.storage().ref(this.state.namenewfood).child(this.state.random)
+        const uploadTask = ref.putFile(imagePath, {contentType : 'image/jpeg'});
+        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, (snapshot) => {
+            
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log(`Upload is ${progress}% done`);
+          
+            switch (snapshot.state) {
+                case firebase.storage.TaskState.SUCCESS: // or 'success'
+                    console.log('Upload is complete');
+                    break;
+                case firebase.storage.TaskState.RUNNING: // or 'running'
+                    console.log('Upload is running');
+                    break;
+                default:
+                    console.log(snapshot.state);
+            }
+        }, (error) => {
+            console.error(error);
+        }, () => {
+            const uploadTaskSnapshot = uploadTask.snapshot;
+        });
+
+
+
+
+    }
 
 
 
@@ -170,15 +218,59 @@ export default class ImageScreen extends React.Component{
                         }}
                     />
                 </View>
+
+
+
+
+
                 <View style = {styles.boxcontent}>
                     {boxnamefood}
                     <TouchableOpacity onPress = {() => {
-                        let storageRef = firebase.storage().ref();
-                        let image = storageRef.child('path')
-                        image.putFile(this.props.camera.image_food).then(function(){
-                            console.log('upload done')
+                        this._toggleModal();
+                        UUIDGenerator.getRandomUUID().then((uuid) => {
+                            this.setState({
+                                random : uuid
+                            })
                         })
+                        
                     }}>
+                    <ModalWrapper visible = {this.state.isModalVisiable} style = {{width : 280, height : 180, paddingLeft : 24, paddingRight : 24}}>
+                        <TextField
+                            autoFocus = {true}
+                            label = 'Input your Food Name'
+                            placeholder = "Name Food..."
+                            onChangeText = {(text)=>{
+                                console.log(text);
+                                this.setState({
+                                    namenewfood : text
+                                })
+                            }}
+                        />
+                        <View style = {{flex : 1,flexDirection : 'row',justifyContent : 'flex-end',alignItems : 'center'}}>
+                            <RaisedTextButton
+                                rippleDuration = {400} 
+                                rippleOpacity={0.54} 
+                                color='#0094ff' 
+                                title = "Next" 
+                                titleColor = "white"
+                                onPress = {()=>{
+                                    this._toggleModal();
+                                    this.saveToStorageFirebase();
+                                }}
+                            />
+                            <RaisedTextButton
+                                rippleDuration = {400} 
+                                rippleOpacity={0.54} 
+                                color='#0094ff' 
+                                title = "Cancle" 
+                                titleColor = "white"
+                                onPress = {()=>{
+                                    this._toggleModal();
+                                }}
+                            />
+                        </View>
+                    </ModalWrapper>
+
                         <View style = {styles.boxtext}>
                             <Text style = {{fontSize : 13}}>
                                 <Text>Other...</Text>

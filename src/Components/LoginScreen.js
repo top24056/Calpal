@@ -118,6 +118,7 @@ export default class LoginScreen extends React.Component{
                         type = "facebook"
                         style = {{width : 300,height : 60}}
                         onPress={this.handleFacebookLogin}
+                        onLongPress = {this.handleFacebookLogin}
                         iconSize = {30}
                     />
                     

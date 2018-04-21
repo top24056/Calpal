@@ -104,6 +104,7 @@ export default class ProfileScreen extends React.Component{
     }
 
     componentDidMount(){
+        firebase.database().goOnline();
         
     }
 
@@ -329,18 +330,17 @@ export default class ProfileScreen extends React.Component{
                 <View style = {styles.boxgraph}>
                     <TouchableOpacity
                         onPress = {() => {
-                            console.log('pressmee')
-                            LoginManager.logOut()
-                            // LoginManager.getIntance().logOut()
-                            // LoginManager.logOut((error,data) => {
-
-                            //     console.log(data)
-                                // console.log("asd")
-                                // if(error){
-                                //     console.log("err",error)
-                                // }
-                                // LoginManager.getIntance().logOut()
-                            // })
+                            
+                            this.props.navigation.navigate("Login");
+                            LoginManager.logOut((error,data) => {
+                                
+                                console.log(data)
+                                console.log("asd")
+                                if(error){
+                                    console.log("err",error)
+                                }
+                                LoginManager.getIntance().logOut()
+                            })
                         }}
                     >
                         <Text>logout</Text>

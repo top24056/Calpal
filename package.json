@@ -12,7 +12,9 @@
     "port": 5678
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "firebase": "^4.12.1",
+    "qs": "^6.5.1",
     "react": "16.3.0-alpha.1",
     "react-native": "0.54.4",
     "react-native-camera": "^1.1.0",

@@ -1,5 +1,8 @@
 import {
     DATA_FOOD,
+    GET_FOOD_BREAKFAST,
+    GET_FOOD_LUNCH,
+    GET_FOOD_DINNER
 } from './../actions/ActionTypes';
 
 
@@ -23,9 +26,19 @@ export default function (state = initState, action){
     switch(action.type){
         case DATA_FOOD :
             return Object.assign({}, state,{
-                name_food : action.payload_name,
-                cal_food : action.payload_cal,
                 total_calperday : action.payload_total
+            })
+        case GET_FOOD_BREAKFAST :
+            return Object.assign({}, state,{
+                breakfast : action.payload
+            })
+        case GET_FOOD_LUNCH :
+            return Object.assign({}, state,{
+                lunch : action.payload
+            })
+        case GET_FOOD_DINNER :
+            return Object.assign({}, state,{
+                dinner : action.payload
             })
         default : 
             return state;

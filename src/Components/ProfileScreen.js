@@ -6,11 +6,10 @@ import {
     StyleSheet,
     Image,
     TouchableOpacity,
-    TextInput
+    TextInput,
+    Picker
 } from 'react-native';
-import { Sae  } from 'react-native-textinput-effects';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import { Dropdown } from 'react-native-material-dropdown';
 import { Avatar } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {
@@ -104,7 +103,30 @@ export default class ProfileScreen extends React.Component{
     }
 
     componentDidMount(){
+        let self = this;
         firebase.database().goOnline();
+        let userId = firebase.auth().currentUser.uid
+        var ref = firebase.database().ref('users/' + userId);
+        let order = ref.child("profile")
+        order.on("value",function(data){
+            console.log("eiei",data.val())
+            let informationcopy = {
+                weight : null,
+                height : null,
+                age : null,
+                gender : null,
+                BMR : 0
+            }
+            informationcopy.weight = data.val().weight
+            informationcopy.height = data.val().height
+            informationcopy.gender = data.val().gender
+            informationcopy.age = data.val().age
+            informationcopy.BMR = data.val().BMR
+            self.setState({
+                information : informationcopy
+            })
+            // console.log(this.state.information)
+        })
         
     }
 
@@ -114,15 +136,12 @@ export default class ProfileScreen extends React.Component{
 
 
         const weightinput = (
-            <Sae 
-                label = {'Weight'}
-                labelStyle = {{backgroundColor : 'red'}}
-                labelStyle = {{color : '#0094ff'}}
-                borderColor = {'#0094ff'}
-                iconClass={FontAwesomeIcon} 
-                iconName={'pencil'}
-                iconColor={'#0094ff'}
-                inputStyle = {{color : '#0094ff'}}
+            <TextInput
+                style = {{color : '#0094ff',fontSize : 17}}
+                placeholder = {'Weight'}
+                placeholderTextColor = {'#0094ff'}
+                underlineColorAndroid = {'#0094ff'}
+                selectionColor = {'#0094ff'}
                 keyboardType = 'numeric'
                 onChangeText = {(text) => {
                     let informationcopy = JSON.parse(JSON.stringify(this.state.information))
@@ -136,14 +155,12 @@ export default class ProfileScreen extends React.Component{
         )
 
         const heightinput = (
-            <Sae 
-                label = {'Height'}
-                labelStyle = {{color : '#0094ff'}}
-                borderColor = {'#0094ff'}
-                iconClass={FontAwesomeIcon} 
-                iconName={'pencil'}
-                iconColor={'#0094ff'}
-                inputStyle = {{color : '#0094ff'}}
+            <TextInput 
+                style = {{color : '#0094ff',fontSize : 17}}
+                placeholder = {'Height'}
+                placeholderTextColor = {'#0094ff'}
+                underlineColorAndroid = {'#0094ff'}
+                selectionColor = {'#0094ff'}
                 keyboardType = "numeric"
                 onChangeText = {(text) => {
                     let informationcopy = JSON.parse(JSON.stringify(this.state.information))
@@ -158,14 +175,12 @@ export default class ProfileScreen extends React.Component{
         )
 
         const ageinput = (
-            <Sae 
-                label = {'Age'}
-                labelStyle = {{color : '#0094ff'}}
-                borderColor = {'#0094ff'}
-                iconClass={FontAwesomeIcon} 
-                iconName={'pencil'}
-                iconColor={'#0094ff'}
-                inputStyle = {{color : '#0094ff'}}
+            <TextInput 
+                style = {{color : '#0094ff',fontSize : 17}}
+                placeholder = {'Age'}
+                placeholderTextColor = {'#0094ff'}
+                underlineColorAndroid = {'#0094ff'}
+                selectionColor = {'#0094ff'}
                 keyboardType = "numeric"
                 onChangeText = {(text) => {
                     let informationcopy = JSON.parse(JSON.stringify(this.state.information))
@@ -178,14 +193,7 @@ export default class ProfileScreen extends React.Component{
             />
         )
 
-        const gender = [
-            {
-                value : 'male',
-            },
-            {
-                value : 'female'
-            }
-        ];
+        
 
         
 
@@ -205,16 +213,16 @@ export default class ProfileScreen extends React.Component{
                             <Text style = {{color : 'white',fontSize : 20,fontWeight : 'bold'}}>{this.props.fb.data_profile.name}</Text>
                         </View>
                         <View style = {{flex : 1}}>
-                            <Text style = {{color : 'white',fontSize : 15}}>Weight : {this.props.infor.weight}</Text>
+                            <Text style = {{color : 'white',fontSize : 15}}>Weight : {this.state.information.weight}</Text>
                         </View>
                         <View style = {{flex : 1}}>
-                            <Text style = {{color : 'white',fontSize : 15}}>Height : {this.props.infor.height}</Text>
+                            <Text style = {{color : 'white',fontSize : 15}}>Height : {this.state.information.height}</Text>
                         </View>
                         <View style = {{flex : 1}}>
-                            <Text style = {{color : 'white',fontSize : 15}}>Age : {this.props.infor.age}</Text>
+                            <Text style = {{color : 'white',fontSize : 15}}>Age : {this.state.information.age}</Text>
                         </View>
                         <View style = {{flex : 1}}>
-                            <Text style = {{color : 'white',fontSize : 15}}>Gender : {this.props.infor.gender}</Text>
+                            <Text style = {{color : 'white',fontSize : 15}}>Gender : {this.state.information.gender}</Text>
                         </View>
                     </View>
                     
@@ -266,19 +274,26 @@ export default class ProfileScreen extends React.Component{
                                 <FontAwesomeIcon name = {'female'} color = {'#ff6beb'} size = {25}/>
                             </View>
                             <View style = {styles.boxtext}>
-                                <Dropdown
-                                    label = 'Gender'
-                                    data = {gender}
-                                    textColor = '#0094ff'
-                                    baseColor = '#0094ff'
-                                    onChangeText = {(data) => {
+
+                                <Picker
+                                    selectedValue = {this.state.information.gender}
+                                    itemStyle = {{color : '#0094ff'}}
+                                    mode = {'dropdown'}
+                                    style = {{color : '#0094ff'}}
+                                    onValueChange = {(itemValue,itemIndex) => {
+                                        console.log('itemvalue',itemValue)
                                         let informationcopy = JSON.parse(JSON.stringify(this.state.information))
-                                        informationcopy.gender = data
+                                        informationcopy.gender = itemValue
                                         this.setState({
                                             information : informationcopy
                                         })
-                                    }}
-                                />
+                                        console.log(this.state.information.gender)
+                                    }}>
+                                    
+                                    <Picker.Item label = "Male" value = "male"/>
+                                    <Picker.Item label = "FeMale" value = "female"/>
+                                </Picker>
+                                
                             </View>
                         </View>
                         <View style = {{flex : 1,flexDirection : 'row',justifyContent : 'flex-end', margin : 5}}>
@@ -290,7 +305,7 @@ export default class ProfileScreen extends React.Component{
                                     title = "Submit" 
                                     titleColor = "white"
                                     onPress = {() => {
-
+                                        console.log('press')
                                         if(this.state.information.gender === 'male'){
                                             let x = 66 + (this.state.information.weight*13.7) + (5*this.state.information.height) - (6.8*this.state.information.age)
                                             let y = x * 1.375
@@ -307,7 +322,6 @@ export default class ProfileScreen extends React.Component{
                                         firebase.database().goOnline();
                                         let userId = firebase.auth().currentUser.uid
                                         let user = firebase.database().ref('users/' + userId);
-                                        let b = user.child('profile')
                                         let valueprofile = {
                                             'weight' : this.state.information.weight,
                                             'height' : this.state.information.height,

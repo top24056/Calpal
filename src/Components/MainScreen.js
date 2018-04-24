@@ -18,10 +18,13 @@ import FBSDK ,{
     GraphRequestManager,
 } from 'react-native-fbsdk';
 import firebase from 'react-native-firebase';
+import axios from 'axios'
 import {
     TextField
 } from 'react-native-material-textfield';
 import UUIDGenerator from 'react-native-uuid-generator';
+// import { resolve } from 'path';
+import inputimg from '../../img/1.png';
 
 
 const styles = StyleSheet.create({
@@ -91,24 +94,24 @@ export default class MainScreen extends React.Component{
         super(props)
         this.state = {
             photo : "You don't have photo",
-            curtime : null,
-            currentcal : 0,
+            curcal : 0,
+            BMR : 0,
             percentCircle : 0,
             profile : null,
-            food:{
-                breakfast : {
-                    name : "Add! Breakfast",
-                    calpre : "Recommend Calrories : 388 KCal",
-                },
-                lunch : {
-                    name : "Add! Lunch",
-                    calpre : "Recommend Calrories : 588 KCal"
-                },
-                dinner : {
-                    name : "Add Dinner",
-                    calpre : "Recommend Calrories : 588 KCal"
-                }
+            
+            breakfast : {
+                namefood : "Add! Breakfast",
+                cal : "Recommend Calrories : 388 KCal",
             },
+            lunch : {
+                namefood : "Add! Lunch",
+                cal : "Recommend Calrories : 588 KCal"
+            },
+            dinner : {
+                namefood : "Add Dinner",
+                cal : "Recommend Calrories : 588 KCal"
+            }
+            ,
             isModalVisiable : false
         }
     }
@@ -119,13 +122,115 @@ export default class MainScreen extends React.Component{
         firebase.database().goOnline();
 
         let userId = firebase.auth().currentUser.uid
-
+        let ref = firebase.database().ref('users/' + userId);
         firebase.database().ref('users/' + userId).update({
             name : this.props.fb.data_profile.name,
             email: this.props.fb.data_profile.email,
         });
+        let hour = new Date().getHours().toString()
+        let date = new Date().getDate().toString();
+        let tempmonth = new Date().getMonth()+1;
+        let month = tempmonth.toString();
+        let year = new Date().getFullYear().toString();
+        let day = date+'-'+month+'-'+year
+
+        let self = this
+        
+        let food = ref.child('food').orderByKey().child(day)
+
+
+        let Query = new Promise((resolve,reject) => {
+            food.on('value',function(data){
+                if(data.val().breakfast){
+                    let tempcal = data.val().breakfast.cal.toString()
+                    let temp = {
+                        namefood : data.val().breakfast.namefood,
+                        cal : "Calories is : " + tempcal
+                    }
+                    self.setState({
+                        breakfast : temp
+                    })
+                }
+                if(data.val().lunch){
+                    let tempcal = data.val().lunch.cal.toString()
+                    let temp = {
+                        namefood : data.val().lunch.namefood,
+                        cal : "Calories is : " + tempcal
+                    }
+                    self.setState({
+                        lunch : temp 
+                    })
+                }
+                if(data.val().dinner){
+                    console.log(data.val().dinner)
+                    let tempcal = data.val().dinner.cal.toString()
+                    let temp = {
+                        namefood : data.val().dinner.namefood,
+                        cal : "Calories is : " + tempcal
+                    }
+                    self.setState({
+                        dinner : temp
+                    })
+                }
+                if(data.val().sumcal){
+                    console.log(data.val().sumcal)
+                    self.setState({
+                        curcal : data.val().sumcal
+                    })
+                }
+            })
+            let pathprofile = ref.child('profile')
+            pathprofile.on('value',function(data){
+                if(data.val().BMR){
+                    self.setState({
+                        BMR : data.val().BMR
+                    })
+                    resolve()
+                }
+            })
+        })
+
+        Query.then(()=>{
+            let p = (this.state.curcal/this.state.BMR) * 100
+            console.log(p)
+            this.setState({
+                percentCircle : p
+            })
+            
+            console.log(this.state.curcal)
+            console.log(this.state.percentCircle)
+        })
 
         
+
+        // axios.post('http://127.0.0.1:5000/predict', )
+        //     .then((response) => {
+        //         // response.json()
+        //         console.log("REst : ",response)
+        //     })
+        //     // .then((responseJson) => {
+        
+        //     //     console.log('REST: ', responseJson)
+        
+        //     // })
+        //     .catch((error) =>{
+        //         console.error(error);
+        //     });
+
+        
+        // axios({
+        //     method: 'post',
+        //     url: 'http://127.0.0.1:5000/predict',
+        //     data: {
+        //         {
+        //             'image' : inputimg
+        //         }
+        //     }
+        // });
+
+        
+
+
     }
 
     componentWillReceiveProps(props){
@@ -152,7 +257,7 @@ export default class MainScreen extends React.Component{
                     <View style = {styles.boxcircle}>
                         <PercentageCircle 
                             radius = {80} 
-                            percent = {50} 
+                            percent = {this.state.percentCircle} 
                             color={"#ffffff"} 
                             borderWidth = {4} 
                             bgcolor = {"#0094ff"} 
@@ -161,7 +266,7 @@ export default class MainScreen extends React.Component{
                             animationType = 'Quad.easeInOut'>
 
                             <Text style = {{color : 'white'}}>
-                                <Text style = {{fontSize : 24}}>{this.props.food.total_calperday} / </Text><Text style = {{fontSize : 14}}>{this.props.infor.BMR}</Text>
+                                <Text style = {{fontSize : 24}}>{this.state.curcal} / </Text><Text style = {{fontSize : 14}}>{this.state.BMR}</Text>
                             </Text>
                             <Text style = {{color : 'white' , fontSize : 15}}>KCal</Text>
                             
@@ -178,12 +283,15 @@ export default class MainScreen extends React.Component{
                             <Image source = {require('../../img/breakfast.png')} style = {{width : 64, height : 64}}/>
                         </View>
                         <View style = {styles.boxtext}>
-                            <Text style = {{color : '#858787', fontSize : 18}}>{this.state.food.breakfast.name}</Text>
-                            <Text style = {{color : '#858787', fontSize : 12}}>{this.state.food.breakfast.calpre}</Text>
+                            <Text style = {{color : '#858787', fontSize : 18}}>{this.state.breakfast.namefood}</Text>
+                            <Text style = {{color : '#858787', fontSize : 12}}>{this.state.breakfast.cal}</Text>
                         </View>
 
                         <View style = {styles.boxadd}>
-                            <TouchableOpacity onPress = {() =>{this.props.navigation.navigate('Photo')}}>
+                            <TouchableOpacity onPress = {() =>{
+                                this.props.setMealTimeToAdd('breakfast')
+                                this.props.navigation.navigate('Photo')
+                            }}>
                                 <View style = {{justifyContent : 'center' ,alignItems : 'center' ,padding : 20}}>
                                     <Image source = {require('../../img/add.png')} style = {{width : 16, height : 16}}/>
                                 </View>
@@ -199,11 +307,14 @@ export default class MainScreen extends React.Component{
                             <Image source = {require('../../img/rice.png') } style = {{width : 64, height : 64}}/>
                         </View>
                         <View style = {styles.boxtext}>
-                            <Text style = {{color : '#858787', fontSize : 18}}>Add! Lunch</Text>
-                            <Text style = {{color : '#858787', fontSize : 12}}>Recommend Calrories : 588 KCal</Text>
+                            <Text style = {{color : '#858787', fontSize : 18}}>{this.state.lunch.namefood}</Text>
+                            <Text style = {{color : '#858787', fontSize : 12}}>{this.state.lunch.cal}</Text>
                         </View>
                         <View style = {styles.boxadd}>
-                            <TouchableOpacity onPress = {() =>{this.props.navigation.navigate('Photo')}}>
+                            <TouchableOpacity onPress = {() =>{
+                                this.props.setMealTimeToAdd('lunch')
+                                this.props.navigation.navigate('Photo')
+                            }}>
                                 <View style = {{justifyContent : 'center' ,alignItems : 'center' ,padding : 20}}>
                                     <Image source = {require('../../img/add.png')} style = {{width : 16, height : 16}}/>
                                 </View>
@@ -217,11 +328,14 @@ export default class MainScreen extends React.Component{
                             <Image source = {require('../../img/fish.png')} style = {{width : 64, height : 64}}/>
                         </View>
                         <View style = {styles.boxtext}>
-                            <Text style = {{color : '#858787', fontSize : 18}}>Add! Dinner</Text>
-                            <Text style = {{color : '#858787', fontSize : 12}}>Recommend Calrories : 588 KCal</Text>
+                            <Text style = {{color : '#858787', fontSize : 18}}>{this.state.dinner.namefood}</Text>
+                            <Text style = {{color : '#858787', fontSize : 12}}>{this.state.dinner.cal}</Text>
                         </View>
                         <View style = {styles.boxadd}>
-                            <TouchableOpacity onPress = {() =>{this.props.navigation.navigate('Photo')}}>
+                            <TouchableOpacity onPress = {() =>{
+                                this.props.setMealTimeToAdd('dinner')
+                                this.props.navigation.navigate('Photo')
+                            }}>
                                 <View style = {{justifyContent : 'center' ,alignItems : 'center' ,padding : 20}}>
                                     <Image source = {require('../../img/add.png')} style = {{width : 16, height : 16}}/>
                                 </View>
@@ -234,7 +348,7 @@ export default class MainScreen extends React.Component{
                         <TouchableOpacity onPress = {()=> {
                             this._toggleModal();
                         }}>
-                            <Text>Show Modal</Text>
+                        
                         </TouchableOpacity>
 
 

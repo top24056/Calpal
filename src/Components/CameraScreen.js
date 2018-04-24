@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import {RNCamera} from 'react-native-camera';
 import Spinner from 'react-native-loading-spinner-overlay';
-import firebase from 'react-native-firebase';
+
 
 
 const styles = StyleSheet.create({
@@ -64,7 +64,6 @@ export default class PhotoScreen extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            path : null,
             ratio : null,
         };
     }
@@ -91,6 +90,8 @@ export default class PhotoScreen extends React.Component{
             console.log('ready')
             const data = await this.camera.takePictureAsync(options);
             this.props.ImageAction(data);
+
+            
             
             this.props.navigation.navigate("Modal");
             

@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import MainScreen from '../Components/MainScreen';
-// import PercentAction from '../actions/MainAction';
 import GetFBAccessTokenAction from '../actions/GetFBAccessTokenAction.js'
 import GetFBDataAction from '../actions/GetFBDataAction'
 import GetUserFirebaseAction from '../actions/GetUserFirebaseAction.js'
+import setMealTimeToAdd from '../actions/setMealTimeToAdd.js'
 
 class MainContainer extends React.Component{
     render(){
@@ -28,5 +28,6 @@ function mapStateToProps(state){
 export default connect(mapStateToProps,{
     GetFBAccessTokenAction,
     GetFBDataAction,
-    GetUserFirebaseAction
+    GetUserFirebaseAction,
+    setMealTimeToAdd
 })(MainContainer)

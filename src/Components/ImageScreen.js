@@ -21,6 +21,8 @@ import {
     RaisedTextButton
 } from 'react-native-material-buttons';
 import UUIDGenerator from 'react-native-uuid-generator';
+// import clear from 'react-native-clear-app-cache';
+
 
 const styles = StyleSheet.create({
     container : {
@@ -71,6 +73,7 @@ export default class ImageScreen extends React.Component{
                     cal : 600
                 }
             ],
+            name : null,
             shareLinkContent: shareLinkContent,
             isModalVisiable : false,
             namenewfood : null,
@@ -80,6 +83,18 @@ export default class ImageScreen extends React.Component{
     }
 
     componentDidMount(){
+
+        let temp_data_server = this.props.server.data_server
+        let temp_name = []
+        for(let i in temp_data_server){
+            let temp = temp_data_server[i][1]
+            temp_name.push(temp)
+        }
+
+
+
+
+
         firebase.database().goOnline();
         let userId = firebase.auth().currentUser.uid
         let ref = firebase.database().ref('users/' + userId);
@@ -94,14 +109,16 @@ export default class ImageScreen extends React.Component{
 
         let food = ref.child('food').orderByKey().child(day)
         food.on('value',function(data){
-            if(data.val().sumcal >= 0){
+            if(data.val() != null){
                 self.setState({
                     sumcal : data.val().sumcal
                 })
             }
         });
-        console.log(typeof userId)
-        console.log(userId)
+
+
+
+        //test
         let refstorage = firebase.storage().ref("tDt1tSqRpjRPfs0duS8vJRebXwh2/main.jpg");
         refstorage.getDownloadURL()
         .then((url) => {
@@ -181,6 +198,9 @@ export default class ImageScreen extends React.Component{
         for(let i = 0 ; i < 3 ; i++){
             boxnamefood.push(
                 <TouchableOpacity key = {i} onPress = {() => {
+                    // clear.clearAppCache(() => {
+                    //     console.log('clear image')
+                    // })
                     let hour = new Date().getHours().toString()
                     let date = new Date().getDate().toString();
                     let tempmonth = new Date().getMonth() + 1;
@@ -205,68 +225,67 @@ export default class ImageScreen extends React.Component{
                         }
                     })
 
-                    console.log("ddddddddd",this.state.sumcal)
                     if (this.props.main.Selected_Meal_Time == 'breakfast') {
                         let breakfast = fndate.child('breakfast');
                         let valuefood = {
-                            'namefood' : this.state.nameFood[i].name,
-                            'cal' : this.state.nameFood[i].cal,
+                            // 'namefood' : this.state.nameFood[i].name,
+                            // 'cal' : this.state.nameFood[i].cal,
                         };
                         breakfast.update(valuefood)
                         
-                        this.props.BreakfastAction(this.state.nameFood[i])
+                        // this.props.BreakfastAction(this.state.nameFood[i])
                     }
                     else if (this.props.main.Selected_Meal_Time == 'lunch') {
                         let lunch = fndate.child('lunch')
                         let valuefood = {
-                            'namefood' : this.state.nameFood[i].name,
-                            'cal' : this.state.nameFood[i].cal,
+                            // 'namefood' : this.state.nameFood[i].name,
+                            // 'cal' : this.state.nameFood[i].cal,
                         };
                         lunch.update(valuefood)
-                        this.props.LunchAction(this.state.nameFood[i])
+                        // this.props.LunchAction(this.state.nameFood[i])
                     }
                     else if (this.props.main.Selected_Meal_Time == 'dinner') {
                         let dinner = fndate.child('dinner')
                         let valuefood = {
-                            'namefood' : this.state.nameFood[i].name,
-                            'cal' : this.state.nameFood[i].cal,
+                            // 'namefood' : this.state.nameFood[i].name,
+                            // 'cal' : this.state.nameFood[i].cal,
                         };
                         dinner.update(valuefood)
-                        this.props.DinnerAction(this.state.nameFood[i])
+                        // this.props.DinnerAction(this.state.nameFood[i])
                     }
                     else if (this.props.main.Selected_Meal_Time == '') {
                         if(hour >= 5 && hour <= 10){
                             let breakfast = fndate.child('breakfast');
                             let valuefood = {
-                                'namefood' : this.state.nameFood[i].name,
-                                'cal' : this.state.nameFood[i].cal,
+                                // 'namefood' : this.state.nameFood[i].name,
+                                // 'cal' : this.state.nameFood[i].cal,
                             };
                             breakfast.update(valuefood)
                             
-                            this.props.BreakfastAction(this.state.nameFood[i])
+                            // this.props.BreakfastAction(this.state.nameFood[i])
                         }
                         else if(hour >= 11 && hour <= 3){
                             let lunch = fndate.child('lunch')
                             let valuefood = {
-                                'namefood' : this.state.nameFood[i].name,
-                                'cal' : this.state.nameFood[i].cal,
+                                // 'namefood' : this.state.nameFood[i].name,
+                                // 'cal' : this.state.nameFood[i].cal,
                             };
                             lunch.update(valuefood)
-                            this.props.LunchAction(this.state.nameFood[i])
+                            // this.props.LunchAction(this.state.nameFood[i])
                         }
                         else{
                             let dinner = fndate.child('dinner')
                             let valuefood = {
-                                'namefood' : this.state.nameFood[i].name,
-                                'cal' : this.state.nameFood[i].cal,
+                                // 'namefood' : this.state.nameFood[i].name,
+                                // 'cal' : this.state.nameFood[i].cal,
                             };
                             dinner.update(valuefood)
-                            this.props.DinnerAction(this.state.nameFood[i])
+                            // this.props.DinnerAction(this.state.nameFood[i])
                         }
                     }
                     this.props.navigation.navigate("Main");
-                    this.props.FoodAction(this.state.nameFood[i]);
-                    let allcal = this.state.sumcal + this.state.nameFood[i].cal
+                    // this.props.FoodAction(this.state.nameFood[i]);
+                    // let allcal = this.state.sumcal + this.state.nameFood[i].cal
                     let temp = {
                         "sumcal" : allcal
                     }
@@ -274,8 +293,8 @@ export default class ImageScreen extends React.Component{
                 }}>
                     <View style = {styles.boxtext}>
                         <Text style = {{fontSize : 13}}>
-                            <Text>{this.state.nameFood[i].name} </Text>
-                            <Text>Calrories : {this.state.nameFood[i].cal}</Text>
+                            {/* <Text>{this.state.nameFood[i]} </Text> */}
+                            {/* <Text>Calrories : {this.state.nameFood[i].cal}</Text> */}
                         </Text>
                     </View>
                 </TouchableOpacity>

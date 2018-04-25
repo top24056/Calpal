@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import ModalLoading from '../Components/ModalLoading';
+import ResponeServerAction from '../actions/ResponeServerAction'
 
 class ModalContainer extends React.Component{
 
@@ -21,5 +22,5 @@ function mapStateToProps(state){
 
 
 export default connect(mapStateToProps,{
-
+    ResponeServerAction,
 })(ModalContainer)

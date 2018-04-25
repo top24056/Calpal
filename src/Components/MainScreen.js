@@ -141,43 +141,49 @@ export default class MainScreen extends React.Component{
 
         let Query = new Promise((resolve,reject) => {
             food.on('value',function(data){
-                if(data.val().breakfast){
-                    let tempcal = data.val().breakfast.cal.toString()
-                    let temp = {
-                        namefood : data.val().breakfast.namefood,
-                        cal : "Calories is : " + tempcal
+                if(data.val() === null){
+                    console.log('null na ja')
+                }
+                else{
+                    if(data.val().breakfast != null){
+                        let tempcal = data.val().breakfast.cal.toString()
+                        let temp = {
+                            namefood : data.val().breakfast.namefood,
+                            cal : "Calories is : " + tempcal
+                        }
+                        self.setState({
+                            breakfast : temp
+                        })
                     }
-                    self.setState({
-                        breakfast : temp
-                    })
-                }
-                if(data.val().lunch){
-                    let tempcal = data.val().lunch.cal.toString()
-                    let temp = {
-                        namefood : data.val().lunch.namefood,
-                        cal : "Calories is : " + tempcal
+                    if(data.val().lunch){
+                        let tempcal = data.val().lunch.cal.toString()
+                        let temp = {
+                            namefood : data.val().lunch.namefood,
+                            cal : "Calories is : " + tempcal
+                        }
+                        self.setState({
+                            lunch : temp 
+                        })
                     }
-                    self.setState({
-                        lunch : temp 
-                    })
-                }
-                if(data.val().dinner){
-                    console.log(data.val().dinner)
-                    let tempcal = data.val().dinner.cal.toString()
-                    let temp = {
-                        namefood : data.val().dinner.namefood,
-                        cal : "Calories is : " + tempcal
+                    if(data.val().dinner){
+                        console.log(data.val().dinner)
+                        let tempcal = data.val().dinner.cal.toString()
+                        let temp = {
+                            namefood : data.val().dinner.namefood,
+                            cal : "Calories is : " + tempcal
+                        }
+                        self.setState({
+                            dinner : temp
+                        })
                     }
-                    self.setState({
-                        dinner : temp
-                    })
+                    if(data.val().sumcal){
+                        console.log(data.val().sumcal)
+                        self.setState({
+                            curcal : data.val().sumcal
+                        })
+                    }
                 }
-                if(data.val().sumcal){
-                    console.log(data.val().sumcal)
-                    self.setState({
-                        curcal : data.val().sumcal
-                    })
-                }
+                
             })
             let pathprofile = ref.child('profile')
             pathprofile.on('value',function(data){

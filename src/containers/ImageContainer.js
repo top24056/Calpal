@@ -21,7 +21,8 @@ function mapStateToProps(state){
     return{
         camera : state.camera,
         food : state.food,
-        main : state.main
+        main : state.main,
+        server : state.server
     }
 }
 

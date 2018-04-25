@@ -5,7 +5,8 @@ import {
     Image,
     TouchableOpacity,
     Text,
-    Button
+    Button,
+    StatusBar
 } from 'react-native';
 import FBSDK ,{
     LoginManager,
@@ -100,68 +101,12 @@ export default class LoginScreen extends React.Component{
     }
     
 
-    componentDidMount(){
-        console.log('Axios POST')
-
-        // fetch('http://127.0.0.1:5000/predict')
-        // .then((response) => response.json())
-        // .then((responseJson) => {
-  
-        //  console.log(responseJson)
-
-        // },
-        // function(){
-  
-        // });
-  
-        
-
-        let post_url = 'http://d3626ed2.ngrok.io/predict'
-        let post_payload = {'image': inputimg}
-
-        // const file = {
-        //     uri : inputimg,
-        //     name : 'eiei.jpg',
-        //     type : 'image/jpeg'
-        // }
-        // const body  = new FormData()
-        // body.append('file',file)
-
-        // await fetch("http://158.108.122.45:5000/predict",{
-        //     method : 'POST',
-        //     body
-        // })
-        axios.post(post_url, post_payload)
-            .then((response) => {
-              //handle success
-              console.log('Axios RESPONSE')
-              console.log('REST: ', response)
-            }).catch((error) => {
-              //handle error
-            });
-
-
-
-        // let config = { headers: {  
-        //     'Content-Type': 'application/json',
-        //     'Access-Control-Allow-Origin': '*'} }
-        // axios.post(
-        //     post_url, 
-        //     qs.stringify(post_payload),
-        //     config
-        // ).then((response) => {
-        //     console.log('Axios RESPONSE')
-        //     console.log('REST: ', response)
-        // }).catch((error) => {
-        //     console.log('ERROR: ', error)
-        // })
-    }
-
-
 
     render(){
         return(
+            
             <View style = {styles.container}>
+            <StatusBar backgroundColor = "#0094ff" barstyle = "light-content"/>
                 <View style = {styles.boxlogo}>
                     <Image
                         source ={require('../../img/Name.png')}

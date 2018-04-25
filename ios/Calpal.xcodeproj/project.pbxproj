@@ -57,6 +57,7 @@
 		4BEC8FEE38B94713ABA669CF /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1D51F2D2F4C4D8F97A692CB /* libRNFetchBlob.a */; };
 		220303AEAEA74248B95AA78E /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EDB7123B308A437FA7FAE18F /* libRNImagePicker.a */; };
 		3A0172CCBB434A06B56D1B00 /* libRNUUIDGenerator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22E272ABA66E48D1AF2E4B15 /* libRNUUIDGenerator.a */; };
+		08E46D4FCF2843FC96996CB4 /* libRCTClearCacheModule.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 26AEE8C2E2BF498EA6FD3970 /* libRCTClearCacheModule.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -337,6 +338,8 @@
 		EDB7123B308A437FA7FAE18F /* libRNImagePicker.a */ = {isa = PBXFileReference; name = "libRNImagePicker.a"; path = "libRNImagePicker.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		9A5DF03FA7F24121AA28E383 /* RNUUIDGenerator.xcodeproj */ = {isa = PBXFileReference; name = "RNUUIDGenerator.xcodeproj"; path = "../node_modules/react-native-uuid-generator/ios/RNUUIDGenerator.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		22E272ABA66E48D1AF2E4B15 /* libRNUUIDGenerator.a */ = {isa = PBXFileReference; name = "libRNUUIDGenerator.a"; path = "libRNUUIDGenerator.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		8836165DE97E4176BE3E8C35 /* RCTClearCacheModule.xcodeproj */ = {isa = PBXFileReference; name = "RCTClearCacheModule.xcodeproj"; path = "../node_modules/react-native-clear-app-cache/ios/RCTClearCacheModule.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		26AEE8C2E2BF498EA6FD3970 /* libRCTClearCacheModule.a */ = {isa = PBXFileReference; name = "libRCTClearCacheModule.a"; path = "libRCTClearCacheModule.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -375,6 +378,7 @@
 				4BEC8FEE38B94713ABA669CF /* libRNFetchBlob.a in Frameworks */,
 				220303AEAEA74248B95AA78E /* libRNImagePicker.a in Frameworks */,
 				3A0172CCBB434A06B56D1B00 /* libRNUUIDGenerator.a in Frameworks */,
+				08E46D4FCF2843FC96996CB4 /* libRCTClearCacheModule.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -562,6 +566,7 @@
 				2F26695E25A146698470AE48 /* RNFetchBlob.xcodeproj */,
 				17CD2066CCDF4D17A98B9AB4 /* RNImagePicker.xcodeproj */,
 				9A5DF03FA7F24121AA28E383 /* RNUUIDGenerator.xcodeproj */,
+				8836165DE97E4176BE3E8C35 /* RCTClearCacheModule.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1174,6 +1179,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1186,6 +1192,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-image-picker\ios",
 					"$(SRCROOT)\..\node_modules\react-native-uuid-generator\ios",
+					"$(SRCROOT)\..\node_modules\react-native-clear-app-cache\ios\RCTClearCacheModule",
 				);
 			};
 			name = Debug;
@@ -1217,6 +1224,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1229,6 +1237,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-image-picker\ios",
 					"$(SRCROOT)\..\node_modules\react-native-uuid-generator\ios",
+					"$(SRCROOT)\..\node_modules\react-native-clear-app-cache\ios\RCTClearCacheModule",
 				);
 			};
 			name = Release;
@@ -1259,6 +1268,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-image-picker\ios",
 					"$(SRCROOT)\..\node_modules\react-native-uuid-generator\ios",
+					"$(SRCROOT)\..\node_modules\react-native-clear-app-cache\ios\RCTClearCacheModule",
 				);
 			};
 			name = Debug;
@@ -1288,6 +1298,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-image-picker\ios",
 					"$(SRCROOT)\..\node_modules\react-native-uuid-generator\ios",
+					"$(SRCROOT)\..\node_modules\react-native-clear-app-cache\ios\RCTClearCacheModule",
 				);
 			};
 			name = Release;
@@ -1328,6 +1339,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1340,6 +1352,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-image-picker\ios",
 					"$(SRCROOT)\..\node_modules\react-native-uuid-generator\ios",
+					"$(SRCROOT)\..\node_modules\react-native-clear-app-cache\ios\RCTClearCacheModule",
 				);
 			};
 			name = Debug;
@@ -1380,6 +1393,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1392,6 +1406,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-image-picker\ios",
 					"$(SRCROOT)\..\node_modules\react-native-uuid-generator\ios",
+					"$(SRCROOT)\..\node_modules\react-native-clear-app-cache\ios\RCTClearCacheModule",
 				);
 			};
 			name = Release;
@@ -1427,6 +1442,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 			};
 			name = Debug;
@@ -1451,6 +1467,7 @@
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",

@@ -7,6 +7,8 @@ import {
 import Spinner from 'react-native-loading-spinner-overlay';
 import firebase from 'react-native-firebase';
 import UUIDGenerator from 'react-native-uuid-generator';
+// import axios from 'axios';
+// import sortObjectList from 'sort-object-list';
 
 const styles = StyleSheet.create({
     container : {
@@ -27,7 +29,8 @@ export default class ModalLoading extends React.Component{
 
 
     saveToFirebase(uuid){
-        const imagePath = this.props.camera.image_food
+        let imagePath = this.props.camera.image_food
+        console.log('image Path ',imagePath)
         let userId = firebase.auth().currentUser.uid;
         let ref = firebase.storage().ref(userId).child('1');
         // let ref = firebase.storage().ref();
@@ -40,9 +43,6 @@ export default class ModalLoading extends React.Component{
             switch (snapshot.state) {
                 case firebase.storage.TaskState.SUCCESS: // or 'success'
                     console.log('Upload is complete');
-                    this.setState({
-                        visible : false
-                    })
                     break;
                 case firebase.storage.TaskState.RUNNING: // or 'running'
                     console.log('Upload is running');
@@ -57,7 +57,61 @@ export default class ModalLoading extends React.Component{
         });
     }
 
+    compareProb(a,b) {
+        if (a[2] < b[2])
+          return -1;
+        if (a[2] > b[2])
+          return 1;
+        return 0;
+    }
+      
+
+    sortByValue(data){
+        
+        let round = 0;
+        let f = []
+
+
+        for(let i in data){
+
+            let temp_name = data[i].label
+            let temp = (data[i].probability).toFixed(20)
+
+            f.push([parseInt(i)+1, temp_name, temp])
+
+        }
+        f.sort(this.compareProb)
+
+        foodOptions = []
+        for(let i = f.length-1 ; i >= f.length-4 ; i--){
+            foodOptions.push(f[i])
+        }
+
+        this.props.ResponeServerAction(foodOptions)
+
+        console.log('foodOptions: ', foodOptions)
+
+        this.setState({
+            visible : false
+        })
+
+        this.props.navigation.navigate("Image");
+    }
+
+    
+
+
+
+
+
+
     componentDidMount() {
+
+
+
+
+
+
         let rn = new Promise((resolve,reject) => {
             UUIDGenerator.getRandomUUID().then((uuid) => {
                 console.log("uuid modal",uuid)
@@ -71,12 +125,33 @@ export default class ModalLoading extends React.Component{
         rn.then((uuid)=>{
             this.saveToFirebase(uuid)
         })
+
+        let self = this
+        let formdata = new FormData();  
+        formdata.append('image', {  
+            uri: this.props.camera.image_food,
+            name: '1.jpg',
+            type: 'image/jpeg'
+        });
+        fetch('http://158.108.122.57:5000/predict',{
+            method : 'post',
+            body : formdata
+        }).then(res =>{
+            console.log('res from Flask Server: ', res.json().then(function(data){
+                console.log(data)
+                self.sortByValue(data.predictions)
+            }))
+
+        }).catch(error=>{
+            console.error(error)
+        })
+
+
+        
         
 
 
-
-
-        this.props.navigation.navigate("Image");
+        
     }
 
     render(){

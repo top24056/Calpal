@@ -8,4 +8,5 @@ export const GET_INFOR = "GET_INFOR";
 export const GET_FOOD_BREAKFAST = "GET_FOOD_BREAKFAST";
 export const GET_FOOD_LUNCH = "GET_FOOD_LUNCH";
 export const GET_FOOD_DINNER = "GET_FOOD_DINNER";
-export const SET_MEAL_TIME = 'SEt_MEAL_TIME'
+export const SET_MEAL_TIME = 'SET_MEAL_TIME';
+export const RESPONE_DATA = "RESPONE_DATA";

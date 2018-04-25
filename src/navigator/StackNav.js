@@ -36,7 +36,7 @@ const StackNav = StackNavigator(
         },
     },
     {
-        initialRouteName : 'Image',
+        initialRouteName : 'Photo',
     }
 )
 

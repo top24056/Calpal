@@ -10,15 +10,17 @@ import {
     Picker
 } from 'react-native';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import firebase from 'react-native-firebase';
 import { Avatar } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import {
-    RaisedTextButton
-} from 'react-native-material-buttons';
+import { RaisedTextButton } from 'react-native-material-buttons';
 import FBSDK ,{
     LoginManager
 } from 'react-native-fbsdk';
-import firebase from 'react-native-firebase';
+import {
+    LineChart,
+    Grid
+} from 'react-native-svg-charts';
 
 const styles = StyleSheet.create({
     container : {
@@ -58,10 +60,11 @@ const styles = StyleSheet.create({
         elevation: 1,
         
     },
-    boxgraph : {
+    boxlogout : {
         flex : 1,
         justifyContent : 'center',
         alignItems : 'center',
+        margin : 10
     },
     boxicon : {
         flex : 0.5,
@@ -133,6 +136,8 @@ export default class ProfileScreen extends React.Component{
  
 
     render(){
+
+        const data = [50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80];
 
 
         const weightinput = (
@@ -335,13 +340,22 @@ export default class ProfileScreen extends React.Component{
                                 />
                             </View>
                         </View>
-
-                        
                     </View>
-                    
+                </View>
+                <View style = {styles.boxcontent}>
+                    <View style = {styles.card}>
+                        <LineChart
+                            style = {{height : 200}}
+                            data = {data}
+                            svg = {{stroke : 'rgb(134,65,244)'}}
+                            contentInset = {{top : 20,bottom : 20}}
+                        >
+                            <Grid/>
+                        </LineChart>
+                    </View>
                 </View>
 
-                <View style = {styles.boxgraph}>
+                <View style = {styles.boxlogout}>
                     <TouchableOpacity
                         onPress = {() => {
                             

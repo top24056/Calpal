@@ -1,4 +1,6 @@
 rootProject.name = 'Calpal'
+include ':react-native-clear-app-cache'
+project(':react-native-clear-app-cache').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-clear-app-cache/android')
 include ':react-native-uuid-generator'
 project(':react-native-uuid-generator').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-uuid-generator/android')
 include ':react-native-image-picker'

@@ -32,20 +32,19 @@ export default class ModalLoading extends React.Component{
         let imagePath = this.props.camera.image_food
         console.log('image Path ',imagePath)
         let userId = firebase.auth().currentUser.uid;
-        let ref = firebase.storage().ref(userId).child('1');
-        // let ref = firebase.storage().ref();
+        let ref = firebase.storage().ref(userId).child('temp.jpg');
         const uploadTask = ref.putFile(imagePath, {contentType : 'image/jpeg'});
         uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, (snapshot) => {
             
             const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log(`Upload is ${progress}% done`);
+            // console.log(`Upload is ${progress}% done`);
           
             switch (snapshot.state) {
                 case firebase.storage.TaskState.SUCCESS: // or 'success'
-                    console.log('Upload is complete');
+                    // console.log('Upload is complete');
                     break;
                 case firebase.storage.TaskState.RUNNING: // or 'running'
-                    console.log('Upload is running');
+                    // console.log('Upload is running');
                     break;
                 default:
                     console.log(snapshot.state);
@@ -70,31 +69,31 @@ export default class ModalLoading extends React.Component{
         
         let round = 0;
         let f = []
-
-
         for(let i in data){
-
             let temp_name = data[i].label
             let temp = (data[i].probability).toFixed(20)
-
             f.push([parseInt(i)+1, temp_name, temp])
-
         }
         f.sort(this.compareProb)
-
         foodOptions = []
         for(let i = f.length-1 ; i >= f.length-4 ; i--){
             foodOptions.push(f[i])
         }
 
-        this.props.ResponeServerAction(foodOptions)
+        let temp_name = []
+        for(let i in foodOptions){
+            let temp = foodOptions[i][1]
+            temp_name.push(temp)
+        }
+
+        this.props.ResponeServerAction(temp_name)
 
         console.log('foodOptions: ', foodOptions)
+        console.log('temp_name',temp_name)
 
         this.setState({
             visible : false
         })
-
         this.props.navigation.navigate("Image");
     }
 
@@ -106,12 +105,6 @@ export default class ModalLoading extends React.Component{
 
 
     componentDidMount() {
-
-
-
-
-
-
         let rn = new Promise((resolve,reject) => {
             UUIDGenerator.getRandomUUID().then((uuid) => {
                 console.log("uuid modal",uuid)
@@ -133,7 +126,7 @@ export default class ModalLoading extends React.Component{
             name: '1.jpg',
             type: 'image/jpeg'
         });
-        fetch('http://158.108.122.57:5000/predict',{
+        fetch('http://158.108.246.96:5000/predict',{
             method : 'post',
             body : formdata
         }).then(res =>{

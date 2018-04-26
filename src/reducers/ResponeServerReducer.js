@@ -4,6 +4,7 @@ import {
 
 const initState = {
     data_server : null,
+    calories : null
 }
 
 export default function (state = initState, action){
@@ -11,6 +12,7 @@ export default function (state = initState, action){
         case RESPONE_DATA:
             return Object.assign({}, state,{
                 data_server : action.payload,
+                calories : action.payload_calories
             })
         
         default : 

@@ -21,7 +21,11 @@ import {
     RaisedTextButton
 } from 'react-native-material-buttons';
 import UUIDGenerator from 'react-native-uuid-generator';
-// import clear from 'react-native-clear-app-cache';
+import {
+    NavigationActions
+} from 'react-navigation';
+import ActionButton from 'react-native-action-button';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 const styles = StyleSheet.create({
@@ -43,14 +47,26 @@ const styles = StyleSheet.create({
         alignItems : 'center',
         padding : 20
     },
+    circle : {
+        width : 60,
+        height : 60,
+        borderRadius : 60/2,
+        backgroundColor : '#4267b2',
+        alignItems : 'center',
+        justifyContent : 'center'
+    }
 
 })
 
-const shareLinkContent = {
-    contentType: 'link',
-    contentUrl: "https://firebasestorage.googleapis.com/v0/b/calpal-4c837.appspot.com/o/test%2Fcd6652b2-b05a-4b7c-9d59-e46e388e20a0?alt=media&token=f0204706-a744-493a-b089-51c41593c281",
-    contentDescription: 'Facebook sharing is easy!',
-}
+
+const resetAction = NavigationActions.reset({
+    index : 0,
+    actions : [
+        NavigationActions.navigate({
+            routeName : 'Photo',
+        })
+    ]
+})
 
 
 
@@ -59,45 +75,24 @@ export default class ImageScreen extends React.Component{
     constructor(props){
         super(props)
         this.state = ({
-            nameFood : [
-                {
-                    name : "ผัดกระเพรา",
-                    cal : 600
-                },
-                {
-                    name : "ผัดซีอิ๊ว",
-                    cal : 900
-                },
-                {
-                    name : "หมูทอดกระเทียม",
-                    cal : 600
-                }
-            ],
             name : null,
-            shareLinkContent: shareLinkContent,
+            calories : null,
+            // shareLinkContent: shareLinkContent,
             isModalVisiable : false,
             namenewfood : null,
             random : null,
-            sumcal : 0
+            sumcal : 0,
+            urlimage : null,
         })
     }
 
     componentDidMount(){
 
-        let temp_data_server = this.props.server.data_server
-        let temp_name = []
-        for(let i in temp_data_server){
-            let temp = temp_data_server[i][1]
-            temp_name.push(temp)
-        }
-
-
-
-
-
         firebase.database().goOnline();
         let userId = firebase.auth().currentUser.uid
         let ref = firebase.database().ref('users/' + userId);
+
+
 
         let hour = new Date().getHours().toString()
         let date = new Date().getDate().toString();
@@ -110,18 +105,22 @@ export default class ImageScreen extends React.Component{
         let food = ref.child('food').orderByKey().child(day)
         food.on('value',function(data){
             if(data.val() != null){
-                self.setState({
-                    sumcal : data.val().sumcal
-                })
+                if( data.val().sumcal != 'undefined'){
+                    self.setState({
+                        sumcal : data.val().sumcal
+                    })
+                }
             }
         });
 
+        
 
-
-        //test
-        let refstorage = firebase.storage().ref("tDt1tSqRpjRPfs0duS8vJRebXwh2/main.jpg");
+        let refstorage = firebase.storage().ref(userId+"/temp.jpg");
         refstorage.getDownloadURL()
         .then((url) => {
+            self.setState({
+                urlimage : url
+            })
             console.log("url",url)
         },function(error){
             console.log(error)
@@ -131,24 +130,29 @@ export default class ImageScreen extends React.Component{
 
 
     shareLinkWithShareDialog() {
+        let shareLinkContent = {
+            contentType: 'link',
+            contentUrl: this.state.urlimage,
+            contentDescription: 'This image for Application Calpal',
+        }
+         
         var tmp = this;
-        ShareDialog.canShow(this.state.shareLinkContent).then(
+        ShareDialog.canShow(shareLinkContent).then(
           function(canShow) {
             if (canShow) {
-              return ShareDialog.show(tmp.state.shareLinkContent);
+              return ShareDialog.show(shareLinkContent);
             }
           }
         ).then(
           function(result) {
             if (result.isCancelled) {
-              alert('Share cancelled');
+              console.log('share cancelled')
             } else {
-              alert('Share success with postId: '
-                + result.postId);
+              console.log('Share success with postId: '+ result.postId);
             }
           },
           function(error) {
-            alert('Share fail with error: ' + error);
+            console.log('Share fail with error: ' + error);
           }
         );
       }
@@ -170,14 +174,14 @@ export default class ImageScreen extends React.Component{
         uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, (snapshot) => {
             
             const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log(`Upload is ${progress}% done`);
+            // console.log(`Upload is ${progress}% done`);
           
             switch (snapshot.state) {
                 case firebase.storage.TaskState.SUCCESS: // or 'success'
-                    console.log('Upload is complete');
+                    // console.log('Upload is complete');
                     break;
                 case firebase.storage.TaskState.RUNNING: // or 'running'
-                    console.log('Upload is running');
+                    // console.log('Upload is running');
                     break;
                 default:
                     console.log(snapshot.state);
@@ -194,13 +198,12 @@ export default class ImageScreen extends React.Component{
 
 
     render(){
+        const iconshare = <Icon name = 'share-alt' style = {{color : 'white'}} size = {25}/>
         var boxnamefood = [];
-        for(let i = 0 ; i < 3 ; i++){
+        for(let i = 0 ; i < 4 ; i++){
             boxnamefood.push(
                 <TouchableOpacity key = {i} onPress = {() => {
-                    // clear.clearAppCache(() => {
-                    //     console.log('clear image')
-                    // })
+                    console.log(this.props.server.data_server[i])
                     let hour = new Date().getHours().toString()
                     let date = new Date().getDate().toString();
                     let tempmonth = new Date().getMonth() + 1;
@@ -216,76 +219,73 @@ export default class ImageScreen extends React.Component{
                     let fndate = food.child(day);
 
 
-                    let qu = user.child('food').orderByKey().child(day)
-                    qu.on('value',function(data){
-                        if(data.val().sumcal >= 0){
-                            self.setState({
-                                sumcal : data.val().sumcal
-                            })
-                        }
-                    })
 
                     if (this.props.main.Selected_Meal_Time == 'breakfast') {
                         let breakfast = fndate.child('breakfast');
                         let valuefood = {
-                            // 'namefood' : this.state.nameFood[i].name,
-                            // 'cal' : this.state.nameFood[i].cal,
+                            'namefood' : this.props.server.data_server[i],
+                            'cal' : this.props.server.calories[i],
                         };
                         breakfast.update(valuefood)
                         
-                        // this.props.BreakfastAction(this.state.nameFood[i])
+                        this.props.BreakfastAction(valuefood)
                     }
                     else if (this.props.main.Selected_Meal_Time == 'lunch') {
                         let lunch = fndate.child('lunch')
                         let valuefood = {
-                            // 'namefood' : this.state.nameFood[i].name,
-                            // 'cal' : this.state.nameFood[i].cal,
+                            'namefood' : this.props.server.data_server[i],
+                            'cal' : this.props.server.calories[i],
                         };
                         lunch.update(valuefood)
-                        // this.props.LunchAction(this.state.nameFood[i])
+                        this.props.LunchAction(valuefood)
                     }
                     else if (this.props.main.Selected_Meal_Time == 'dinner') {
                         let dinner = fndate.child('dinner')
                         let valuefood = {
-                            // 'namefood' : this.state.nameFood[i].name,
-                            // 'cal' : this.state.nameFood[i].cal,
+                            'namefood' : this.props.server.data_server[i],
+                            'cal' : this.props.server.calories[i],
                         };
                         dinner.update(valuefood)
-                        // this.props.DinnerAction(this.state.nameFood[i])
+                        this.props.DinnerAction(valuefood)
                     }
                     else if (this.props.main.Selected_Meal_Time == '') {
                         if(hour >= 5 && hour <= 10){
                             let breakfast = fndate.child('breakfast');
                             let valuefood = {
-                                // 'namefood' : this.state.nameFood[i].name,
-                                // 'cal' : this.state.nameFood[i].cal,
+                                'namefood' : this.props.server.data_server[i],
+                                'cal' : this.props.server.calories[i],
                             };
                             breakfast.update(valuefood)
                             
-                            // this.props.BreakfastAction(this.state.nameFood[i])
+                            this.props.BreakfastAction(valuefood)
                         }
                         else if(hour >= 11 && hour <= 3){
                             let lunch = fndate.child('lunch')
                             let valuefood = {
-                                // 'namefood' : this.state.nameFood[i].name,
-                                // 'cal' : this.state.nameFood[i].cal,
+                                'namefood' : this.props.server.data_server[i],
+                                'cal' : this.props.server.calories[i],
                             };
                             lunch.update(valuefood)
-                            // this.props.LunchAction(this.state.nameFood[i])
+                            this.props.LunchAction(valuefood)
                         }
                         else{
                             let dinner = fndate.child('dinner')
                             let valuefood = {
-                                // 'namefood' : this.state.nameFood[i].name,
-                                // 'cal' : this.state.nameFood[i].cal,
+                                'namefood' : this.props.server.data_server[i],
+                                'cal' : this.props.server.calories[i],
                             };
                             dinner.update(valuefood)
-                            // this.props.DinnerAction(this.state.nameFood[i])
+                            this.props.DinnerAction(valuefood)
                         }
                     }
+                    
+                    this.props.navigation.dispatch(resetAction)
                     this.props.navigation.navigate("Main");
                     // this.props.FoodAction(this.state.nameFood[i]);
-                    // let allcal = this.state.sumcal + this.state.nameFood[i].cal
+                    let allcal = this.state.sumcal + this.props.server.calories[i]
+                    console.log('type cal',typeof this.props.server.calories[i])
+                    console.log('type state',typeof this.state.sumcal)
+                    console.log('allcal',allcal)
                     let temp = {
                         "sumcal" : allcal
                     }
@@ -293,8 +293,8 @@ export default class ImageScreen extends React.Component{
                 }}>
                     <View style = {styles.boxtext}>
                         <Text style = {{fontSize : 13}}>
-                            {/* <Text>{this.state.nameFood[i]} </Text> */}
-                            {/* <Text>Calrories : {this.state.nameFood[i].cal}</Text> */}
+                            <Text>{this.props.server.data_server[i]} </Text>
+                            <Text> : {this.props.server.calories[i]} Calrories</Text>
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -375,10 +375,15 @@ export default class ImageScreen extends React.Component{
                         </View>
                     </TouchableOpacity>
 
+                    <View style = {{position : 'absolute', right : 20,bottom : 20}}>
+                        <TouchableOpacity onPress={this.shareLinkWithShareDialog.bind(this)}>
+                            <View style = {styles.circle}>
+                                {iconshare}
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+
                 </View>
-                <TouchableHighlight onPress={this.shareLinkWithShareDialog.bind(this)}>
-          <Text style={styles.shareText}>Share link with ShareDialog</Text>
-        </TouchableHighlight>
             </View>
         );
     }

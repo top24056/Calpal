@@ -7,7 +7,8 @@ import {
     Image,
     TouchableOpacity,
     TextInput,
-    Picker
+    Picker,
+    Button
 } from 'react-native';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import firebase from 'react-native-firebase';
@@ -21,6 +22,7 @@ import {
     LineChart,
     Grid
 } from 'react-native-svg-charts';
+// import logoutImg from '../../img/logout.png;'
 
 const styles = StyleSheet.create({
     container : {
@@ -358,7 +360,6 @@ export default class ProfileScreen extends React.Component{
                 <View style = {styles.boxlogout}>
                     <TouchableOpacity
                         onPress = {() => {
-                            
                             this.props.navigation.navigate("Login");
                             LoginManager.logOut((error,data) => {
                                 
@@ -367,12 +368,36 @@ export default class ProfileScreen extends React.Component{
                                 if(error){
                                     console.log("err",error)
                                 }
+
                                 LoginManager.getIntance().logOut()
                             })
                         }}
                     >
-                        <Text>logout</Text>
+                        <View style = {{alignItems:'center',flexDirection:'row',backgroundColor :'#4267b2',padding : 10}}>
+                            <Image source = {require('../../img/logout.png')}/>
+                            <Text style = {{color :'white',paddingLeft : 10}}>Log out</Text>
+                        </View>
                     </TouchableOpacity>
+
+                    {/* <Button 
+                        color='#0094ff' 
+                        titleColor = "white"
+                        title = "Log out"
+                        onPress = {() => {
+                            this.props.navigation.navigate("Login");
+                            LoginManager.logOut((error,data) => {
+                                
+                                console.log(data)
+                                console.log("asd")
+                                if(error){
+                                    console.log("err",error)
+                                }
+
+                                LoginManager.getIntance().logOut()
+                            })
+                        }}
+                    > */}
+                    
                 </View>
 
             {/* </View> */}

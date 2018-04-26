@@ -79,9 +79,6 @@ export default class PhotoScreen extends React.Component{
     }
 
     takePicture = async function(){
-        if(this.camera == null){
-            console.log('Camera is null',this.camera)
-        }
         console.log("Camera ",this.camera)
         if(this.camera){
             const options = {

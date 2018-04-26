@@ -137,8 +137,6 @@ export default class MainScreen extends React.Component{
         let self = this
         
         let food = ref.child('food').orderByKey().child(day)
-
-
         let Query = new Promise((resolve,reject) => {
             food.on('value',function(data){
                 if(data.val() === null){
@@ -155,7 +153,7 @@ export default class MainScreen extends React.Component{
                             breakfast : temp
                         })
                     }
-                    if(data.val().lunch){
+                    if(data.val().lunch != null){
                         let tempcal = data.val().lunch.cal.toString()
                         let temp = {
                             namefood : data.val().lunch.namefood,
@@ -165,8 +163,7 @@ export default class MainScreen extends React.Component{
                             lunch : temp 
                         })
                     }
-                    if(data.val().dinner){
-                        console.log(data.val().dinner)
+                    if(data.val().dinner != null){
                         let tempcal = data.val().dinner.cal.toString()
                         let temp = {
                             namefood : data.val().dinner.namefood,
@@ -176,8 +173,7 @@ export default class MainScreen extends React.Component{
                             dinner : temp
                         })
                     }
-                    if(data.val().sumcal){
-                        console.log(data.val().sumcal)
+                    if(data.val().sumcal != null){
                         self.setState({
                             curcal : data.val().sumcal
                         })
@@ -208,32 +204,7 @@ export default class MainScreen extends React.Component{
         })
 
         
-
-        // axios.post('http://127.0.0.1:5000/predict', )
-        //     .then((response) => {
-        //         // response.json()
-        //         console.log("REst : ",response)
-        //     })
-        //     // .then((responseJson) => {
         
-        //     //     console.log('REST: ', responseJson)
-        
-        //     // })
-        //     .catch((error) =>{
-        //         console.error(error);
-        //     });
-
-        
-        // axios({
-        //     method: 'post',
-        //     url: 'http://127.0.0.1:5000/predict',
-        //     data: {
-        //         {
-        //             'image' : inputimg
-        //         }
-        //     }
-        // });
-
         
 
 
@@ -352,10 +323,12 @@ export default class MainScreen extends React.Component{
                     
                     <View style = {styles.box}>
                         <TouchableOpacity onPress = {()=> {
+                            console.log('press test')
                             this._toggleModal();
+                            
                         }}>
-                        
-                        </TouchableOpacity>
+                            <Text>Test</Text>
+                        </TouchableOpacity> 
 
 
                         

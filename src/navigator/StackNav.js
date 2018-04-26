@@ -3,13 +3,12 @@ import {
     View,
     Text
 } from 'react-native';
-import {StackNavigator} from 'react-navigation';
-// import ModalLoading from '../Components/ModalLoading';
-// import MainScreen from '../src/MainScreen';
+import {StackNavigator,NavigationAction} from 'react-navigation';
 import CameraContainer from '../containers/CameraContainer';
 import ImageScreen from '../Components/ImageScreen';
 import ImageContainer from '../containers/ImageContainer';
 import ModalContainer from '../containers/ModalContainer';
+
 
 const StackNav = StackNavigator(
     {

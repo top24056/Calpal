@@ -24,7 +24,6 @@ import UUIDGenerator from 'react-native-uuid-generator';
 import {
     NavigationActions
 } from 'react-navigation';
-import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 

@@ -13,7 +13,6 @@ import com.facebook.react.ReactApplication;
 // import com.learnta.clear.ClearCachePackage;
 import com.reactlibrary.RNUUIDGeneratorPackage;
 import com.imagepicker.ImagePickerPackage;
-import com.RNFetchBlob.RNFetchBlobPackage;
 import com.horcrux.svg.SvgPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
@@ -52,7 +51,6 @@ public class MainApplication extends Application implements ReactApplication {
             // new ClearCachePackage(),
             new RNUUIDGeneratorPackage(),
             new ImagePickerPackage(),
-            new RNFetchBlobPackage(), 
             new SvgPackage(),
             new RNFirebasePackage(),
             new FBSDKPackage(mCallbackManager),

@@ -20,8 +20,6 @@ import {
     SocialIcon
 } from 'react-native-elements';
 import inputimg from '../../img/1.png';
-import axios from 'axios'
-import qs from 'qs'
 
 const styles = StyleSheet.create({
     container : {

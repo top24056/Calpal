@@ -18,12 +18,10 @@ import FBSDK ,{
     GraphRequestManager,
 } from 'react-native-fbsdk';
 import firebase from 'react-native-firebase';
-import axios from 'axios'
 import {
     TextField
 } from 'react-native-material-textfield';
 import UUIDGenerator from 'react-native-uuid-generator';
-// import { resolve } from 'path';
 import inputimg from '../../img/1.png';
 
 
@@ -101,15 +99,15 @@ export default class MainScreen extends React.Component{
             
             breakfast : {
                 namefood : "Add! Breakfast",
-                cal : "Recommend Calrories : 388 KCal",
+                cal : "Recommend Calrories : 388",
             },
             lunch : {
                 namefood : "Add! Lunch",
-                cal : "Recommend Calrories : 588 KCal"
+                cal : "Recommend Calrories : 588"
             },
             dinner : {
                 namefood : "Add Dinner",
-                cal : "Recommend Calrories : 588 KCal"
+                cal : "Recommend Calrories : 588"
             }
             ,
             isModalVisiable : false
@@ -261,7 +259,7 @@ export default class MainScreen extends React.Component{
                         </View>
                         <View style = {styles.boxtext}>
                             <Text style = {{color : '#858787', fontSize : 18}}>{this.state.breakfast.namefood}</Text>
-                            <Text style = {{color : '#858787', fontSize : 12}}>{this.state.breakfast.cal}</Text>
+                            <Text style = {{color : '#858787', fontSize : 12}}>{this.state.breakfast.cal} KCal</Text>
                         </View>
 
                         <View style = {styles.boxadd}>
@@ -285,7 +283,7 @@ export default class MainScreen extends React.Component{
                         </View>
                         <View style = {styles.boxtext}>
                             <Text style = {{color : '#858787', fontSize : 18}}>{this.state.lunch.namefood}</Text>
-                            <Text style = {{color : '#858787', fontSize : 12}}>{this.state.lunch.cal}</Text>
+                            <Text style = {{color : '#858787', fontSize : 12}}>{this.state.lunch.cal} KCal</Text>
                         </View>
                         <View style = {styles.boxadd}>
                             <TouchableOpacity onPress = {() =>{
@@ -306,7 +304,7 @@ export default class MainScreen extends React.Component{
                         </View>
                         <View style = {styles.boxtext}>
                             <Text style = {{color : '#858787', fontSize : 18}}>{this.state.dinner.namefood}</Text>
-                            <Text style = {{color : '#858787', fontSize : 12}}>{this.state.dinner.cal}</Text>
+                            <Text style = {{color : '#858787', fontSize : 12}}>{this.state.dinner.cal} KCal</Text>
                         </View>
                         <View style = {styles.boxadd}>
                             <TouchableOpacity onPress = {() =>{

@@ -7,7 +7,6 @@ import {
 import Spinner from 'react-native-loading-spinner-overlay';
 import firebase from 'react-native-firebase';
 import UUIDGenerator from 'react-native-uuid-generator';
-// import axios from 'axios';
 // import sortObjectList from 'sort-object-list';
 
 const styles = StyleSheet.create({

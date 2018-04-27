@@ -125,14 +125,14 @@ export default class ModalLoading extends React.Component{
             name: '1.jpg',
             type: 'image/jpeg'
         });
-        fetch('http://158.108.246.96:5000/predict',{
+        fetch('http://158.108.246.77:5000/predict',{
             method : 'post',
             body : formdata
         }).then(res =>{
-            console.log('res from Flask Server: ', res.json().then(function(data){
+            res.json().then(function(data){
                 console.log(data)
                 self.sortByValue(data.predictions)
-            }))
+            })
 
         }).catch(error=>{
             console.error(error)

@@ -76,7 +76,7 @@ export default class ImageScreen extends React.Component{
         this.state = ({
             name : null,
             calories : null,
-            // shareLinkContent: shareLinkContent,
+            meal : null,
             isModalVisiable : false,
             namenewfood : null,
             random : null,
@@ -202,7 +202,6 @@ export default class ImageScreen extends React.Component{
         for(let i = 0 ; i < 4 ; i++){
             boxnamefood.push(
                 <TouchableOpacity key = {i} onPress = {() => {
-                    console.log(this.props.server.data_server[i])
                     let hour = new Date().getHours().toString()
                     let date = new Date().getDate().toString();
                     let tempmonth = new Date().getMonth() + 1;
@@ -211,12 +210,19 @@ export default class ImageScreen extends React.Component{
                     let day = date+'-'+month+'-'+year
                     let self = this
 
+
+                    //database
                     firebase.database().goOnline();
                     let userId = firebase.auth().currentUser.uid;
                     let user = firebase.database().ref('users/' + userId);
                     let food = user.child('food');
                     let fndate = food.child(day);
 
+
+
+                    //storage
+                    let refstorage = firebase.storage().ref(userId).child(day)
+                    let imagePath = this.props.camera.image_food
 
 
                     if (this.props.main.Selected_Meal_Time == 'breakfast') {
@@ -226,7 +232,6 @@ export default class ImageScreen extends React.Component{
                             'cal' : this.props.server.calories[i],
                         };
                         breakfast.update(valuefood)
-                        
                         this.props.BreakfastAction(valuefood)
                     }
                     else if (this.props.main.Selected_Meal_Time == 'lunch') {
@@ -247,6 +252,8 @@ export default class ImageScreen extends React.Component{
                         dinner.update(valuefood)
                         this.props.DinnerAction(valuefood)
                     }
+
+
                     else if (this.props.main.Selected_Meal_Time == '') {
                         if(hour >= 5 && hour <= 10){
                             let breakfast = fndate.child('breakfast');

@@ -40,10 +40,17 @@ const styles = StyleSheet.create({
     boxprofileimage : {
         flex : 1,
         justifyContent : 'center',
+        alignItems : 'center'
+        // marginTop : 40,
+        // marginLeft : 20,
+        // marginBottom : 40,
         // backgroundColor : 'red'
     },
     boxprofilecontent : {
+        flex : 1,
         flexDirection : 'column',
+        padding : 20
+        // marginLeft : 20
         // backgroundColor : 'red'
     },
     boxcontent : {
@@ -220,14 +227,30 @@ export default class ProfileScreen extends React.Component{
                         />
                     </View>
                     <View style = {styles.boxprofilecontent}>
+                        <View style = {{flex : 1,justifyContent : 'flex-start',alignItems : 'center',marginTop : 15, marginBottom: 15}}>
+                            <Text style = {{color : 'white',fontSize : 20,fontWeight : 'bold'}}>
+                                {this.props.fb.data_profile.name}
+                            </Text>
                         </View>
                         <View style = {{flex : 1}}>
+                            <Text style = {{color : 'white',fontSize : 15, paddingLeft: 10}}>
+                                Weight : {this.state.information.weight}
+                            </Text>
                         </View>
                         <View style = {{flex : 1}}>
+                            <Text style = {{color : 'white',fontSize : 15, paddingLeft: 10}}>
+                                Height : {this.state.information.height}
+                            </Text>
                         </View>
                         <View style = {{flex : 1}}>
+                            <Text style = {{color : 'white',fontSize : 15, paddingLeft: 10}}>
+                                Age : {this.state.information.age}
+                            </Text>
                         </View>
                         <View style = {{flex : 1}}>
+                            <Text style = {{color : 'white',fontSize : 15, paddingLeft: 10}}>
+                                Gender : {this.state.information.gender}
+                            </Text>
                         </View>
                     </View>
                     
@@ -236,6 +259,11 @@ export default class ProfileScreen extends React.Component{
                 
                 <View style = {styles.boxcontent}>
                     <View style = {styles.card}>
+                        <View>
+                            <Text style={{color: '#0094ff', fontWeight: 'bold', paddingTop: 5, paddingBottom: 5}}>
+                                Edit personal info
+                            </Text>
+                        </View>
                         <View style = {styles.box}>
                             <View style = {styles.boxicon}>
                                 <Image
@@ -307,6 +335,7 @@ export default class ProfileScreen extends React.Component{
                                     rippleDuration = {400} 
                                     rippleOpacity={0.54} 
                                     color='#0094ff' 
+                                    title = "Save Changes" 
                                     titleColor = "white"
                                     onPress = {() => {
                                         console.log('press')
@@ -342,6 +371,12 @@ export default class ProfileScreen extends React.Component{
                     </View>
                 </View>
                 <View style = {styles.boxcontent}>
+                    <View style={{padding: 10}}>
+                        <Text style={{color: '#0094ff', fontWeight: 'bold', paddingTop: 5}}>
+                            Weekly Calorie Comsumption
+                        </Text>
+                    </View>
+                    <View style={{ height: 200, padding: 10, flexDirection: 'row' }}>
                         <YAxis
                             data={data}
                             style={{ marginBottom: xAxisHeight }}
@@ -374,6 +409,7 @@ export default class ProfileScreen extends React.Component{
 
                 <View style = {styles.boxlogout}>
                     <TouchableOpacity
+                        style={{borderRadius: 20}}
                         onPress = {() => {
                             this.props.navigation.navigate("Login");
                             LoginManager.logOut((error,data) => {

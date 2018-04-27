@@ -125,7 +125,9 @@ export default class ModalLoading extends React.Component{
             name: '1.jpg',
             type: 'image/jpeg'
         });
-        fetch('http://158.108.246.96:5000/predict',{
+        // fetch('http://158.108.246.96:5000/predict',{
+            
+        fetch('http://158.108.246.63:5000/predict',{
             method : 'post',
             body : formdata
         }).then(res =>{

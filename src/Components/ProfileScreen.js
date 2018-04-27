@@ -40,16 +40,10 @@ const styles = StyleSheet.create({
     boxprofileimage : {
         flex : 1,
         justifyContent : 'center',
-        alignItems : 'flex-start',
-        marginTop : 40,
-        marginLeft : 20,
-        marginBottom : 40,
         // backgroundColor : 'red'
     },
     boxprofilecontent : {
-        flex : 1.5,
         flexDirection : 'column',
-        marginLeft : 20
         // backgroundColor : 'red'
     },
     boxcontent : {
@@ -221,24 +215,19 @@ export default class ProfileScreen extends React.Component{
                         <Avatar
                             xlarge
                             rounded
+                            style={{width: 48, height: 32}}
                             source = {{uri : this.props.fb.data_profile.picture.data.url}}
                         />
                     </View>
                     <View style = {styles.boxprofilecontent}>
-                        <View style = {{flex : 1,justifyContent : 'flex-start',alignItems : 'center',marginTop : 40}}>
-                            <Text style = {{color : 'white',fontSize : 20,fontWeight : 'bold'}}>{this.props.fb.data_profile.name}</Text>
                         </View>
                         <View style = {{flex : 1}}>
-                            <Text style = {{color : 'white',fontSize : 15}}>Weight : {this.state.information.weight}</Text>
                         </View>
                         <View style = {{flex : 1}}>
-                            <Text style = {{color : 'white',fontSize : 15}}>Height : {this.state.information.height}</Text>
                         </View>
                         <View style = {{flex : 1}}>
-                            <Text style = {{color : 'white',fontSize : 15}}>Age : {this.state.information.age}</Text>
                         </View>
                         <View style = {{flex : 1}}>
-                            <Text style = {{color : 'white',fontSize : 15}}>Gender : {this.state.information.gender}</Text>
                         </View>
                     </View>
                     
@@ -318,7 +307,6 @@ export default class ProfileScreen extends React.Component{
                                     rippleDuration = {400} 
                                     rippleOpacity={0.54} 
                                     color='#0094ff' 
-                                    title = "Submit" 
                                     titleColor = "white"
                                     onPress = {() => {
                                         console.log('press')
@@ -354,7 +342,6 @@ export default class ProfileScreen extends React.Component{
                     </View>
                 </View>
                 <View style = {styles.boxcontent}>
-                    <View style={{ height: 200, padding: 20, flexDirection: 'row' }}>
                         <YAxis
                             data={data}
                             style={{ marginBottom: xAxisHeight }}

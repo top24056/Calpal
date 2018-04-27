@@ -67,6 +67,15 @@ const resetAction = NavigationActions.reset({
     ]
 })
 
+const hour = new Date().getHours().toString()
+const date = new Date().getDate().toString();
+const tempmonth = new Date().getMonth()+1;
+const month = tempmonth.toString();
+const year = new Date().getFullYear().toString();
+const day = date+'-'+month+'-'+year;
+
+
+
 
 
 export default class ImageScreen extends React.Component{
@@ -76,7 +85,6 @@ export default class ImageScreen extends React.Component{
         this.state = ({
             name : null,
             calories : null,
-            meal : null,
             isModalVisiable : false,
             namenewfood : null,
             random : null,
@@ -87,20 +95,11 @@ export default class ImageScreen extends React.Component{
 
     componentDidMount(){
 
+        //read sumcal from database
         firebase.database().goOnline();
         let userId = firebase.auth().currentUser.uid
         let ref = firebase.database().ref('users/' + userId);
-
-
-
-        let hour = new Date().getHours().toString()
-        let date = new Date().getDate().toString();
-        let tempmonth = new Date().getMonth()+1;
-        let month = tempmonth.toString();
-        let year = new Date().getFullYear().toString();
-        let day = date+'-'+month+'-'+year;
         let self = this;
-
         let food = ref.child('food').orderByKey().child(day)
         food.on('value',function(data){
             if(data.val() != null){
@@ -113,7 +112,7 @@ export default class ImageScreen extends React.Component{
         });
 
         
-
+        //url to share
         let refstorage = firebase.storage().ref(userId+"/temp.jpg");
         refstorage.getDownloadURL()
         .then((url) => {
@@ -124,6 +123,7 @@ export default class ImageScreen extends React.Component{
         },function(error){
             console.log(error)
         });
+
     }
 
 
@@ -165,11 +165,10 @@ export default class ImageScreen extends React.Component{
 
 
 
-    saveToStorageFirebase(){
-        console.log('Other image : ',this.props.camera.image_food)
-        const imagePath = this.props.camera.image_food
-        const ref = firebase.storage().ref(this.state.namenewfood).child(this.state.random)
-        const uploadTask = ref.putFile(imagePath, {contentType : 'image/jpeg'});
+    OthersaveToStorageFirebase(){
+        let imagePath = this.props.camera.image_food
+        let ref = firebase.storage().ref(this.state.namenewfood).child(this.state.random)
+        let uploadTask = ref.putFile(imagePath, {contentType : 'image/jpeg'});
         uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, (snapshot) => {
             
             const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -193,6 +192,32 @@ export default class ImageScreen extends React.Component{
     }
 
 
+    NormalSaveToStorageFirebase(name){
+        let userId = firebase.auth().currentUser.uid;
+        let imagePath = this.props.camera.image_food
+        let ref = firebase.storage().ref(userId).child(day).child(name);
+        const uploadTask = ref.putFile(imagePath, {contentType : 'image/jpeg'});
+        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, (snapshot) => {
+            
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            // console.log(`Upload is ${progress}% done`);
+          
+            switch (snapshot.state) {
+                case firebase.storage.TaskState.SUCCESS: // or 'success'
+                    console.log('Upload is complete');
+                    break;
+                case firebase.storage.TaskState.RUNNING: // or 'running'
+                    // console.log('Upload is running');
+                    break;
+                default:
+                    console.log(snapshot.state);
+            }
+        }, (error) => {
+            console.error(error);
+        }, () => {
+            const uploadTaskSnapshot = uploadTask.snapshot;
+        });
+    }
 
 
 
@@ -202,29 +227,13 @@ export default class ImageScreen extends React.Component{
         for(let i = 0 ; i < 4 ; i++){
             boxnamefood.push(
                 <TouchableOpacity key = {i} onPress = {() => {
-                    let hour = new Date().getHours().toString()
-                    let date = new Date().getDate().toString();
-                    let tempmonth = new Date().getMonth() + 1;
-                    let month = tempmonth.toString();
-                    let year = new Date().getFullYear().toString();
-                    let day = date+'-'+month+'-'+year
                     let self = this
-
-
                     //database
                     firebase.database().goOnline();
                     let userId = firebase.auth().currentUser.uid;
                     let user = firebase.database().ref('users/' + userId);
                     let food = user.child('food');
                     let fndate = food.child(day);
-
-
-
-                    //storage
-                    let refstorage = firebase.storage().ref(userId).child(day)
-                    let imagePath = this.props.camera.image_food
-
-
                     if (this.props.main.Selected_Meal_Time == 'breakfast') {
                         let breakfast = fndate.child('breakfast');
                         let valuefood = {
@@ -233,6 +242,7 @@ export default class ImageScreen extends React.Component{
                         };
                         breakfast.update(valuefood)
                         this.props.BreakfastAction(valuefood)
+                        this.NormalSaveToStorageFirebase('breakfast.jpg')
                     }
                     else if (this.props.main.Selected_Meal_Time == 'lunch') {
                         let lunch = fndate.child('lunch')
@@ -242,6 +252,7 @@ export default class ImageScreen extends React.Component{
                         };
                         lunch.update(valuefood)
                         this.props.LunchAction(valuefood)
+                        this.NormalSaveToStorageFirebase('lunch.jpg')
                     }
                     else if (this.props.main.Selected_Meal_Time == 'dinner') {
                         let dinner = fndate.child('dinner')
@@ -251,6 +262,7 @@ export default class ImageScreen extends React.Component{
                         };
                         dinner.update(valuefood)
                         this.props.DinnerAction(valuefood)
+                        this.NormalSaveToStorageFirebase('dinner.jpg')
                     }
 
 
@@ -262,8 +274,8 @@ export default class ImageScreen extends React.Component{
                                 'cal' : this.props.server.calories[i],
                             };
                             breakfast.update(valuefood)
-                            
                             this.props.BreakfastAction(valuefood)
+                            this.NormalSaveToStorageFirebase('breakfast.jpg')
                         }
                         else if(hour >= 11 && hour <= 3){
                             let lunch = fndate.child('lunch')
@@ -273,6 +285,7 @@ export default class ImageScreen extends React.Component{
                             };
                             lunch.update(valuefood)
                             this.props.LunchAction(valuefood)
+                            this.NormalSaveToStorageFirebase('lunch.jpg')
                         }
                         else{
                             let dinner = fndate.child('dinner')
@@ -282,6 +295,7 @@ export default class ImageScreen extends React.Component{
                             };
                             dinner.update(valuefood)
                             this.props.DinnerAction(valuefood)
+                            this.NormalSaveToStorageFirebase('dinner.jpg')
                         }
                     }
                     
@@ -289,13 +303,11 @@ export default class ImageScreen extends React.Component{
                     this.props.navigation.navigate("Main");
                     // this.props.FoodAction(this.state.nameFood[i]);
                     let allcal = this.state.sumcal + this.props.server.calories[i]
-                    console.log('type cal',typeof this.props.server.calories[i])
-                    console.log('type state',typeof this.state.sumcal)
-                    console.log('allcal',allcal)
                     let temp = {
                         "sumcal" : allcal
                     }
                     fndate.update(temp)
+
                 }}>
                     <View style = {styles.boxtext}>
                         <Text style = {{fontSize : 13}}>
@@ -359,7 +371,7 @@ export default class ImageScreen extends React.Component{
                                 titleColor = "white"
                                 onPress = {()=>{
                                     this._toggleModal();
-                                    this.saveToStorageFirebase();
+                                    this.OthersaveToStorageFirebase();
                                 }}
                             />
                             <RaisedTextButton

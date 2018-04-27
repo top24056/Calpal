@@ -20,7 +20,9 @@ import FBSDK ,{
 } from 'react-native-fbsdk';
 import {
     LineChart,
-    Grid
+    Grid,
+    YAxis,
+    XAxis
 } from 'react-native-svg-charts';
 // import logoutImg from '../../img/logout.png;'
 
@@ -141,6 +143,14 @@ export default class ProfileScreen extends React.Component{
 
         const data = [50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80];
 
+        const contentInset = {
+            top : 20,
+            bottom : 20
+        }
+        const axesSvg = { fontSize: 10, fill: 'grey' };
+        const verticalContentInset = { top: 10, bottom: 10 }
+        const xAxisHeight = 30
+
 
         const weightinput = (
             <TextInput
@@ -206,7 +216,6 @@ export default class ProfileScreen extends React.Component{
 
         return(
             <KeyboardAwareScrollView style={styles.container}>
-            {/* <View style = {styles.container}> */}
                 <View style = {styles.boxprofile}>
                     <View style = {styles.boxprofileimage}>
                         <Avatar
@@ -345,17 +354,36 @@ export default class ProfileScreen extends React.Component{
                     </View>
                 </View>
                 <View style = {styles.boxcontent}>
-                    <View style = {styles.card}>
-                        <LineChart
-                            style = {{height : 200}}
-                            data = {data}
-                            svg = {{stroke : 'rgb(134,65,244)'}}
-                            contentInset = {{top : 20,bottom : 20}}
-                        >
-                            <Grid/>
-                        </LineChart>
+                    <View style={{ height: 200, padding: 20, flexDirection: 'row' }}>
+                        <YAxis
+                            data={data}
+                            style={{ marginBottom: xAxisHeight }}
+                            contentInset={verticalContentInset}
+                            svg={axesSvg}
+                        />
+                        <View style={{ flex: 1, marginLeft: 10 }}>
+                            <LineChart
+                                style={{ flex: 1 }}
+                                data={data}
+                                contentInset={verticalContentInset}
+                                svg={{ stroke: 'rgb(134, 65, 244)' }}
+                            >
+                                <Grid/>
+                            </LineChart>
+                            <XAxis
+                                style={{ marginHorizontal: -10, height: xAxisHeight }}
+                                data={data}
+
+                                formatLabel={(value, index) => index}
+                                contentInset={{ left: 10, right: 10 }}
+                                svg={axesSvg}
+                            />
+                        </View>
                     </View>
                 </View>
+
+                
+                
 
                 <View style = {styles.boxlogout}>
                     <TouchableOpacity
@@ -379,28 +407,8 @@ export default class ProfileScreen extends React.Component{
                         </View>
                     </TouchableOpacity>
 
-                    {/* <Button 
-                        color='#0094ff' 
-                        titleColor = "white"
-                        title = "Log out"
-                        onPress = {() => {
-                            this.props.navigation.navigate("Login");
-                            LoginManager.logOut((error,data) => {
-                                
-                                console.log(data)
-                                console.log("asd")
-                                if(error){
-                                    console.log("err",error)
-                                }
-
-                                LoginManager.getIntance().logOut()
-                            })
-                        }}
-                    > */}
-                    
+                   
                 </View>
-
-            {/* </View> */}
             </KeyboardAwareScrollView>
         );
     }

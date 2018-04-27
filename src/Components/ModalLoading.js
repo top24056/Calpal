@@ -125,13 +125,7 @@ export default class ModalLoading extends React.Component{
             name: '1.jpg',
             type: 'image/jpeg'
         });
-<<<<<<< HEAD
         fetch('http://158.108.246.77:5000/predict',{
-=======
-        // fetch('http://158.108.246.96:5000/predict',{
-            
-        fetch('http://158.108.246.63:5000/predict',{
->>>>>>> instance2
             method : 'post',
             body : formdata
         }).then(res =>{
@@ -144,12 +138,6 @@ export default class ModalLoading extends React.Component{
             console.error(error)
         })
 
-
-        
-        
-
-
-        
     }
 
     render(){

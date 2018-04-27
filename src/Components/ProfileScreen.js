@@ -35,23 +35,17 @@ const styles = StyleSheet.create({
         flex : 1,
         backgroundColor : '#0094ff',
         flexDirection : 'row',
-        
+        marginBottom : 10,
     },
     boxprofileimage : {
         flex : 1,
         justifyContent : 'center',
-        alignItems : 'center'
-        // marginTop : 40,
-        // marginLeft : 20,
-        // marginBottom : 40,
-        // backgroundColor : 'red'
+        alignItems : 'center',
     },
     boxprofilecontent : {
         flex : 1,
         flexDirection : 'column',
-        padding : 20
-        // marginLeft : 20
-        // backgroundColor : 'red'
+        padding : 20,
     },
     boxcontent : {
         flex : 1,
@@ -69,7 +63,8 @@ const styles = StyleSheet.create({
         flex : 1,
         justifyContent : 'center',
         alignItems : 'center',
-        margin : 10
+        marginTop : 10,
+        marginBottom : 10,
     },
     boxicon : {
         flex : 0.5,
@@ -227,28 +222,28 @@ export default class ProfileScreen extends React.Component{
                         />
                     </View>
                     <View style = {styles.boxprofilecontent}>
-                        <View style = {{flex : 1,justifyContent : 'flex-start',alignItems : 'center',marginTop : 15, marginBottom: 15}}>
+                        <View style = {{flex : 1,justifyContent : 'flex-start',alignItems : 'center',marginTop : 15, marginBottom: 10}}>
                             <Text style = {{color : 'white',fontSize : 20,fontWeight : 'bold'}}>
                                 {this.props.fb.data_profile.name}
                             </Text>
                         </View>
                         <View style = {{flex : 1}}>
-                            <Text style = {{color : 'white',fontSize : 15, paddingLeft: 10}}>
+                            <Text style = {{color : 'white',fontSize : 15, paddingLeft: 10, paddingBottom : 5}}>
                                 Weight : {this.state.information.weight}
                             </Text>
                         </View>
                         <View style = {{flex : 1}}>
-                            <Text style = {{color : 'white',fontSize : 15, paddingLeft: 10}}>
+                            <Text style = {{color : 'white',fontSize : 15, paddingLeft: 10, paddingBottom : 5}}>
                                 Height : {this.state.information.height}
                             </Text>
                         </View>
                         <View style = {{flex : 1}}>
-                            <Text style = {{color : 'white',fontSize : 15, paddingLeft: 10}}>
+                            <Text style = {{color : 'white',fontSize : 15, paddingLeft: 10, paddingBottom : 5}}>
                                 Age : {this.state.information.age}
                             </Text>
                         </View>
                         <View style = {{flex : 1}}>
-                            <Text style = {{color : 'white',fontSize : 15, paddingLeft: 10}}>
+                            <Text style = {{color : 'white',fontSize : 15, paddingLeft: 10, paddingBottom : 5}}>
                                 Gender : {this.state.information.gender}
                             </Text>
                         </View>

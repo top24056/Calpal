@@ -11,5 +11,7 @@ export const GET_FOOD_DINNER = "GET_FOOD_DINNER";
 export const SET_MEAL_TIME = 'SET_MEAL_TIME';
 export const RESPONE_DATA = "RESPONE_DATA";
 <<<<<<< HEAD
+export const SET_GRAPH_DATA = 'SET_GRAPH_DATA'
 =======
+export const SET_IMG_DL_URL = 'SET_IMAGE_DOWNLOAD_URL'
 >>>>>>> instance2

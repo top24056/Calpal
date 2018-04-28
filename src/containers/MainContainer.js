@@ -8,6 +8,7 @@ import setMealTimeToAdd from '../actions/setMealTimeToAdd.js'
 <<<<<<< HEAD
 import setGraphData from '../actions/setGraphData';
 =======
+import setImageDownloadURLAction from '../actions/setImageDownloadURLAction.js'
 >>>>>>> instance2
 
 class MainContainer extends React.Component{
@@ -28,6 +29,7 @@ function mapStateToProps(state){
 <<<<<<< HEAD
         profile : state.profile
 =======
+        main : state.main
 >>>>>>> instance2
     }
 }
@@ -41,5 +43,6 @@ export default connect(mapStateToProps,{
 <<<<<<< HEAD
     setGraphData
 =======
+    setImageDownloadURLAction
 >>>>>>> instance2
 })(MainContainer)

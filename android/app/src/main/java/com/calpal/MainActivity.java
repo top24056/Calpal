@@ -10,6 +10,12 @@ public class MainActivity extends ReactActivity {
      * This is used to schedule rendering of the component.
      */
     @Override
+    public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+    }
+    
+    @Override
     protected String getMainComponentName() {
         return "Calpal";
     }

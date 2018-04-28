@@ -6,6 +6,7 @@ import MainReducer from './MainReducer';
 import FBDataReducer from './FBDataReducer';
 import FirebaseReducer from './FirebaseReducer';
 import ResponeServerReducer from './ResponeServerReducer';
+import ProfileReducer from './ProfileReducer'
 
 export default combineReducers({
     camera : CameraReducer,
@@ -14,5 +15,6 @@ export default combineReducers({
     main : MainReducer,
     fb : FBDataReducer,
     firebase : FirebaseReducer,
-    server : ResponeServerReducer
+    server : ResponeServerReducer,
+    profile : ProfileReducer
 });

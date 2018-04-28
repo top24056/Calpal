@@ -22,7 +22,6 @@ import {
     TextField
 } from 'react-native-material-textfield';
 import UUIDGenerator from 'react-native-uuid-generator';
-import inputimg from '../../img/1.png';
 
 
 const styles = StyleSheet.create({
@@ -128,6 +127,8 @@ export default class MainScreen extends React.Component{
             if(this.state.percentCircle == 0){
                 let self = this
                 console.log(this.state.percentCircle)
+
+                let userId = firebase.auth().currentUser.uid
                 let ref = firebase.database().ref('users/' + userId);
                 let food = ref.child('food').child(day)
                 let pathprofile = ref.child('profile')
@@ -145,10 +146,6 @@ export default class MainScreen extends React.Component{
                     }
                 })
                 pathprofile.on('value',function(data){
-                    if(data.val().BMR){
-                        self.setState({
-                            BMR : data.val().BMR
-                        })
                     }
                 })
             }
@@ -157,10 +154,6 @@ export default class MainScreen extends React.Component{
             },3000 )
         })
         QueryWill.then(()=>{
-            console.log(this.state.curcal)
-            console.log(this.state.BMR)
-            let p = (this.state.curcal/this.state.BMR) * 100
-            this.setState({
                 percentCircle : p
             })
         })
@@ -243,24 +236,11 @@ export default class MainScreen extends React.Component{
             })
             let pathprofile = ref.child('profile')
             pathprofile.on('value',function(data){
-                if(data.val().BMR){
-                    self.setState({
-                        BMR : data.val().BMR
-                    })
-                    resolve()
                 }
+                
             })
         })
 
-        Query.then(()=>{
-            let p = (this.state.curcal/this.state.BMR) * 100
-            this.setState({
-                percentCircle : p
-            })
-            console.log(this.state.curcal)
-            console.log(this.state.BMR)
-            console.log(p)
-        })
 
     }
 

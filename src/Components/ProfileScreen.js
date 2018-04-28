@@ -18,7 +18,7 @@ import { RaisedTextButton } from 'react-native-material-buttons';
 import FBSDK, {
     LoginManager
 } from 'react-native-fbsdk';
-import { BarChart, Grid, YAxis } from 'react-native-svg-charts'
+import { LineChart, Grid, YAxis, XAxis } from 'react-native-svg-charts'
 import * as scale from 'd3-scale'
 // import logoutImg from '../../img/logout.png;'
 
@@ -85,12 +85,8 @@ const styles = StyleSheet.create({
 })
 
 
-let data = [
-    {
-        value : 5,
-        label : 'dd'
-    }
-]
+let data = []
+let dataday = []
 
 
 
@@ -110,9 +106,71 @@ export default class ProfileScreen extends React.Component {
         }
     }
 
+    componentWillMount() {
+        let Query = new Promise((resolve, reject) => {
+            let userId = firebase.auth().currentUser.uid
+            var ref = firebase.database().ref('users/' + userId);
+            let date = new Date().getDate();
+            let month = new Date().getMonth() + 1;
+            let year = new Date().getFullYear();
+            roundloop = 7
+            while (roundloop > 0) {
+                let strdate = date.toString();
+                let strmonth = month.toString();
+                let stryear = year.toString();
+                let day = strdate + "-" + strmonth + "-" + stryear
+                dataday.push(day)
+                let queryday = ref.child("food").child(day).child("sumcal")
+                queryday.on('value', function (snapshot) {
+                    if (snapshot.val() == null) {
+                        data.push(0)
+                    }
+                    else {
+                        data.push(snapshot.val())
+                    }
+                })
+
+
+
+                date = date - 1
+                if (date === 0) {
+                    month = month - 1
+                    if (month === 0) {
+                        month = 12
+                        date = 31
+                    }
+                    else if (month === 1 || month === 3 || month === 5 || month === 7 || month === 8 || month === 10) {
+                        date = 31
+                    }
+                    else if (month === 2) {
+                        if (year % 4 === 0) {
+                            date = 29
+                        }
+                        else {
+                            date = 28
+                        }
+                    }
+                    else {
+                        date = 31
+                    }
+                }
+
+                roundloop = roundloop - 1
+            }
+            setTimeout(function () {
+                resolve()
+            }, 1500)
+        })
+
+        Query.then((() => {
+            // console.log(data)
+            // console.log(dataday)
+        }))
+    }
+
     componentDidMount() {
-        
-        console.log(typeof data)
+        console.log(this.props.profile.graphDataXAxis)
+        console.log(this.props.profile.graphDataYAxis)
         let self = this;
         firebase.database().goOnline();
         let userId = firebase.auth().currentUser.uid
@@ -126,77 +184,74 @@ export default class ProfileScreen extends React.Component {
                 gender: null,
                 BMR: 0
             }
-            informationcopy.weight = data.val().weight
-            informationcopy.height = data.val().height
-            informationcopy.gender = data.val().gender
-            informationcopy.age = data.val().age
-            informationcopy.BMR = data.val().BMR
-            self.setState({
-                information: informationcopy
-            })
-        })
-        let date = new Date().getDate();
-        let month = new Date().getMonth()+1;
-        let year = new Date().getFullYear();
-        roundloop = 7
-        while(roundloop > 0){
-            let strdate = date.toString();
-            let strmonth = month.toString();
-            let stryear = year.toString();
-            let day = strdate+"-"+strmonth+"-"+stryear
+            if (data.val() === null) {
 
-            let queryday = ref.child("food").child(day).child("sumcal")
-            queryday.on('value',function(snapshot){
-                if(snapshot.val() == null){
-                    let temp = {
-                        value : 0,
-                        label : day
-                    }
-                    data.push(temp)
-                }
-                else{
-                    let temp = {
-                        value : snapshot.val(),
-                        label : day
-                    }
-                    data.push(temp)
-                }
-            })
-
-
-
-            date = date - 1
-            if(date === 0){
-                month = month - 1
-                if(month === 0){
-                    month = 12
-                    date = 31
-                }
-                else if(month === 1 || month === 3 || month === 5 || month === 7 || month === 8 || month === 10){
-                    date = 31
-                }
-                else if(month === 2){
-                    if(year % 4 === 0){
-                        date = 29
-                    }
-                    else{
-                        date = 28
-                    }
-                }
-                else{
-                    date = 31
-                }
             }
-            
-            roundloop = roundloop - 1
-        }
-        console.log(data)
+            else {
+                informationcopy.weight = data.val().weight
+                informationcopy.height = data.val().height
+                informationcopy.gender = data.val().gender
+                informationcopy.age = data.val().age
+                informationcopy.BMR = data.val().BMR
+                self.setState({
+                    information: informationcopy
+                })
+            }
+
+        })
+
+        // let date = new Date().getDate();
+        // let month = new Date().getMonth()+1;
+        // let year = new Date().getFullYear();
+        // roundloop = 7
+        // while(roundloop > 0){
+        //     let strdate = date.toString();
+        //     let strmonth = month.toString();
+        //     let stryear = year.toString();
+        //     let day = strdate+"-"+strmonth+"-"+stryear
+        //     dataday.push(day)
+        //     let queryday = ref.child("food").child(day).child("sumcal")
+        //     queryday.on('value',function(snapshot){
+        //         if(snapshot.val() == null){
+        //             data.push(0)
+        //         }
+        //         else{
+        //             data.push(snapshot.val())
+        //         }
+        //     })
+
+
+
+        //     date = date - 1
+        //     if(date === 0){
+        //         month = month - 1
+        //         if(month === 0){
+        //             month = 12
+        //             date = 31
+        //         }
+        //         else if(month === 1 || month === 3 || month === 5 || month === 7 || month === 8 || month === 10){
+        //             date = 31
+        //         }
+        //         else if(month === 2){
+        //             if(year % 4 === 0){
+        //                 date = 29
+        //             }
+        //             else{
+        //                 date = 28
+        //             }
+        //         }
+        //         else{
+        //             date = 31
+        //         }
+        //     }
+
+        //     roundloop = roundloop - 1
+        // }
     }
 
 
 
     render() {
-
 
 
         const weightinput = (
@@ -383,6 +438,9 @@ export default class ProfileScreen extends React.Component {
                                     title="Save Changes"
                                     titleColor="white"
                                     onPress={() => {
+
+                                        console.log(data)
+                                        console.log(dataday)
                                         if (this.state.information.gender === 'male') {
                                             let x = 66 + (this.state.information.weight * 13.7) + (5 * this.state.information.height) - (6.8 * this.state.information.age)
                                             let y = x * 1.375
@@ -420,28 +478,37 @@ export default class ProfileScreen extends React.Component {
                             Weekly Calorie Comsumption
                         </Text>
                     </View>
-                    <View style={{ flexDirection: 'row', height: 200, paddingVertical: 16 }}>
-                        <YAxis
-                            data={data}
-                            yAccessor={({ index }) => index}
-                            scale={scale.scaleBand}
-                            contentInset={{ top: 10, bottom: 10 }}
-                            spacing={0.2}
-                            formatLabel={(_, index) => data[index].label}
-                        />
-                        <BarChart
-                            style={{ flex: 1, marginLeft: 8 }}
-                            data={data}
-                            horizontal={true}
-                            yAccessor={({ item }) => item.value}
-                            svg={{ fill: 'rgba(0,148,255)' }}
-                            contentInset={{ top: 10, bottom: 10 }}
-                            spacing={0.2}
-                            gridMin={0}
-                        >
-                            <Grid direction={Grid.Direction.VERTICAL} />
-                        </BarChart>
-                    </View>
+                    {/* <View style={{ flexDirection: 'row', height: 300 }}> */}
+                        <View style={{ flexDirection: 'row', height: 300, padding: 10 }}>
+                            <YAxis
+                                data={this.props.profile.graphDataYAxis}
+                                style={{ marginBottom: 30 }}
+                                contentInset={{ top: 10, bottom: 10 }}
+                                svg={{ fontSize: 10, fill: 'grey' }}
+                                formatLabel={(value) => value + " KCal"}
+                            />
+                            <View style={{ flex: 1, paddingLeft: 10 }}>
+                                <LineChart
+                                    style={{ flex: 1 }}
+                                    data={this.props.profile.graphDataYAxis}
+                                    contentInset={{ top: 10, bottom: 10 }}
+                                    svg={{ stroke: 'rgb(134, 65, 244)' }}
+                                >
+                                    <Grid />
+                                </LineChart>
+                                <View>
+                                    <XAxis
+                                        style={{ marginHorizontal: -10, height: 30 ,padding :10}}
+                                        data={this.props.profile.graphDataXAxis}
+                                        formatLabel={(value) => "day"+value}
+                                        contentInset={{ left: 10, right: 10 }}
+                                        svg={{ fontSize: 10, fill: 'grey' }}
+                                        xAccessor={({ item }) => item}
+                                    />
+                                </View>
+                            </View>
+                        </View>
+                    {/* </View> */}
                 </View>
 
 
@@ -451,6 +518,8 @@ export default class ProfileScreen extends React.Component {
                     <TouchableOpacity
                         style={{ borderRadius: 20 }}
                         onPress={() => {
+                            data = []
+                            dataday = []
                             this.props.navigation.navigate("Login");
                             LoginManager.logOut((error, data) => {
 

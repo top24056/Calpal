@@ -85,11 +85,20 @@ const styles = StyleSheet.create({
 })
 
 
+const hour = new Date().getHours().toString()
+const date = new Date().getDate().toString();
+const tempmonth = new Date().getMonth()+1;
+const month = tempmonth.toString();
+const year = new Date().getFullYear().toString();
+const day = date+'-'+month+'-'+year
+
+
 
 export default class MainScreen extends React.Component{
     
     constructor (props) {
-        super(props)
+        super(props);
+        this.update = this.update.bind(this)
         this.state = {
             photo : "You don't have photo",
             curcal : 0,
@@ -109,14 +118,55 @@ export default class MainScreen extends React.Component{
                 namefood : "Add Dinner",
                 cal : "Recommend Calrories : 588"
             }
-            ,
-            isModalVisiable : false
         }
+    }
+
+    componentWillMount(){
+        let QueryWill = new Promise((resolve,reject) =>{
+            if(this.state.percentCircle == 0){
+                let self = this
+                console.log(this.state.percentCircle)
+                let userId = firebase.auth().currentUser.uid
+                let ref = firebase.database().ref('users/' + userId);
+                let food = ref.child('food').child(day)
+                let pathprofile = ref.child('profile')
+                
+                food.on('value',function(data){
+                    if(data.val().sumcal != null){
+                        self.setState({
+                            curcal : data.val().sumcal
+                        })
+                    }
+                })
+                pathprofile.on('value',function(data){
+                    if(data.val().BMR){
+                        self.setState({
+                            BMR : data.val().BMR
+                        })
+                    }
+                })
+            }
+            setTimeout(function(){
+                resolve()
+            },3000 )
+        })
+        QueryWill.then(()=>{
+            console.log(this.state.curcal)
+            console.log(this.state.BMR)
+            let p = (this.state.curcal/this.state.BMR) * 100
+            this.setState({
+                percentCircle : p
+            })
+        })
+
+
     }
     
 
 
     componentDidMount(){
+
+    
         firebase.database().goOnline();
 
         let userId = firebase.auth().currentUser.uid
@@ -125,12 +175,7 @@ export default class MainScreen extends React.Component{
             name : this.props.fb.data_profile.name,
             email: this.props.fb.data_profile.email,
         });
-        let hour = new Date().getHours().toString()
-        let date = new Date().getDate().toString();
-        let tempmonth = new Date().getMonth()+1;
-        let month = tempmonth.toString();
-        let year = new Date().getFullYear().toString();
-        let day = date+'-'+month+'-'+year
+        
 
         let self = this
         
@@ -192,35 +237,26 @@ export default class MainScreen extends React.Component{
 
         Query.then(()=>{
             let p = (this.state.curcal/this.state.BMR) * 100
-            console.log(p)
             this.setState({
                 percentCircle : p
             })
-            
             console.log(this.state.curcal)
-            console.log(this.state.percentCircle)
+            console.log(this.state.BMR)
+            console.log(p)
         })
-
-        
-        
-        
-
 
     }
 
-    componentWillReceiveProps(props){
-        
-    }
-
-    _toggleModal(){
-        this.setState({
-            isModalVisiable : !this.state.isModalVisiable
-        })
+    update(){
+        console.log('ddd')
+        this.forceUpdate();
     }
 
     
+    
     render(){
-
+        // console.log('re')
+        // console.log(this.state.percentCircle)
         return(
             <View style = {styles.container}>
 
@@ -322,7 +358,7 @@ export default class MainScreen extends React.Component{
                     <View style = {styles.box}>
                         <TouchableOpacity onPress = {()=> {
                             console.log('press test')
-                            this._toggleModal();
+                            this.update()
                             
                         }}>
                             <Text>Test</Text>

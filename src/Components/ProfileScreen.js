@@ -135,8 +135,6 @@ export default class ProfileScreen extends React.Component {
                 information: informationcopy
             })
         })
-        let datagraph = []
-        
         let date = new Date().getDate();
         let month = new Date().getMonth()+1;
         let year = new Date().getFullYear();

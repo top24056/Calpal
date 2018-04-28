@@ -53,11 +53,13 @@ export default class LoginScreen extends React.Component{
 
     
     handleFacebookLogin = () => {
+        
         this.setState({
             loading : true
         })
         LoginManager.logInWithReadPermissions(['public_profile', 'email', 'user_friends',])
         .then((result) => {
+            console.log('login res: ', result)
             if(result.isCancelled){
                 return Promise.reject(new Error('The user cancelled the request'));
             }

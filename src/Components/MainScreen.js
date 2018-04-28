@@ -22,7 +22,13 @@ import {
     TextField
 } from 'react-native-material-textfield';
 import UUIDGenerator from 'react-native-uuid-generator';
-import inputimg from '../../img/1.png';
+import FCM,{
+    FCMEvent,
+    RemoteNotificationResult,
+    WillPresentNotificationResult,
+    NotificationType
+} from 'react-native-fcm';
+
 
 
 const styles = StyleSheet.create({
@@ -122,28 +128,41 @@ export default class MainScreen extends React.Component{
     }
 
     componentWillMount(){
+        this.props.setGraphData();
+        let self = this
         let QueryWill = new Promise((resolve,reject) =>{
             if(this.state.percentCircle == 0){
-                let self = this
-                console.log(this.state.percentCircle)
+
                 let userId = firebase.auth().currentUser.uid
                 let ref = firebase.database().ref('users/' + userId);
                 let food = ref.child('food').child(day)
                 let pathprofile = ref.child('profile')
                 
                 food.on('value',function(data){
-                    if(data.val().sumcal != null){
-                        self.setState({
-                            curcal : data.val().sumcal
-                        })
+                    if(data.val() === null){
+                        console.log('null')
+                    }
+                    else{
+                        if(data.val().sumcal != null){
+                            self.setState({
+                                curcal : data.val().sumcal
+                            })
+                            console.log(data.val().sumcal)
+                        }
                     }
                 })
                 pathprofile.on('value',function(data){
-                    if(data.val().BMR){
-                        self.setState({
-                            BMR : data.val().BMR
-                        })
+                    if(data.val() === null){
+
                     }
+                    else{
+                        if(data.val().BMR){
+                            self.setState({
+                                BMR : data.val().BMR
+                            })
+                        }
+                    }
+                    
                 })
             }
             setTimeout(function(){
@@ -151,10 +170,8 @@ export default class MainScreen extends React.Component{
             },3000 )
         })
         QueryWill.then(()=>{
-            console.log(this.state.curcal)
-            console.log(this.state.BMR)
-            let p = (this.state.curcal/this.state.BMR) * 100
-            this.setState({
+            let p = (self.state.curcal/self.state.BMR) * 100
+            self.setState({
                 percentCircle : p
             })
         })
@@ -180,7 +197,6 @@ export default class MainScreen extends React.Component{
         let self = this
         
         let food = ref.child('food').orderByKey().child(day)
-        let Query = new Promise((resolve,reject) => {
             food.on('value',function(data){
                 if(data.val() === null){
                     console.log('null na ja')
@@ -226,24 +242,39 @@ export default class MainScreen extends React.Component{
             })
             let pathprofile = ref.child('profile')
             pathprofile.on('value',function(data){
-                if(data.val().BMR){
-                    self.setState({
-                        BMR : data.val().BMR
-                    })
-                    resolve()
-                }
-            })
-        })
+                if(data.val() === null){
 
-        Query.then(()=>{
-            let p = (this.state.curcal/this.state.BMR) * 100
-            this.setState({
-                percentCircle : p
+                }
+                else{
+                    if(data.val().BMR){
+                        self.setState({
+                            BMR : data.val().BMR
+                        })
+                    }
+                }
+                
             })
-            console.log(this.state.curcal)
-            console.log(this.state.BMR)
-            console.log(p)
-        })
+            setTimeout(function(){
+                let p = (self.state.curcal/self.state.BMR) * 100
+                self.setState({
+                    percentCircle : p
+                })
+            },3000)
+           
+
+
+        // FCM.requestPermissions().then(() => 
+        //     console.log('granted'))
+        // .catch(() => 
+        //     console.log('notification permission rejected'
+        // ));
+
+        // FCM.on(FCMEvent.Notification, async (notif) => {
+        //     console.log(notif)
+        //     if (notif.opened_from_tray) {
+
+        //     }
+        // });
 
     }
 

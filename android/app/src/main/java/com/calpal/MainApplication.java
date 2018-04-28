@@ -10,6 +10,8 @@ import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 
 import com.facebook.react.ReactApplication;
+import com.evollu.react.fcm.FIRMessagingPackage;
+// import com.learnta.clear.ClearCachePackage;
 // import com.learnta.clear.ClearCachePackage;
 import com.reactlibrary.RNUUIDGeneratorPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -48,6 +50,8 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
             new RNCameraPackage(),
             new MainReactPackage(),
+            new FIRMessagingPackage(),
+            // new ClearCachePackage(),
             // new ClearCachePackage(),
             new RNUUIDGeneratorPackage(),
             new ImagePickerPackage(),

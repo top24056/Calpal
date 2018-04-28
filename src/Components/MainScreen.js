@@ -96,7 +96,6 @@ const date = new Date().getDate().toString();
 const tempmonth = new Date().getMonth()+1;
 const month = tempmonth.toString();
 const year = new Date().getFullYear().toString();
-const day = date+'-'+month+'-'+year
 
 
 
@@ -123,31 +122,39 @@ export default class MainScreen extends React.Component{
             dinner : {
                 namefood : "Add Dinner",
                 cal : "Recommend Calrories : 588"
-            }
         }
     }
 
     componentWillMount(){
+<<<<<<< HEAD
         this.props.setGraphData();
         let self = this
         let QueryWill = new Promise((resolve,reject) =>{
             if(this.state.percentCircle == 0){
 
                 let userId = firebase.auth().currentUser.uid
+=======
+>>>>>>> instance2
                 let ref = firebase.database().ref('users/' + userId);
                 let food = ref.child('food').child(day)
                 let pathprofile = ref.child('profile')
                 
                 food.on('value',function(data){
+<<<<<<< HEAD
                     if(data.val() === null){
                         console.log('null')
                     }
                     else{
+=======
+>>>>>>> instance2
                         if(data.val().sumcal != null){
                             self.setState({
                                 curcal : data.val().sumcal
                             })
+<<<<<<< HEAD
                             console.log(data.val().sumcal)
+=======
+>>>>>>> instance2
                         }
                     }
                 })
@@ -282,12 +289,11 @@ export default class MainScreen extends React.Component{
         console.log('ddd')
         this.forceUpdate();
     }
-
-    
     
     render(){
-        // console.log('re')
-        // console.log(this.state.percentCircle)
+
+
+
         return(
             <View style = {styles.container}>
 
@@ -300,10 +306,9 @@ export default class MainScreen extends React.Component{
                         <PercentageCircle 
                             radius = {80} 
                             percent = {this.state.percentCircle} 
-                            color={"#ffffff"} 
                             borderWidth = {4} 
-                            bgcolor = {"#0094ff"} 
-                            innerColor = {"#0094ff"} 
+                            // innerColor = {"#0094ff"}
+                            // innerColor = {"#35a8ff"}
                             duration = {500} 
                             animationType = 'Quad.easeInOut'>
 
@@ -392,8 +397,6 @@ export default class MainScreen extends React.Component{
                             this.update()
                             
                         }}>
-                            <Text>Test</Text>
-                        </TouchableOpacity> 
 
 
                         

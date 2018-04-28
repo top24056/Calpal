@@ -22,6 +22,8 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
+console.ignoredYellowBox = ['Remote debugger']
+
 export default class App extends Component {
   render() {
     return (

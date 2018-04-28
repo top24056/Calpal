@@ -363,11 +363,9 @@ export default class ProfileScreen extends React.Component {
                                         this.setState({
                                             information: informationcopy
                                         })
-                                        console.log(this.state.information.gender)
                                     }}>
 
                                     <Picker.Item label="Male" value="male" />
-                                    <Picker.Item label="FeMale" value="female" />
                                 </Picker>
 
                             </View>

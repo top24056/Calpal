@@ -1,13 +1,11 @@
 import {
     PERCENT,
-    SET_MEAL_TIME
 } from './../actions/ActionTypes';
 
 
 const initState = {
     percen : 0,
     Selected_Meal_Time : '',
-    login_press : false
 }
 
 export default function (state = initState, action){

@@ -129,10 +129,6 @@ export default class MainScreen extends React.Component{
     }
 
     componentWillMount(){
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> instance2
         this.props.setGraphData();
         let self = this
         let QueryWill = new Promise((resolve,reject) =>{
@@ -177,7 +173,6 @@ export default class MainScreen extends React.Component{
                             })
 <<<<<<< HEAD
 <<<<<<< HEAD
-                            console.log(data.val().sumcal)
 =======
 >>>>>>> instance2
 =======

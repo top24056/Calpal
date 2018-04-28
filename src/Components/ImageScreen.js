@@ -307,6 +307,7 @@ export default class ImageScreen extends React.Component{
                         "sumcal" : allcal
                     }
                     fndate.update(temp)
+                    this.props.setGraphData();
 
                 }}>
                     <View style = {styles.boxtext}>

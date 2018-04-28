@@ -107,65 +107,7 @@ export default class ProfileScreen extends React.Component {
     }
 
     componentWillMount() {
-        let Query = new Promise((resolve, reject) => {
-            let userId = firebase.auth().currentUser.uid
-            var ref = firebase.database().ref('users/' + userId);
-            let date = new Date().getDate();
-            let month = new Date().getMonth() + 1;
-            let year = new Date().getFullYear();
-            roundloop = 7
-            while (roundloop > 0) {
-                let strdate = date.toString();
-                let strmonth = month.toString();
-                let stryear = year.toString();
-                let day = strdate + "-" + strmonth + "-" + stryear
-                dataday.push(day)
-                let queryday = ref.child("food").child(day).child("sumcal")
-                queryday.on('value', function (snapshot) {
-                    if (snapshot.val() == null) {
-                        data.push(0)
-                    }
-                    else {
-                        data.push(snapshot.val())
-                    }
-                })
-
-
-
-                date = date - 1
-                if (date === 0) {
-                    month = month - 1
-                    if (month === 0) {
-                        month = 12
-                        date = 31
-                    }
-                    else if (month === 1 || month === 3 || month === 5 || month === 7 || month === 8 || month === 10) {
-                        date = 31
-                    }
-                    else if (month === 2) {
-                        if (year % 4 === 0) {
-                            date = 29
-                        }
-                        else {
-                            date = 28
-                        }
-                    }
-                    else {
-                        date = 31
-                    }
-                }
-
-                roundloop = roundloop - 1
-            }
-            setTimeout(function () {
-                resolve()
-            }, 1500)
-        })
-
-        Query.then((() => {
-            // console.log(data)
-            // console.log(dataday)
-        }))
+        
     }
 
     componentDidMount() {

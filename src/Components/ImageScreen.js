@@ -12,7 +12,6 @@ import {
     ShareDialog
 } from 'react-native-fbsdk';
 import firebase from 'react-native-firebase';
-import Modal from 'react-native-modal';
 import ModalWrapper from 'react-native-modal-wrapper';
 import {
     TextField

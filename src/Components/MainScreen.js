@@ -90,7 +90,7 @@ const date = new Date().getDate().toString();
 const tempmonth = new Date().getMonth()+1;
 const month = tempmonth.toString();
 const year = new Date().getFullYear().toString();
-const day = date+'-'+month+'-'+year
+const day = date + '-' + month + '-' + year
 
 
 
@@ -117,25 +117,31 @@ export default class MainScreen extends React.Component{
             dinner : {
                 namefood : "Add Dinner",
                 cal : "Recommend Calrories : 588"
-            }
+            },
+            downloadURL: ''
         }
     }
 
     componentWillMount(){
+        let userId = firebase.auth().currentUser.uid
         let QueryWill = new Promise((resolve,reject) =>{
             if(this.state.percentCircle == 0){
                 let self = this
                 console.log(this.state.percentCircle)
-                let userId = firebase.auth().currentUser.uid
                 let ref = firebase.database().ref('users/' + userId);
                 let food = ref.child('food').child(day)
                 let pathprofile = ref.child('profile')
                 
                 food.on('value',function(data){
-                    if(data.val().sumcal != null){
-                        self.setState({
-                            curcal : data.val().sumcal
-                        })
+                    if (data.val() === null ) {
+                        console.log('No food photo on this day (', day , ') yet.')
+                    }
+                    else {
+                        if(data.val().sumcal != null){
+                            self.setState({
+                                curcal : data.val().sumcal
+                            })
+                        }
                     }
                 })
                 pathprofile.on('value',function(data){
@@ -159,6 +165,17 @@ export default class MainScreen extends React.Component{
             })
         })
 
+        let storageRef = firebase.storage().ref(userId)
+        console.log('storageRef: ', storageRef)
+
+        storageRef.child(day).child('dinner.jpg').getDownloadURL()
+        .then((url) => {
+            console.log('storageRef image downloadURL: ', url)
+            this.props.setImageDownloadURLAction(url)
+        })
+        .catch((error) => {
+            console.log('Unable to get a download URL due to ' + error)
+        })
 
     }
     
@@ -251,12 +268,22 @@ export default class MainScreen extends React.Component{
         console.log('ddd')
         this.forceUpdate();
     }
-
-    
     
     render(){
-        // console.log('re')
-        // console.log(this.state.percentCircle)
+
+        let downloadImageURL = (<View></View>)
+
+        if (this.props.main.downloadImageURL != null) {
+            downloadImageURL = (
+                <View>
+                    <Image
+                        style={{width: 100, height: 100}}
+                        source = {{uri: this.props.main.downloadImageURL}}
+                    />
+                </View>
+            )
+        }
+
         return(
             <View style = {styles.container}>
 
@@ -269,10 +296,12 @@ export default class MainScreen extends React.Component{
                         <PercentageCircle 
                             radius = {80} 
                             percent = {this.state.percentCircle} 
-                            color={"#ffffff"} 
+                            color={"#ffffff"}
                             borderWidth = {4} 
-                            bgcolor = {"#0094ff"} 
-                            innerColor = {"#0094ff"} 
+                            bgcolor = {"#0094ff"}
+                            // innerColor = {"#0094ff"}
+                            // innerColor = {"#35a8ff"}
+                            innerColor = {'#23a0ff'}
                             duration = {500} 
                             animationType = 'Quad.easeInOut'>
 
@@ -361,8 +390,8 @@ export default class MainScreen extends React.Component{
                             this.update()
                             
                         }}>
-                            <Text>Test</Text>
-                        </TouchableOpacity> 
+                        </TouchableOpacity>
+                        {downloadImageURL}
 
 
                         

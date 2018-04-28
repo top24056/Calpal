@@ -5,6 +5,7 @@ import GetFBAccessTokenAction from '../actions/GetFBAccessTokenAction.js'
 import GetFBDataAction from '../actions/GetFBDataAction'
 import GetUserFirebaseAction from '../actions/GetUserFirebaseAction.js'
 import setMealTimeToAdd from '../actions/setMealTimeToAdd.js'
+import setImageDownloadURLAction from '../actions/setImageDownloadURLAction.js'
 
 class MainContainer extends React.Component{
     render(){
@@ -21,6 +22,7 @@ function mapStateToProps(state){
         fb : state.fb,
         firebase : state.firebase,
         infor : state.infor,
+        main : state.main
     }
 }
 
@@ -29,5 +31,6 @@ export default connect(mapStateToProps,{
     GetFBAccessTokenAction,
     GetFBDataAction,
     GetUserFirebaseAction,
-    setMealTimeToAdd
+    setMealTimeToAdd,
+    setImageDownloadURLAction
 })(MainContainer)

@@ -130,12 +130,16 @@ export default class MainScreen extends React.Component{
 
     componentWillMount(){
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> instance2
         this.props.setGraphData();
         let self = this
         let QueryWill = new Promise((resolve,reject) =>{
             if(this.state.percentCircle == 0){
 
                 let userId = firebase.auth().currentUser.uid
+<<<<<<< HEAD
 =======
         let userId = firebase.auth().currentUser.uid
         let QueryWill = new Promise((resolve,reject) =>{
@@ -143,29 +147,41 @@ export default class MainScreen extends React.Component{
                 let self = this
                 console.log(this.state.percentCircle)
 >>>>>>> instance2
+=======
+>>>>>>> instance2
                 let ref = firebase.database().ref('users/' + userId);
                 let food = ref.child('food').child(day)
                 let pathprofile = ref.child('profile')
                 
                 food.on('value',function(data){
 <<<<<<< HEAD
+<<<<<<< HEAD
                     if(data.val() === null){
                         console.log('null')
                     }
                     else{
 =======
+=======
+>>>>>>> instance2
                     if (data.val() === null ) {
                         console.log('No food photo on this day (', day , ') yet.')
                     }
                     else {
+<<<<<<< HEAD
+>>>>>>> instance2
+=======
 >>>>>>> instance2
                         if(data.val().sumcal != null){
                             self.setState({
                                 curcal : data.val().sumcal
                             })
 <<<<<<< HEAD
+<<<<<<< HEAD
                             console.log(data.val().sumcal)
 =======
+>>>>>>> instance2
+=======
+                            console.log(data.val().sumcal)
 >>>>>>> instance2
                         }
                     }

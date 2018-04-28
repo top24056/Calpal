@@ -357,15 +357,16 @@ export default class ProfileScreen extends React.Component {
                                     mode={'dropdown'}
                                     style={{ color: '#0094ff' }}
                                     onValueChange={(itemValue, itemIndex) => {
-                                        console.log('itemvalue', itemValue)
                                         let informationcopy = JSON.parse(JSON.stringify(this.state.information))
                                         informationcopy.gender = itemValue
                                         this.setState({
                                             information: informationcopy
                                         })
+                                        console.log('informationcopy state: ', this.state.information)
                                     }}>
 
                                     <Picker.Item label="Male" value="male" />
+                                    <Picker.Item label="Female" value="female" />
                                 </Picker>
 
                             </View>

@@ -5,15 +5,8 @@ import GetFBAccessTokenAction from '../actions/GetFBAccessTokenAction.js'
 import GetFBDataAction from '../actions/GetFBDataAction'
 import GetUserFirebaseAction from '../actions/GetUserFirebaseAction.js'
 import setMealTimeToAdd from '../actions/setMealTimeToAdd.js'
-<<<<<<< HEAD
-<<<<<<< HEAD
 import setGraphData from '../actions/setGraphData';
-=======
 import setImageDownloadURLAction from '../actions/setImageDownloadURLAction.js'
->>>>>>> instance2
-=======
-import setGraphData from '../actions/setGraphData';
->>>>>>> instance2
 
 class MainContainer extends React.Component{
     render(){
@@ -30,15 +23,8 @@ function mapStateToProps(state){
         fb : state.fb,
         firebase : state.firebase,
         infor : state.infor,
-<<<<<<< HEAD
-<<<<<<< HEAD
-        profile : state.profile
-=======
-        main : state.main
->>>>>>> instance2
-=======
-        profile : state.profile
->>>>>>> instance2
+        profile : state.profile,
+        main : state.main,
     }
 }
 
@@ -48,13 +34,6 @@ export default connect(mapStateToProps,{
     GetFBDataAction,
     GetUserFirebaseAction,
     setMealTimeToAdd,
-<<<<<<< HEAD
-<<<<<<< HEAD
+    setImageDownloadURLAction,
     setGraphData
-=======
-    setImageDownloadURLAction
->>>>>>> instance2
-=======
-    setGraphData
->>>>>>> instance2
 })(MainContainer)

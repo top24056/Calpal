@@ -92,6 +92,16 @@ export default class ImageScreen extends React.Component{
         })
     }
 
+
+    componentWillMount(){
+        UUIDGenerator.getRandomUUID().then((uuid) => {
+            this.setState({
+                random : uuid
+            })
+        })
+    }
+
+
     componentDidMount(){
 
         //read sumcal from database
@@ -167,6 +177,7 @@ export default class ImageScreen extends React.Component{
     OthersaveToStorageFirebase(){
         let imagePath = this.props.camera.image_food
         let ref = firebase.storage().ref(this.state.namenewfood).child(this.state.random)
+        console.log(ref.fullPath)
         let uploadTask = ref.putFile(imagePath, {contentType : 'image/jpeg'});
         uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, (snapshot) => {
             
@@ -191,10 +202,23 @@ export default class ImageScreen extends React.Component{
     }
 
 
-    NormalSaveToStorageFirebase(name){
+    NormalSaveToStorageFirebase(name,namefood,cal){
         let userId = firebase.auth().currentUser.uid;
         let imagePath = this.props.camera.image_food
-        let ref = firebase.storage().ref(userId).child(day).child(name);
+        let ref = firebase.storage().ref(userId).child(day).child(name).child(this.state.random);
+
+        //save to firebase
+        let user = firebase.database().ref('users/' + userId);
+        let fndate = user.child('food').child(day).child(name)
+        let newlist = fndate.push()
+        newlist.set({
+            'cal' : cal,
+            'namefood' : namefood,
+            'pathimage' : ref.fullPath
+        })
+
+
+        //log upload
         const uploadTask = ref.putFile(imagePath, {contentType : 'image/jpeg'});
         uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, (snapshot) => {
             
@@ -234,70 +258,31 @@ export default class ImageScreen extends React.Component{
                     let food = user.child('food');
                     let fndate = food.child(day);
                     if (this.props.main.Selected_Meal_Time == 'breakfast') {
-                        let breakfast = fndate.child('breakfast');
-                        let valuefood = {
-                            'namefood' : this.props.server.data_server[i],
-                            'cal' : this.props.server.calories[i],
-                        };
-                        breakfast.update(valuefood)
-                        this.props.BreakfastAction(valuefood)
-                        this.NormalSaveToStorageFirebase('breakfast.jpg')
+                        // this.props.BreakfastAction(valuefood)
+                        this.NormalSaveToStorageFirebase('breakfast')
                     }
                     else if (this.props.main.Selected_Meal_Time == 'lunch') {
-                        let lunch = fndate.child('lunch')
-                        let valuefood = {
-                            'namefood' : this.props.server.data_server[i],
-                            'cal' : this.props.server.calories[i],
-                        };
-                        lunch.update(valuefood)
-                        this.props.LunchAction(valuefood)
-                        this.NormalSaveToStorageFirebase('lunch.jpg')
+                        // this.props.LunchAction(valuefood)
+                        this.NormalSaveToStorageFirebase('lunch')
                     }
                     else if (this.props.main.Selected_Meal_Time == 'dinner') {
-                        let dinner = fndate.child('dinner')
-                        let valuefood = {
-                            'namefood' : this.props.server.data_server[i],
-                            'cal' : this.props.server.calories[i],
-                        };
-                        dinner.update(valuefood)
-                        this.props.DinnerAction(valuefood)
-                        this.NormalSaveToStorageFirebase('dinner.jpg')
+                        // this.props.DinnerAction(valuefood)
+                        this.NormalSaveToStorageFirebase('dinner')
                     }
-
-
                     else if (this.props.main.Selected_Meal_Time == '') {
                         if(hour >= 5 && hour <= 10){
-                            let breakfast = fndate.child('breakfast');
-                            let valuefood = {
-                                'namefood' : this.props.server.data_server[i],
-                                'cal' : this.props.server.calories[i],
-                            };
-                            breakfast.update(valuefood)
-                            this.props.BreakfastAction(valuefood)
-                            this.NormalSaveToStorageFirebase('breakfast.jpg')
+                            // this.props.BreakfastAction(valuefood)
+                            this.NormalSaveToStorageFirebase('breakfast')
                         }
                         else if(hour >= 11 && hour <= 3){
-                            let lunch = fndate.child('lunch')
-                            let valuefood = {
-                                'namefood' : this.props.server.data_server[i],
-                                'cal' : this.props.server.calories[i],
-                            };
-                            lunch.update(valuefood)
-                            this.props.LunchAction(valuefood)
-                            this.NormalSaveToStorageFirebase('lunch.jpg')
+                            // this.props.LunchAction(valuefood)
+                            this.NormalSaveToStorageFirebase('lunch')
                         }
                         else{
-                            let dinner = fndate.child('dinner')
-                            let valuefood = {
-                                'namefood' : this.props.server.data_server[i],
-                                'cal' : this.props.server.calories[i],
-                            };
-                            dinner.update(valuefood)
-                            this.props.DinnerAction(valuefood)
-                            this.NormalSaveToStorageFirebase('dinner.jpg')
+                            // this.props.DinnerAction(valuefood)
+                            this.NormalSaveToStorageFirebase('dinner',this.props.server.data_server[i],this.props.server.calories[i])
                         }
                     }
-                    
                     this.props.navigation.dispatch(resetAction)
                     this.props.navigation.navigate("Main");
                     // this.props.FoodAction(this.state.nameFood[i]);
@@ -343,11 +328,7 @@ export default class ImageScreen extends React.Component{
                     {boxnamefood}
                     <TouchableOpacity onPress = {() => {
                         this._toggleModal();
-                        UUIDGenerator.getRandomUUID().then((uuid) => {
-                            this.setState({
-                                random : uuid
-                            })
-                        })
+                        
                         
                     }}>
                     <ModalWrapper visible = {this.state.isModalVisiable} style = {{width : 280, height : 180, paddingLeft : 24, paddingRight : 24}}>

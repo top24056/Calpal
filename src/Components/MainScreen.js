@@ -151,13 +151,14 @@ export default class MainScreen extends React.Component {
     }
 
     componentWillMount() {
+        console.log('welcome to willmount')
+        this.props.setImageDownloadURLAction()
         this.props.setGraphData();
         let self = this
         let userId = firebase.auth().currentUser.uid
         let QueryWill = new Promise((resolve, reject) => {
             if (this.state.percentCircle == 0) {
                 let self = this
-                console.log(this.state.percentCircle)
                 let ref = firebase.database().ref('users/' + userId);
                 let food = ref.child('food').child(day)
                 let pathprofile = ref.child('profile')
@@ -199,7 +200,6 @@ export default class MainScreen extends React.Component {
                 percentCircle: p
             })
         })
-
     }
 
 
@@ -216,85 +216,7 @@ export default class MainScreen extends React.Component {
             name: this.props.fb.data_profile.name,
             email: this.props.fb.data_profile.email,
         });
-        let tempimage = []
-
-    
-        //Dinner new query path gen key from firebase
-        let tempdinner = []
-        let querydinner = ref.child('food').child(day).child('dinner')
-        querydinner.on('value',function (snapshot){
-            for ( let i in snapshot._childKeys) {
-                let childpath = querydinner.child(snapshot._childKeys[i])
-                childpath.on('value', function (childsnapshot) {
-                    let temp = {
-                        namefood : childsnapshot.val().namefood,
-                        cal : childsnapshot.val().cal
-                    }
-                    let temppathimage = {
-                        namefood : childsnapshot.val().namefood,
-                        path : childsnapshot.val().pathimage,
-                        cal : childsnapshot.val().cal
-                    }
-                    tempdinner.push(temp)
-                    tempimage.push(temppathimage)
-                })
-            }
-        })
-
-
-        // let food = ref.child('food').child(day)
-        // food.on('value', function (data) {
-        //     if (data.val() === null) {
-        //         console.log('null na ja')
-        //     }
-        //     else {
-        //         if (data.val().breakfast != null) {
-        //             let tempcal = data.val().breakfast
-        //             // console.log(tempcal)
-
-        //             let temp = {
-        //                 namefood: data.val().breakfast.namefood,
-        //                 cal: "Calories is : " + tempcal
-        //             }
-        //             self.setState({
-        //                 breakfast: temp
-        //             })
-        //         }
-        //         if (data.val().lunch != null) {
-        //             let tempcal = data.val().lunch.cal.toString()
-        //             let temp = {
-        //                 namefood: data.val().lunch.namefood,
-        //                 cal: "Calories is : " + tempcal
-        //             }
-        //             self.setState({
-        //                 lunch: temp
-        //             })
-        //         }
-        //         if (data.val().dinner != null) {
-        //             let tempcal = data.val().dinner.cal.toString()
-        //             let temp = {
-        //                 namefood: data.val().dinner.namefood,
-        //                 cal: "Calories is : " + tempcal
-        //             }
-        //             self.setState({
-        //                 dinner: temp
-        //             })
-        //         }
-        //         if (data.val().sumcal != null) {
-        //             self.setState({
-        //                 curcal: data.val().sumcal
-        //             })
-        //         }
-        //     }
-
-        // })
-        // let pathimage = food.child('pathimage')
-        // pathimage.on('value',function(snapshot){
-        //     console.log(snapshot.val())
-        // })
-
-
-
+        
         let pathprofile = ref.child('profile')
         pathprofile.on('value', function (data) {
             if (data.val() === null) {
@@ -314,8 +236,6 @@ export default class MainScreen extends React.Component {
             self.setState({
                 percentCircle: p
             })
-            
-            self.props.setImageDownloadURLAction(tempimage)
         }, 3000)
     }
 

@@ -230,6 +230,7 @@ export default class ImageScreen extends React.Component{
             switch (snapshot.state) {
                 case firebase.storage.TaskState.SUCCESS: // or 'success'
                     console.log('Upload is complete');
+                    this.props.setImageDownloadURLAction()
                     break;
                 case firebase.storage.TaskState.RUNNING: // or 'running'
                     // console.log('Upload is running');
@@ -261,24 +262,24 @@ export default class ImageScreen extends React.Component{
                     let fndate = food.child(day);
                     if (this.props.main.Selected_Meal_Time == 'breakfast') {
                         // this.props.BreakfastAction(valuefood)
-                        this.NormalSaveToStorageFirebase('breakfast', this.props.server.data_server[i],this.props.server.calories[i])
+                        this.NormalSaveToStorageFirebase('breakfast',this.props.server.data_server[i],this.props.server.calories[i])
                     }
                     else if (this.props.main.Selected_Meal_Time == 'lunch') {
                         // this.props.LunchAction(valuefood)
-                        this.NormalSaveToStorageFirebase('lunch', this.props.server.data_server[i],this.props.server.calories[i])
+                        this.NormalSaveToStorageFirebase('lunch',this.props.server.data_server[i],this.props.server.calories[i])
                     }
                     else if (this.props.main.Selected_Meal_Time == 'dinner') {
                         // this.props.DinnerAction(valuefood)
-                        this.NormalSaveToStorageFirebase('dinner', this.props.server.data_server[i],this.props.server.calories[i])
+                        this.NormalSaveToStorageFirebase('dinner',this.props.server.data_server[i],this.props.server.calories[i])
                     }
                     else if (this.props.main.Selected_Meal_Time == '') {
                         if(hour >= 5 && hour <= 10){
                             // this.props.BreakfastAction(valuefood)
-                            this.NormalSaveToStorageFirebase('breakfast', this.props.server.data_server[i],this.props.server.calories[i])
+                            this.NormalSaveToStorageFirebase('breakfast',this.props.server.data_server[i],this.props.server.calories[i])
                         }
                         else if(hour >= 11 && hour <= 3){
                             // this.props.LunchAction(valuefood)
-                            this.NormalSaveToStorageFirebase('lunch', this.props.server.data_server[i],this.props.server.calories[i])
+                            this.NormalSaveToStorageFirebase('lunch',this.props.server.data_server[i],this.props.server.calories[i])
                         }
                         else{
                             // this.props.DinnerAction(valuefood)

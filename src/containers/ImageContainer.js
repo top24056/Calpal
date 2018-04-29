@@ -6,6 +6,7 @@ import BreakfastAction from '../actions/BreakfastAction';
 import LunchAction from '../actions/LunchAction';
 import DinnerAction from '../actions/DinnerAction';
 import setGraphData from '../actions/setGraphData';
+import setImageDownloadURLAction from '../actions/setImageDownloadURLAction'
 
 class ImageContainer extends React.Component{
 
@@ -33,5 +34,6 @@ export default connect(mapStateToProps,{
     BreakfastAction,
     LunchAction,
     DinnerAction,
-    setGraphData
+    setGraphData,
+    setImageDownloadURLAction
 })(ImageContainer)

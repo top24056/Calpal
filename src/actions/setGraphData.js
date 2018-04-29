@@ -21,7 +21,6 @@ export default function setGraphdata(){
         let strmonth = month.toString();
         let stryear = year.toString();
         let day = strdate+"-"+strmonth+"-"+stryear
-        // console.log('dd'+day)
         dataday.push(date)
         let queryday = ref.child("food").child(day).child("sumcal")
         queryday.on('value',function(snapshot){
@@ -37,7 +36,7 @@ export default function setGraphdata(){
 
         date = date + 1
         if(month === 1 || month === 3 || month === 5 || month === 7 || month === 8 || month === 10 || month === 12){
-            if(date == 31){
+            if(date == 32){
                 date = 1
                 if(month >= 12){
                     month = 1
@@ -58,33 +57,12 @@ export default function setGraphdata(){
             month = 3
         }
         else{
-            if(date == 30){
+            if(date == 31){
                 date = 1
                 month = month + 1
             }
         }
         
-        // if(date === 0){
-        //     month = month - 1
-        //     if(month === 0){
-        //         month = 12
-        //         date = 31
-        //     }
-        //     else if(month === 1 || month === 3 || month === 5 || month === 7 || month === 8 || month === 10){
-        //         date = 31
-        //     }
-        //     else if(month === 2){
-        //         if(year % 4 === 0){
-        //             date = 29
-        //         }
-        //         else{
-        //             date = 28
-        //         }
-        //     }
-        //     else{
-        //         date = 31
-        //     }
-        // }
         roundloop = roundloop - 1
     }
     setTimeout( () => {
@@ -96,10 +74,6 @@ export default function setGraphdata(){
             type : SET_GRAPH_DATA,
             payload : data,
             payload_2 : dataday,
-            // payload_month : month,
-            // payload_year : year,
-            // payload_day7 : date7,
-            // payload_month7 : month7,
         })
     }
 }

@@ -5,6 +5,7 @@ import GetFBAccessTokenAction from '../actions/GetFBAccessTokenAction.js'
 import GetFBDataAction from '../actions/GetFBDataAction'
 import GetUserFirebaseAction from '../actions/GetUserFirebaseAction.js'
 import setGraphData from '../actions/setGraphData';
+import setImageDownloadURLAction from '../actions/setImageDownloadURLAction'
 class LoginContainer extends React.Component{
     render(){
         return (
@@ -28,5 +29,6 @@ export default connect(mapStateToProps,{
     GetFBAccessTokenAction,
     GetFBDataAction,
     GetUserFirebaseAction,
-    setGraphData
+    setGraphData,
+    setImageDownloadURLAction
 })(LoginContainer)

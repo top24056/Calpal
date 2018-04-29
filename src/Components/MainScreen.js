@@ -193,6 +193,7 @@ export default class MainScreen extends React.Component {
             name: this.props.fb.data_profile.name,
             email: this.props.fb.data_profile.email,
         });
+        let tempimage = []
 
     
         //Dinner new query path gen key from firebase
@@ -206,11 +207,15 @@ export default class MainScreen extends React.Component {
                         namefood : childsnapshot.val().namefood,
                         cal : childsnapshot.val().cal
                     }
+                    let temppathimage = {
+                        namefood : childsnapshot.val().namefood,
+                        path : childsnapshot.val().pathimage
+                    }
                     tempdinner.push(temp)
+                    tempimage.push(temppathimage)
                 })
             }
         })
-        console.log(tempdinner)
 
 
         // let food = ref.child('food').child(day)
@@ -285,6 +290,8 @@ export default class MainScreen extends React.Component {
             self.setState({
                 percentCircle: p
             })
+            
+            self.props.setImageDownloadURLAction(tempimage)
         }, 3000)
 
 
@@ -300,7 +307,7 @@ export default class MainScreen extends React.Component {
                 <View>
                     <Image
                         style={{ width: 100, height: 100 }}
-                        source={{ uri: this.props.main.downloadImageURL }}
+                        // source={{ uri: this.props.main.downloadImageURL }}
                     />
                 </View>
             )

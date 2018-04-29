@@ -8,6 +8,8 @@ import {
     TouchableOpacity,
     StatusBar,
     Button,
+    FlatList,
+    ActivityIndicator,
 } from 'react-native';
 import PercentageCircle from 'react-native-percentage-circle';
 import FBSDK ,{
@@ -22,12 +24,12 @@ import {
     TextField
 } from 'react-native-material-textfield';
 import UUIDGenerator from 'react-native-uuid-generator';
-import FCM,{
-    FCMEvent,
-    RemoteNotificationResult,
-    WillPresentNotificationResult,
-    NotificationType
-} from 'react-native-fcm';
+// import FCM,{
+//     FCMEvent,
+//     RemoteNotificationResult,
+//     WillPresentNotificationResult,
+//     NotificationType
+// } from 'react-native-fcm';
 
 
 
@@ -86,6 +88,26 @@ const styles = StyleSheet.create({
         justifyContent : 'center',
         alignItems : 'center'
     },
+    FlatList_container : {
+        flex: 1,
+        justifyContent : 'center',
+        alignItems : 'center',
+    },
+    FlatList_style : {
+
+    },
+    FlatList_EmptyList : {
+        flex: 1,
+        flexDirection: 'column',
+        height: 500,
+        backgroundColor: '#d1d1d1'
+    },
+    FlatList_ItemSeparatorComponent : {
+        backgroundColor: '#ededed',
+        height: 1,
+        width: '90%',
+        alignSelf: 'center'
+    }
     
     
 })
@@ -124,60 +146,32 @@ export default class MainScreen extends React.Component{
                 namefood : "Add Dinner",
                 cal : "Recommend Calrories : 588"
             },
-            downloadURL: ''
+            downloadURL: '',
         }
     }
 
     componentWillMount(){
         this.props.setGraphData();
         let self = this
-        let QueryWill = new Promise((resolve,reject) =>{
-            if(this.state.percentCircle == 0){
-
-                let userId = firebase.auth().currentUser.uid
-<<<<<<< HEAD
-=======
         let userId = firebase.auth().currentUser.uid
         let QueryWill = new Promise((resolve,reject) =>{
             if(this.state.percentCircle == 0){
                 let self = this
                 console.log(this.state.percentCircle)
->>>>>>> instance2
-=======
->>>>>>> instance2
                 let ref = firebase.database().ref('users/' + userId);
                 let food = ref.child('food').child(day)
                 let pathprofile = ref.child('profile')
                 
                 food.on('value',function(data){
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    if(data.val() === null){
-                        console.log('null')
-                    }
-                    else{
-=======
-=======
->>>>>>> instance2
                     if (data.val() === null ) {
                         console.log('No food photo on this day (', day , ') yet.')
                     }
                     else {
-<<<<<<< HEAD
->>>>>>> instance2
-=======
->>>>>>> instance2
                         if(data.val().sumcal != null){
                             self.setState({
                                 curcal : data.val().sumcal
                             })
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> instance2
-=======
                             console.log(data.val().sumcal)
->>>>>>> instance2
                         }
                     }
                 })
@@ -339,6 +333,41 @@ export default class MainScreen extends React.Component{
             )
         }
 
+        refreshList = () => {
+            this.setState({
+                page: 1,
+                seed: this.state.seed + 1
+            }, () => {
+                    // this.props.fetchCoinAPI()
+                    // setTimeout(() => {
+                    // this.props.setInitialFavBool()
+                    // }, 1500)
+                }
+            )
+        }
+
+        renderSeparator = () => {
+            return (
+                <View style={styles.FlatList_ItemSeparatorComponent}/>
+            )
+        }
+
+        renderEmptyList = () => {
+            return (
+                <View style={styles.FlatList_EmptyList}>
+                    <ActivityIndicator style={{flex:1}} size='large' color='#198ce5'/>
+                </View>
+            )
+        }
+
+        renderListItem = (item) => {
+            return (
+                <View>
+                    
+                </View>
+            )
+        }
+
         return(
             <View style = {styles.container}>
 
@@ -446,7 +475,17 @@ export default class MainScreen extends React.Component{
                             
                         }}>
                         </TouchableOpacity>
-                        {downloadImageURL}
+                        <View style={styles.FlatList_container}>
+                            <FlatList
+                                style={styles.FlatList_style}
+                                data={}
+                                keyExtractor={(item, index) => item.id}
+                                renderItem={ ( {item} ) => (renderListItem(item))
+                                }
+                                ItemSeparatorComponent={renderSeparator}
+                                ListEmptyComponent={renderEmptyList}
+                            />
+                        </View>
 
 
                         

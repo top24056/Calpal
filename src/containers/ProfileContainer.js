@@ -1,9 +1,9 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ProfileScreen from '../Components/ProfileScreen';
-import GetInformationAction from '../actions/GetInformationAction';
-import firebase from 'react-native-firebase';
-import setGraphData from '../actions/setGraphData';
+import React from 'react'
+import { connect } from 'react-redux'
+import ProfileScreen from '../Components/ProfileScreen'
+import GetInformationAction from '../actions/GetInformationAction'
+import firebase from 'react-native-firebase'
+import setGraphData from '../actions/setGraphData'
 
 class ProfileContainer extends React.Component{
 

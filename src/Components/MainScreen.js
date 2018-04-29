@@ -172,10 +172,7 @@ export default class MainScreen extends React.Component {
             }, 3000)
         })
         QueryWill.then(() => {
-            let p = (self.state.curcal / self.state.BMR) * 100
-            self.setState({
-                percentCircle: p
-            })
+            
         })
     }
 
@@ -185,16 +182,27 @@ export default class MainScreen extends React.Component {
         
         let self = this
 
+        
+
         firebase.database().goOnline();
 
         let userId = firebase.auth().currentUser.uid
         let ref = firebase.database().ref('users/' + userId);
+        let food = ref.child('food').child(day)
+        let pathprofile = ref.child('profile')
+
         firebase.database().ref('users/' + userId).update({
             name: this.props.fb.data_profile.name,
             email: this.props.fb.data_profile.email,
         });
+        food.on('value',function(data){
+            if(data.val() != null){
+                self.setState({
+                    curcal: data.val().sumcal
+                })
+            }
+        })
         
-        let pathprofile = ref.child('profile')
         pathprofile.on('value', function (data) {
             if (data.val() === null) {
 
@@ -209,7 +217,13 @@ export default class MainScreen extends React.Component {
 
         })
         setTimeout(function () {
+            console.log(self.state.curcal)
+            console.log(self.state.BMR)
             let p = (self.state.curcal / self.state.BMR) * 100
+            console.log(p)
+            if(p >= 100){
+                p = 100
+            }
             self.setState({
                 percentCircle: p
             })
@@ -232,6 +246,7 @@ export default class MainScreen extends React.Component {
                     />
                 </View>
             )
+            
         }
 
         return (

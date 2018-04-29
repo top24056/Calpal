@@ -470,7 +470,7 @@ export default class MainScreen extends React.Component {
                         }}>
                         </TouchableOpacity>
                         <View style={styles.FlatList_container}>
-                            <FlatList
+                            {/* <FlatList
                                 style={styles.FlatList_style}
                                 data={}
                                 keyExtractor={(item, index) => item.id}
@@ -478,7 +478,7 @@ export default class MainScreen extends React.Component {
                                 }
                                 ItemSeparatorComponent={renderSeparator}
                                 ListEmptyComponent={renderEmptyList}
-                            />
+                            /> */}
                         </View>
 
 

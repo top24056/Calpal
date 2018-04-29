@@ -209,7 +209,8 @@ export default class MainScreen extends React.Component {
                     }
                     let temppathimage = {
                         namefood : childsnapshot.val().namefood,
-                        path : childsnapshot.val().pathimage
+                        path : childsnapshot.val().pathimage,
+                        cal : childsnapshot.val().cal
                     }
                     tempdinner.push(temp)
                     tempimage.push(temppathimage)

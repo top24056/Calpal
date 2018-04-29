@@ -79,7 +79,6 @@ export default class PhotoScreen extends React.Component{
     }
 
     takePicture = async function(){
-        console.log("Camera ",this.camera)
         if(this.camera){
             const options = {
                 quality : 1,
@@ -88,13 +87,9 @@ export default class PhotoScreen extends React.Component{
                 fixOrientation : true,
                 base64 : true
             };
-            // console.log('ready')
             const data = await this.camera.takePictureAsync(options);
-            console.log("Camera Data : ",data)
             this.props.ImageAction(data);
             this.props.navigation.navigate("Modal");
-            
-            // console.log("store image = ",this.props.image.image_food)
         }
     }
 

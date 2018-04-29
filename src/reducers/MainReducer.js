@@ -9,7 +9,7 @@ const initState = {
     percen : 0,
     Selected_Meal_Time : '',
     login_press : false,
-    downloadImageURL : null
+    mealDataArr : null
 }
 
 export default function (state = initState, action){
@@ -25,7 +25,7 @@ export default function (state = initState, action){
             })
         case SET_IMG_DL_URL:
             return Object.assign({}, state,{
-                downloadImageURL : action.payload
+                mealDataArr : action.payload
             })
         default : 
             return state;

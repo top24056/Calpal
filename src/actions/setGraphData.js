@@ -21,7 +21,7 @@ export default function setGraphdata(){
         let strmonth = month.toString();
         let stryear = year.toString();
         let day = strdate+"-"+strmonth+"-"+stryear
-        console.log('dd'+day)
+        // console.log('dd'+day)
         dataday.push(date)
         let queryday = ref.child("food").child(day).child("sumcal")
         queryday.on('value',function(snapshot){

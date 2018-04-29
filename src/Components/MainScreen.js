@@ -94,7 +94,8 @@ const styles = StyleSheet.create({
         alignItems : 'center',
     },
     FlatList_style : {
-
+        flex: 1,
+        flexDirection: 'row',
     },
     FlatList_EmptyList : {
         flex: 1,
@@ -134,11 +135,11 @@ export default class MainScreen extends React.Component {
             profile: null,
 
             breakfast: {
-                namefood: "Add! Breakfast",
+                namefood: "Add Breakfast",
                 cal: "Recommend Calrories : 388",
             },
             lunch: {
-                namefood: "Add! Lunch",
+                namefood: "Add Lunch",
                 cal: "Recommend Calrories : 588"
             },
             dinner: {
@@ -316,38 +317,23 @@ export default class MainScreen extends React.Component {
             
             self.props.setImageDownloadURLAction(tempimage)
         }, 3000)
-
-
     }
 
 
     render() {
 
-        let downloadImageURL = (<View></View>)
+        // let downloadImageURL = (<View></View>)
 
-        if (this.props.main.downloadImageURL != null) {
-            downloadImageURL = (
-                <View>
-                    <Image
-                        style={{ width: 100, height: 100 }}
-                        // source={{ uri: this.props.main.downloadImageURL }}
-                    />
-                </View>
-            )
-        }
-
-        refreshList = () => {
-            this.setState({
-                page: 1,
-                seed: this.state.seed + 1
-            }, () => {
-                    // this.props.fetchCoinAPI()
-                    // setTimeout(() => {
-                    // this.props.setInitialFavBool()
-                    // }, 1500)
-                }
-            )
-        }
+        // if (this.props.main.downloadImageURL != null) {
+        //     downloadImageURL = (
+        //         <View>
+        //             <Image
+        //                 style={{ width: 100, height: 100 }}
+        //                 // source={{ uri: this.props.main.downloadImageURL }}
+        //             />
+        //         </View>
+        //     )
+        // }
 
         renderSeparator = () => {
             return (
@@ -364,14 +350,23 @@ export default class MainScreen extends React.Component {
         }
 
         renderListItem = (item) => {
+            console.log('item name: ', item.namefood)
+            console.log('item path: ', item.path)
+            console.log('item cal: ', item.cal)
             return (
                 <View>
-                    
+                    {item.namefood}
+                    {item.cal}
+                    {item.path}
                 </View>
             )
         }
 
+        let FlatListData = this.props.main.mealDataArr == null ? [] : this.props.main.mealDataArr
+
+
         return(
+
             <View style = {styles.container}>
 
                 <StatusBar backgroundColor="#0094ff" barstyle="light-content" />
@@ -478,15 +473,15 @@ export default class MainScreen extends React.Component {
                         }}>
                         </TouchableOpacity>
                         <View style={styles.FlatList_container}>
-                            {/* <FlatList
+                            <FlatList
                                 style={styles.FlatList_style}
-                                data={}
-                                keyExtractor={(item, index) => item.id}
+                                data={FlatListData}
+                                keyExtractor={(item, index) => index}
                                 renderItem={ ( {item} ) => (renderListItem(item))
                                 }
                                 ItemSeparatorComponent={renderSeparator}
                                 ListEmptyComponent={renderEmptyList}
-                            /> */}
+                            />
                         </View>
 
 

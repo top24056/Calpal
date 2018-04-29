@@ -28,6 +28,7 @@ export default function setImageDownloadURLAction() {
             let childpath = querybreakfast.child(snapshot._childKeys[i])
             childpath.once('value', function (childsnapshot) {
                 let temppathimage = {
+                    meal : 'breakfast',
                     namefood: childsnapshot.val().namefood,
                     path: childsnapshot.val().pathimage,
                     cal: childsnapshot.val().cal
@@ -47,6 +48,7 @@ export default function setImageDownloadURLAction() {
             let childpath = querylunch.child(snapshot._childKeys[i])
             childpath.once('value', function (childsnapshot) {
                 let temppathimage = {
+                    meal : 'lunch',
                     namefood: childsnapshot.val().namefood,
                     path: childsnapshot.val().pathimage,
                     cal: childsnapshot.val().cal
@@ -66,6 +68,7 @@ export default function setImageDownloadURLAction() {
             let childpath = querydinner.child(snapshot._childKeys[i])
             childpath.once('value', function (childsnapshot) {
                 let temppathimage = {
+                    meal : 'dinner',
                     namefood: childsnapshot.val().namefood,
                     path: childsnapshot.val().pathimage,
                     cal: childsnapshot.val().cal

@@ -18,7 +18,7 @@ import { RaisedTextButton } from 'react-native-material-buttons';
 import FBSDK, {
     LoginManager
 } from 'react-native-fbsdk';
-import { LineChart, Grid, YAxis, XAxis } from 'react-native-svg-charts'
+import { LineChart, Grid, YAxis, XAxis, Path } from 'react-native-svg-charts'
 import * as scale from 'd3-scale'
 // import logoutImg from '../../img/logout.png;'
 
@@ -255,7 +255,16 @@ export default class ProfileScreen extends React.Component {
         )
 
 
-
+        const Shadow = ({ line }) => (
+            <Path
+                key={'shadow'}
+                y={2}
+                d={line}
+                fill={'none'}
+                strokeWidth={4}
+                stroke={'rgba(134, 65, 244, 0.2)'}
+            />
+        )
 
 
         return (
@@ -428,6 +437,7 @@ export default class ProfileScreen extends React.Component {
                                 contentInset={{ top: 10, bottom: 10 }}
                                 svg={{ fontSize: 10, fill: 'grey' }}
                                 formatLabel={(value) => value + " KCal"}
+                                numberofticks = {7}
                             />
                             <View style={{ flex: 1, paddingLeft: 10 }}>
                                 <LineChart
@@ -437,6 +447,7 @@ export default class ProfileScreen extends React.Component {
                                     svg={{ stroke: 'rgb(134, 65, 244)' }}
                                 >
                                     <Grid />
+                                    <Shadow/>
                                 </LineChart>
                                 <View>
                                     <XAxis
@@ -446,6 +457,7 @@ export default class ProfileScreen extends React.Component {
                                         contentInset={{ left: 10, right: 10 }}
                                         svg={{ fontSize: 10, fill: 'grey' }}
                                         xAccessor={({ item }) => item}
+                                        numberofticks = {7}
                                     />
                                 </View>
                             </View>

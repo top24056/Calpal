@@ -92,15 +92,20 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent : 'center',
         alignItems : 'center',
+        backgroundColor : 'yellow'
     },
     FlatList_style : {
         flex: 1,
-        flexDirection: 'row',
+        flexDirection: 'column',
+    },
+    FlatList_Each_Container : {
+        flex: 1,
+        flexDirection: 'row'
     },
     FlatList_EmptyList : {
         flex: 1,
         flexDirection: 'column',
-        height: 500,
+        // height: 500,
         backgroundColor: '#d1d1d1'
     },
     FlatList_ItemSeparatorComponent : {
@@ -146,7 +151,7 @@ export default class MainScreen extends React.Component {
                 namefood: "Add Dinner",
                 cal: "Recommend Calrories : 588"
             },
-            downloadURL: '',
+            dailyMealData : []
         }
     }
 
@@ -253,6 +258,34 @@ export default class MainScreen extends React.Component {
         }, 3000)
     }
 
+    // componentWillReceiveProps(nextProps) {
+
+    // }
+
+    shouldComponentUpdate(nextProps) {
+        console.log('SHOULD1 this.props.main.mealDataArr: ', this.props.main.mealDataArr)
+        if (nextProps.main.mealDataArr != this.props.main.mealDataArr) {
+            // console.log('nextProps: ', nextProps.main.mealDataArr)
+            // console.log('this.props.main.mealDataArr: ', this.props.main.mealDataArr)
+            return true
+        }
+        console.log('SHOULD2 this.props.main.mealDataArr: ', this.props.main.mealDataArr)
+        return true
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        console.log('WILL1 this.props.main.mealDataArr: ', this.props.main.mealDataArr)
+        if (nextProps.main.mealDataArr != this.props.main.mealDataArr) {
+            this.setState({
+                dailyMealData : nextProps.main.mealDataArr
+            })
+            console.log('dailyMealData: ', nextState.dailyMealData )
+        }
+        console.log('WILL2 this.props.main.mealDataArr: ', this.props.main.mealDataArr)
+    }
+
+
+
 
     render() {
 
@@ -288,10 +321,10 @@ export default class MainScreen extends React.Component {
             console.log('item path: ', item.path)
             console.log('item cal: ', item.cal)
             return (
-                <View>
-                    {item.namefood}
-                    {item.cal}
-                    {item.path}
+                <View style={styles.FlatList_Each_Container}>
+                    <Text>{item.namefood}</Text>
+                    <Text>{item.cal}</Text>
+                    <Text>{item.path}</Text>
                 </View>
             )
             
@@ -400,27 +433,18 @@ export default class MainScreen extends React.Component {
                         </View>
                     </View>
 
-
-                    <View style={styles.box}>
-                        <TouchableOpacity onPress={() => {
-                            console.log('press test')
-
-                        }}>
-                        </TouchableOpacity>
-                        <View style={styles.FlatList_container}>
-                            <FlatList
-                                style={styles.FlatList_style}
-                                data={FlatListData}
-                                keyExtractor={(item, index) => index}
-                                renderItem={ ( {item} ) => (renderListItem(item))
-                                }
-                                ItemSeparatorComponent={renderSeparator}
-                                ListEmptyComponent={renderEmptyList}
-                            />
-                        </View>
-
-
-
+                    <View style={styles.FlatList_container}>
+                        <FlatList
+                            style={styles.FlatList_style}
+                            data={this.props.main.mealDataArr}
+                            keyExtractor={(item, index) => index}
+                            renderItem={ ( {item} ) => {
+                                console.log('item: ', item)
+                                renderListItem(item)
+                            } }
+                            ItemSeparatorComponent={renderSeparator}
+                            ListEmptyComponent={renderEmptyList}
+                        />
                     </View>
 
 

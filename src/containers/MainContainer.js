@@ -7,6 +7,7 @@ import GetUserFirebaseAction from '../actions/GetUserFirebaseAction.js'
 import setMealTimeToAdd from '../actions/setMealTimeToAdd.js'
 import setGraphData from '../actions/setGraphData';
 import setImageDownloadURLAction from '../actions/setImageDownloadURLAction.js'
+import setRefreshFlatlist from '../actions/setRefreshFlatlist'
 
 class MainContainer extends React.Component{
     render(){
@@ -35,5 +36,6 @@ export default connect(mapStateToProps,{
     GetUserFirebaseAction,
     setMealTimeToAdd,
     setImageDownloadURLAction,
-    setGraphData
+    setGraphData,
+    setRefreshFlatlist
 })(MainContainer)

@@ -29,7 +29,6 @@ export default class ModalLoading extends React.Component{
 
     saveToFirebase(uuid){
         let imagePath = this.props.camera.image_food
-        console.log('image Path ',imagePath)
         let userId = firebase.auth().currentUser.uid;
         let ref = firebase.storage().ref(userId).child('temp.jpg');
         const uploadTask = ref.putFile(imagePath, {contentType : 'image/jpeg'});
@@ -125,7 +124,7 @@ export default class ModalLoading extends React.Component{
             name: '1.jpg',
             type: 'image/jpeg'
         });
-        fetch('http:/158.108.247.15:5000/predict',{
+        fetch('http:/158.108.122.35:5000/predict',{
             method : 'post',
             body : formdata
         }).then(res =>{

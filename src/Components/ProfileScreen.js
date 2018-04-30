@@ -191,7 +191,44 @@ export default class ProfileScreen extends React.Component {
         // }
     }
 
+    checkDateGraph(value) {
+        let tempdate = new Date();
+        tempdate.setDate(tempdate.getDate() - 6)
+        let date = tempdate.getDate()
+        let month = tempdate.getMonth() + 1
+        let year = new Date().getFullYear()
 
+
+        let newvalue = value;
+        let newmonth = month
+        if(month === 1 || month === 3 || month === 5 || month === 7 || month === 8 || month === 10 || month === 12){
+            if(value >= 32){
+                newvalue -= 31
+                newmonth += 1
+            }
+        }
+        else if(month === 2){
+            if(year % 4 == 0){
+                if( value >= 30){
+                    newvalue -= 29
+                    newmonth += 1
+                }
+                else{
+                    newvalue -= 28
+                    newmonth += 1
+                }
+            }
+        }
+        else{
+            if(value >= 31){
+                newvalue -= 30
+                newmonth += 1
+            }
+        }
+
+        return (newvalue + "/"+newmonth)
+        
+    }
 
     render() {
 
@@ -416,7 +453,7 @@ export default class ProfileScreen extends React.Component {
                                             'BMR': this.state.information.BMR
                                         };
                                         user.child('profile').update(valueprofile)
-
+                                        this.props.setPercentAction(this.state.information.BMR)
                                     }}
                                 />
                             </View>
@@ -453,7 +490,9 @@ export default class ProfileScreen extends React.Component {
                                     <XAxis
                                         style={{ marginHorizontal: -10, height: 30 ,padding :10}}
                                         data={this.props.profile.graphDataXAxis}
-                                        formatLabel={(value) => "day"+value}
+                                        formatLabel={(value) => {
+                                            return(this.checkDateGraph(value))
+                                        }}
                                         contentInset={{ left: 10, right: 10 }}
                                         svg={{ fontSize: 10, fill: 'grey' }}
                                         xAccessor={({ item }) => item}

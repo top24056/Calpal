@@ -29,7 +29,6 @@ export default class ModalLoading extends React.Component{
 
     saveToFirebase(uuid){
         let imagePath = this.props.camera.image_food
-        console.log('image Path ',imagePath)
         let userId = firebase.auth().currentUser.uid;
         let ref = firebase.storage().ref(userId).child('temp.jpg');
         const uploadTask = ref.putFile(imagePath, {contentType : 'image/jpeg'});

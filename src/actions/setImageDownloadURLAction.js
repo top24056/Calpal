@@ -14,6 +14,7 @@ const day = date + '-' + month + '-' + year
 
 export default function setImageDownloadURLAction() {
     console.log('action running')
+    
     let tempimage = []
     
     let userId = firebase.auth().currentUser.uid
@@ -27,13 +28,19 @@ export default function setImageDownloadURLAction() {
         for (let i in snapshot._childKeys) {
             let childpath = querybreakfast.child(snapshot._childKeys[i])
             childpath.once('value', function (childsnapshot) {
-                let temppathimage = {
-                    meal : 'breakfast',
-                    namefood: childsnapshot.val().namefood,
-                    path: childsnapshot.val().pathimage,
-                    cal: childsnapshot.val().cal
-                }
-                tempimage.push(temppathimage)
+                let image;
+                let refstorage = firebase.storage().ref(childsnapshot.val().pathimage)
+                refstorage.getDownloadURL().then((url) => {
+                    // console.log(url)
+                    let temppathimage = {
+                        meal : 'breakfast',
+                        namefood: childsnapshot.val().namefood,
+                        path: url,
+                        cal: childsnapshot.val().cal
+                    }
+                    tempimage.push(temppathimage)
+                })
+               
             })
         }
     })
@@ -47,13 +54,19 @@ export default function setImageDownloadURLAction() {
         for (let i in snapshot._childKeys) {
             let childpath = querylunch.child(snapshot._childKeys[i])
             childpath.once('value', function (childsnapshot) {
-                let temppathimage = {
-                    meal : 'lunch',
-                    namefood: childsnapshot.val().namefood,
-                    path: childsnapshot.val().pathimage,
-                    cal: childsnapshot.val().cal
-                }
-                tempimage.push(temppathimage)
+                let image;
+                let refstorage = firebase.storage().ref(childsnapshot.val().pathimage)
+                refstorage.getDownloadURL().then((url) => {
+                    // console.log(url)
+                    let temppathimage = {
+                        meal : 'lunch',
+                        namefood: childsnapshot.val().namefood,
+                        path: url,
+                        cal: childsnapshot.val().cal
+                    }
+                    tempimage.push(temppathimage)
+                })
+               
             })
         }
     })
@@ -67,16 +80,24 @@ export default function setImageDownloadURLAction() {
         for (let i in snapshot._childKeys) {
             let childpath = querydinner.child(snapshot._childKeys[i])
             childpath.once('value', function (childsnapshot) {
-                let temppathimage = {
-                    meal : 'dinner',
-                    namefood: childsnapshot.val().namefood,
-                    path: childsnapshot.val().pathimage,
-                    cal: childsnapshot.val().cal
-                }
-                tempimage.push(temppathimage)
+                let image;
+                let refstorage = firebase.storage().ref(childsnapshot.val().pathimage)
+                refstorage.getDownloadURL().then((url) => {
+                    // console.log(url)
+                    let temppathimage = {
+                        meal : 'dinner',
+                        namefood: childsnapshot.val().namefood,
+                        path: url,
+                        cal: childsnapshot.val().cal
+                    }
+                    tempimage.push(temppathimage)
+                })
+               
             })
         }
     })
+
+
     return dispatch => {
         dispatch({
             type: SET_IMG_DL_URL,

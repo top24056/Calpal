@@ -1,7 +1,8 @@
 import {
     PERCENT,
     SET_MEAL_TIME,
-    SET_IMG_DL_URL
+    SET_IMG_DL_URL,
+    SET_REFRESH
 } from './../actions/ActionTypes';
 
 
@@ -9,7 +10,8 @@ const initState = {
     percen : 0,
     Selected_Meal_Time : '',
     login_press : false,
-    mealDataArr : null
+    downloadImageURL : null,
+    refresh : false 
 }
 
 export default function (state = initState, action){
@@ -18,7 +20,6 @@ export default function (state = initState, action){
             return Object.assign({}, state,{
                 percen : action.payload
             })
-
         case SET_MEAL_TIME:
             return Object.assign({}, state,{
                 Selected_Meal_Time : action.payload
@@ -26,6 +27,10 @@ export default function (state = initState, action){
         case SET_IMG_DL_URL:
             return Object.assign({}, state,{
                 mealDataArr : action.payload
+            })
+        case SET_REFRESH :
+            return Object.assign({} ,state,{
+                refresh : action.payload
             })
         default : 
             return state;

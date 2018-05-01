@@ -1,9 +1,10 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import ProfileScreen from '../Components/ProfileScreen'
-import GetInformationAction from '../actions/GetInformationAction'
-import firebase from 'react-native-firebase'
-import setGraphData from '../actions/setGraphData'
+import React from 'react';
+import { connect } from 'react-redux';
+import ProfileScreen from '../Components/ProfileScreen';
+import GetInformationAction from '../actions/GetInformationAction';
+import firebase from 'react-native-firebase';
+import setGraphData from '../actions/setGraphData';
+import setPercentAction from '../actions/setPercentAction'
 
 class ProfileContainer extends React.Component{
 
@@ -30,5 +31,6 @@ function mapStateToProps(state){
 
 export default connect(mapStateToProps,{
     GetInformationAction,
-    setGraphData
+    setGraphData,
+    setPercentAction
 })(ProfileContainer)

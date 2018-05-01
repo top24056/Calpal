@@ -59,7 +59,6 @@ export default class LoginScreen extends React.Component{
         })
         LoginManager.logInWithReadPermissions(['public_profile', 'email', 'user_friends',])
         .then((result) => {
-            console.log('login res: ', result)
             if(result.isCancelled){
                 return Promise.reject(new Error('The user cancelled the request'));
             }
@@ -90,6 +89,7 @@ export default class LoginScreen extends React.Component{
                     const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
                     return firebase.auth().signInAndRetrieveDataWithCredential(credential).then((result) => {
                         this.props.GetUserFirebaseAction(result.user)
+                        this.props.setImageDownloadURLAction()
                         this.props.navigation.navigate("Main");
                     })
                     

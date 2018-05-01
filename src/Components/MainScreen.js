@@ -139,19 +139,25 @@ export default class MainScreen extends React.Component {
             percentCircle: 0,
             profile: null,
 
-            breakfast: {
-                namefood: "Add Breakfast",
-                cal: "Recommend Calrories : 388",
-            },
-            lunch: {
-                namefood: "Add Lunch",
-                cal: "Recommend Calrories : 588"
-            },
-            dinner: {
-                namefood: "Add Dinner",
-                cal: "Recommend Calrories : 588"
-            },
-            dailyMealData : []
+            food : [
+                {   
+                    meal: 'breakfast',
+                    namefood: "Add Breakfast",
+                    cal: "Recommend Calrories : 388",
+                },
+                {
+                    meal: 'lunch,',
+                    namefood: "Add Lunch",
+                    cal: "Recommend Calrories : 588"
+                },
+                {
+                    meal: 'dinner,',
+                    namefood: "Add Dinner",
+                    cal: "Recommend Calrories : 588"
+                },
+            ],
+            dailyMealData : [],
+            refreshing : false
         }
     }
 

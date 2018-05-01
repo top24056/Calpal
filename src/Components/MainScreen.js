@@ -437,7 +437,7 @@ export default class MainScreen extends React.Component {
                         <FlatList
                             style={styles.FlatList_style}
                             data={this.props.main.mealDataArr}
-                            keyExtractor={(item, index) => index}
+                            keyExtractor={(item, index) => index.toString()}
                             renderItem={ ( {item} ) => {
                                 console.log('item: ', item)
                                 renderListItem(item)

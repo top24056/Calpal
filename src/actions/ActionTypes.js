@@ -13,3 +13,4 @@ export const RESPONE_DATA = "RESPONE_DATA";
 export const SET_GRAPH_DATA = 'SET_GRAPH_DATA';
 export const SET_IMG_DL_URL = 'SET_IMAGE_DOWNLOAD_URL';
 export const SET_REFRESH = 'SET_REFRESH';
+export const DEL_MEAL_ITEM = 'DEL_MEAL_ITEM';

@@ -8,6 +8,7 @@ import setMealTimeToAdd from '../actions/setMealTimeToAdd.js'
 import setGraphData from '../actions/setGraphData';
 import setImageDownloadURLAction from '../actions/setImageDownloadURLAction.js'
 import setRefreshFlatlist from '../actions/setRefreshFlatlist'
+import delMealItem from '../actions/delMealItem'
 
 class MainContainer extends React.Component{
     render(){
@@ -37,5 +38,6 @@ export default connect(mapStateToProps,{
     setMealTimeToAdd,
     setImageDownloadURLAction,
     setGraphData,
-    setRefreshFlatlist
+    setRefreshFlatlist,
+    delMealItem
 })(MainContainer)

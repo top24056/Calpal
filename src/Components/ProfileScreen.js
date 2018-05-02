@@ -463,7 +463,7 @@ export default class ProfileScreen extends React.Component {
                 <View style={styles.boxcontent}>
                     <View style={{ padding: 10 }}>
                         <Text style={{ color: '#0094ff', fontWeight: 'bold', paddingTop: 5 }}>
-                            Weekly Calorie Comsumption
+                            Last 7 days Calorie Comsumption
                         </Text>
                     </View>
                     {/* <View style={{ flexDirection: 'row', height: 300 }}> */}

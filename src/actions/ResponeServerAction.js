@@ -9,7 +9,8 @@ export default function ResponeServerAction(data){
         let calories = []
         for (let i = 0 ; i < 4 ; i++){
             let cal = nutrition.child(data[i])
-            cal.on('value',function(snapshot){
+            cal.once('value',function(snapshot){
+                console.log(snapshot.val())
                 let a = snapshot.val()
                 calories.push(a)
             })

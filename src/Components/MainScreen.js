@@ -9,7 +9,8 @@ import {
     StatusBar,
     Button,
     ScrollView,
-    FlatList
+    FlatList,
+    ActivityIndicator
 } from 'react-native';
 import PercentageCircle from 'react-native-percentage-circle';
 import FBSDK, {
@@ -39,15 +40,21 @@ const styles = StyleSheet.create({
         backgroundColor: '#E8EAF6'
     },
     circle: {
-        flex: 0.5,
+        flex: 0.4,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: "#0094ff"
     },
     content: {
-        flex: 0.6,
+        flex: 0.8,
         backgroundColor: 'rgba(0,0,0,.05)'
+    },
+    content2: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,.05)',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     box: {
         flex: 1,
@@ -55,7 +62,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         marginRight: 10,
         marginTop: 10,
-        marginBottom: 10,
+        // marginBottom: 10,
         backgroundColor: 'white',
         shadowOpacity: 0.54,
         shadowRadius: 1,
@@ -78,6 +85,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         // backgroundColor : 'blue'
     },
+    boxdel: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    delIcon : {
+        width: 16,
+        height: 16,
+        marginBottom: 5
+    },
     boxcircle: {
         flex: 2.5,
         // justifyContent : 'center',
@@ -88,6 +106,20 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    addMealEach : {
+        flex: 1, 
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    FlatListStyle : {
+        flex: 0.7
+    },
+    actIndic : {
+        flex: 1,
+        justifyContent: 'center',
+        alignSelf: 'center'
+    }
 
 
 })
@@ -113,32 +145,32 @@ export default class MainScreen extends React.Component {
             percentCircle: 0,
             profile: null,
             isFetching: false,
-            refreshing : false,
+            refreshing: false,
             food: [
                 {
                     meal: 'breakfast',
-                    namefood: "Add! Breakfast",
+                    namefood: "Add Breakfast",
                     cal: "Recommend Calrories : 388",
                 },
                 {
                     meal: 'lunch',
-                    namefood: "Add! Lunch",
+                    namefood: "Add Lunch",
                     cal: "Recommend Calrories : 588",
                 },
                 {
                     meal: 'dinner',
-                    namefood: "Add! Dinner",
+                    namefood: "Add Dinner",
                     cal: "Recommend Calrories : 588",
                 }
             ],
-            foodup : []
+            foodup: [],
         }
     }
 
     componentWillMount() {
         let self = this
         this.setState({
-            foodup : this.props.main.downloadImageURL
+            foodup: this.props.main.downloadImageURL
         })
         this.props.setGraphData();
         let userId = firebase.auth().currentUser.uid
@@ -176,9 +208,9 @@ export default class MainScreen extends React.Component {
             })
         }
 
-        setTimeout(function(){
+        setTimeout(function () {
 
-        },1500)
+        }, 1500)
 
 
     }
@@ -253,41 +285,42 @@ export default class MainScreen extends React.Component {
 
 
 
-    renderItemFlatlist = (item) => {
+    renderItemFlatlist = (item, index) => {
         console.log(item)
         let breakfastPhoto = item.meal == 'breakfast' ? require('../../img/breakfast.png') :
             item.meal == 'lunch' ? require('../../img/rice.png') : require('../../img/fish.png')
 
         let mealselect = item.meal == 'breakfast' ? 'Breakfast' :
-            item.meal == 'lunch' ? 'Lunch' : 'Dinner' 
+            item.meal == 'lunch' ? 'Lunch' : 'Dinner'
 
 
         return (
             <View style={styles.box}>
-                <View style = {{flex : 0.5,paddingLeft :10,paddingTop :5,}}>
+                {/* <View style={{ flex: 0.5, paddingLeft: 10, paddingTop: 5, }}>
                     <Text style={{ color: 'black', fontSize: 18 }}>{mealselect}</Text>
-                </View>
+                </View> */}
                 <View style={{ flexDirection: 'row' }}>
                     <View style={styles.boximg}>
-                        <Image source={{ uri: item.path }} style={{ width: 64, height: 64 }} />
+                        <Image source={{ uri: item.path }} style={{ width: 64, height: 64, borderRadius: 30 }} />
                     </View>
                     <View style={styles.boxtext}>
-                        <View style={{ flexDirection: 'row', flex: 1, alignItems: 'flex-end' }}>
+                        <View style={{ flex: 1, flexDirection: 'row'}}>
+                            <Text style={{ color: 'black', fontSize: 18 }}>{mealselect}</Text>
+                        </View>
+                        <View style={{ flex: 1, flexDirection: 'row'}}>
                             <Text style={{ color: '#858787', fontSize: 18 }}>{item.namefood}</Text>
                         </View>
-                        <View style={{ flexDirection: 'row', flex: 1 }}>
-                            <Text style={{ color: '#858787', fontSize: 12 }}>Calories is : {item.cal} KCal</Text>
+                        <View style={{ flex: 1, flexDirection: 'row'}}>
+                            <Text style={{ color: '#858787', fontSize: 12 }}>{item.cal} KCal</Text>
                         </View>
                     </View>
-                    <View style={styles.boxadd}>
+                    <View style={styles.boxdel}>
                         <TouchableOpacity onPress={() => {
-                            this.props.setMealTimeToAdd(mealselect)
-                            this.props.navigation.navigate('Photo')
+                            console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXXx ', index)
+                            this.props.delMealItem(index, item)
+                            this.onRefresh()
                         }}>
-                            <View style={{ justifyContent: 'center', alignItems: 'center', padding: 20 }}>
-                                <Image source={require('../../img/add.png')} style={{ width: 16, height: 16 }} />
-                            </View>
-
+                            <Image source={require('../../img/icon-delete.png')} style={styles.delIcon}/>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -301,10 +334,12 @@ export default class MainScreen extends React.Component {
         return (
             <View style={styles.container}>
 
-                <View style={styles.content}>
+                <View style={styles.content2}>
 
-                    <View style={styles.box}>
-                        <View style = {{flexDirection : 'row'}}>
+                    <ActivityIndicator animating hidesWhenStopped size='large' color='#1c73ff' style={styles.actIndic}/>
+
+                    {/* <View style={styles.box}>
+                        <View style={{ flexDirection: 'row' }}>
                             <View style={styles.boximg}>
                                 <Image source={require('../../img/breakfast.png')} style={{ width: 64, height: 64 }} />
                             </View>
@@ -377,21 +412,21 @@ export default class MainScreen extends React.Component {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                    </View>
+                    </View> */}
                 </View>
             </View>
 
         );
     }
 
-    
+
     onRefresh = () => {
         this.setState({
-            refreshing : true
-        },function(){
-            if(this.props.main.downloadImageURL){
+            refreshing: true
+        }, function () {
+            if (this.props.main.downloadImageURL) {
                 this.setState({
-                    refreshing : false
+                    refreshing: false
                 })
             }
         })
@@ -401,19 +436,7 @@ export default class MainScreen extends React.Component {
 
     render() {
 
-        let downloadImageURL = (<View></View>)
-
-        if (this.props.main.downloadImageURL != null) {
-            downloadImageURL = (
-                <View>
-                    <Image
-                        style={{ width: 100, height: 100 }}
-                    // source={{ uri: this.props.main.downloadImageURL }}
-                    />
-                </View>
-            )
-        }
-
+        let circleColor = this.state.curcal >= this.state.BMR ? '#f44141' : '#80f442'
 
         return (
 
@@ -431,7 +454,8 @@ export default class MainScreen extends React.Component {
                         <PercentageCircle
                             radius={80}
                             percent={this.state.percentCircle}
-                            color={"#ffffff"}
+                            // percent={100}
+                            color={circleColor}
                             borderWidth={4}
                             bgcolor={"#0094ff"}
                             innerColor={'#23a0ff'}
@@ -448,20 +472,71 @@ export default class MainScreen extends React.Component {
 
                 </View>
                 <View style={styles.content}>
+                    <View style={{flex: 0.3}}>
+                        <View style={{ flex: 1, flexDirection: 'row', backgroundColor: '#ffffff'}}>
+                            <TouchableOpacity style={styles.addMealEach} onPress={() => {
+                                this.props.setMealTimeToAdd('breakfast')
+                                this.props.navigation.navigate('Photo')
+                            }}>
+                                <View style={{padding: 10}}>
+                                    <View style={{ flex: 0.8, justifyContent: 'center', alignItems: 'center'}}>
+                                        <Image source={require('../../img/breakfast.png')} style={{ width: 64, height: 64 }} />
+                                    </View>
+                                    <View style={{ flex: 0.2, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                                        <Image source={require('../../img/add.png')} style={{ width: 16, height: 16, marginLeft: 5, marginRight: 5 }} />
+                                        <Text>Breakfast</Text>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={styles.addMealEach} onPress={() => {
+                                this.props.setMealTimeToAdd('lunch')
+                                this.props.navigation.navigate('Photo')
+                            }}>
+                                <View style={{margin: 10}}>
+                                    <View style={{ flex: 0.8, justifyContent: 'center', alignItems: 'center'}}>
+                                        <Image source={require('../../img/rice.png')} style={{ width: 64, height: 64 }} />
+                                    </View>
+                                    <View style={{ flex: 0.2, flexDirection: 'row',  justifyContent: 'center', alignItems: 'center'}}>
+                                        <Image source={require('../../img/add.png')} style={{ width: 16, height: 16, marginLeft: 5, marginRight: 5 }} />
+                                        <Text>Lunch</Text>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={styles.addMealEach} onPress={() => {
+                                this.props.setMealTimeToAdd('dinner')
+                                this.props.navigation.navigate('Photo')
+                            }}>
+                                <View style={{padding: 10}}>
+                                     <View style={{ flex: 0.8, justifyContent: 'center', alignItems: 'center'}}>
+                                        <Image source={require('../../img/fish.png')} style={{ width: 64, height: 64 }} />
+                                    </View>
+                                    <View style={{ flex: 0.2, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                                        <Image source={require('../../img/add.png')} style={{ width: 16, height: 16, marginLeft: 5, marginRight: 5 }} />
+                                        <Text>Dinner</Text>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+
+                        </View>
+                    </View>
+
                     <FlatList
                         data={this.props.main.downloadImageURL}
                         ItemSeparatorComponent={this.FlatlistItem}
-                        renderItem={({ item }) =>
-                            (this.renderItemFlatlist(item))
+                        style={styles.FlatListStyle}
+                        renderItem={({ item, index }) =>
+                            (this.renderItemFlatlist(item, index))
                         }
                         keyExtractor={(item, index) => index.toString()}
                         ListEmptyComponent={this.ListEmptyView}
                         extraData={this.props}
-                        onRefresh = {() => this.onRefresh()}
-                        refreshing = {this.state.refreshing}
+                        onRefresh={() => this.onRefresh()}
+                        refreshing={this.state.refreshing}
                     />
                 </View>
-                
+
             </View>
         );
     }

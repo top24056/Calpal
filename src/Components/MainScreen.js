@@ -8,9 +8,8 @@ import {
     TouchableOpacity,
     StatusBar,
     Button,
-    ScrollView,
     FlatList,
-    ActivityIndicator
+    ActivityIndicator,
 } from 'react-native';
 import PercentageCircle from 'react-native-percentage-circle';
 import FBSDK, {
@@ -52,9 +51,10 @@ const styles = StyleSheet.create({
     },
     content2: {
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,.05)',
+        flexDirection: 'column',
+        alignItems: 'center',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignSelf: 'center'
     },
     box: {
         flex: 1,
@@ -106,6 +106,32 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    FlatList_container : {
+        flex: 1,
+        justifyContent : 'center',
+        alignItems : 'center',
+        backgroundColor : 'yellow'
+    },
+    FlatList_style : {
+        flex: 1,
+        flexDirection: 'column',
+    },
+    FlatList_Each_Container : {
+        flex: 1,
+        flexDirection: 'row'
+    },
+    FlatList_EmptyList : {
+        flex: 1,
+        flexDirection: 'column',
+        // height: 500,
+        backgroundColor: '#d1d1d1'
+    },
+    FlatList_ItemSeparatorComponent : {
+        backgroundColor: '#ededed',
+        height: 1,
+        width: '90%',
+        alignSelf: 'center'
+    },   
     addMealEach : {
         flex: 1, 
         flexDirection: 'column',
@@ -119,6 +145,22 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignSelf: 'center'
+    },
+    ListEmptyViewText1 : {
+        flex: 1,
+        paddingTop : 20,
+        paddingLeft : 20,
+        paddingLeft : 20,
+        paddingBottom : 10
+    },
+    ListEmptyViewText2 : {
+        flex: 1,
+        justifyContent : 'center',
+        alignItems : 'center',
+        paddingTop : 10,
+        paddingLeft : 20,
+        paddingLeft : 20,
+        paddingBottom : 20
     }
 
 
@@ -153,17 +195,19 @@ export default class MainScreen extends React.Component {
                     cal: "Recommend Calrories : 388",
                 },
                 {
-                    meal: 'lunch',
+                    meal: 'lunch,',
                     namefood: "Add Lunch",
-                    cal: "Recommend Calrories : 588",
+                    cal: "Recommend Calrories : 588"
                 },
                 {
-                    meal: 'dinner',
+                    meal: 'dinner,',
                     namefood: "Add Dinner",
-                    cal: "Recommend Calrories : 588",
-                }
+                    cal: "Recommend Calrories : 588"
+                },
             ],
-            foodup: [],
+            dailyMealData : [],
+            refreshing : false,
+            flatListIsEmpty : true,
         }
     }
 
@@ -184,6 +228,9 @@ export default class MainScreen extends React.Component {
             food.on('value', function (data) {
                 if (data.val() === null) {
                     console.log('No food photo on this day (', day, ') yet.')
+                    self.setState({
+                        flatListIsEmpty : true
+                    })
                 }
                 else {
                     if (data.val().sumcal != null) {
@@ -191,6 +238,9 @@ export default class MainScreen extends React.Component {
                             curcal: data.val().sumcal
                         })
                     }
+                    self.setState({
+                        flatListIsEmpty : false
+                    })
                 }
             })
             pathprofile.on('value', function (data) {
@@ -234,7 +284,8 @@ export default class MainScreen extends React.Component {
         food.on('value', function (data) {
             if (data.val() != null) {
                 self.setState({
-                    curcal: data.val().sumcal
+                    curcal: data.val().sumcal,
+                    flatListIsEmpty : true
                 })
             }
         })
@@ -271,10 +322,7 @@ export default class MainScreen extends React.Component {
                 percentCircle: p
             })
         }, 3000)
-
-
     }
-
 
     FlatlistItem = () => {
         return (
@@ -331,12 +379,31 @@ export default class MainScreen extends React.Component {
 
     ListEmptyView = () => {
 
+        let ListEmptyView = (
+            <View>
+                <Text>
+
+                </Text>
+            </View>
+        )
+
+        if (this.state.flatListIsEmpty) {
+            ListEmptyView = (
+                <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                    <Text style={styles.ListEmptyViewText1}>No photo for today yet.</Text>
+                    <Text style={styles.ListEmptyViewText2}>Press one of three icons above to add some food photo.</Text>
+                </View>
+            )
+        } else {
+            ListEmptyView = (
+                <ActivityIndicator animating hidesWhenStopped size='large' color='#1c73ff' style={styles.actIndic}/>
+            )
+        }
+
         return (
             <View style={styles.container}>
-
                 <View style={styles.content2}>
-
-                    <ActivityIndicator animating hidesWhenStopped size='large' color='#1c73ff' style={styles.actIndic}/>
+                    {ListEmptyView}
 
                     {/* <View style={styles.box}>
                         <View style={{ flexDirection: 'row' }}>
@@ -436,6 +503,20 @@ export default class MainScreen extends React.Component {
 
     render() {
 
+        renderSeparator = () => {
+            return (
+                <View style={styles.FlatList_ItemSeparatorComponent}/>
+            )
+        }
+
+        renderEmptyList = () => {
+            return (
+                <View style={styles.FlatList_EmptyList}>
+                    <ActivityIndicator style={{flex:1}} size='large' color='#198ce5'/>
+                </View>
+            )
+        }
+
         let circleColor = this.state.curcal >= this.state.BMR ? '#f44141' : '#80f442'
 
         return (
@@ -452,9 +533,8 @@ export default class MainScreen extends React.Component {
                     </View>
                     <View style={styles.boxcircle}>
                         <PercentageCircle
-                            radius={80}
+                            radius={65}
                             percent={this.state.percentCircle}
-                            // percent={100}
                             color={circleColor}
                             borderWidth={4}
                             bgcolor={"#0094ff"}
@@ -472,17 +552,17 @@ export default class MainScreen extends React.Component {
 
                 </View>
                 <View style={styles.content}>
-                    <View style={{flex: 0.3}}>
+                    <View style={{flex: 0.20}}>
                         <View style={{ flex: 1, flexDirection: 'row', backgroundColor: '#ffffff'}}>
                             <TouchableOpacity style={styles.addMealEach} onPress={() => {
                                 this.props.setMealTimeToAdd('breakfast')
                                 this.props.navigation.navigate('Photo')
                             }}>
-                                <View style={{padding: 10}}>
-                                    <View style={{ flex: 0.8, justifyContent: 'center', alignItems: 'center'}}>
-                                        <Image source={require('../../img/breakfast.png')} style={{ width: 64, height: 64 }} />
+                                <View style={{padding: 5}}>
+                                    <View style={{ flex: 0.7, justifyContent: 'center', alignItems: 'center'}}>
+                                        <Image source={require('../../img/breakfast.png')} style={{ width: 48, height: 48 }} />
                                     </View>
-                                    <View style={{ flex: 0.2, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                                    <View style={{ flex: 0.3, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                                         <Image source={require('../../img/add.png')} style={{ width: 16, height: 16, marginLeft: 5, marginRight: 5 }} />
                                         <Text>Breakfast</Text>
                                     </View>
@@ -493,11 +573,11 @@ export default class MainScreen extends React.Component {
                                 this.props.setMealTimeToAdd('lunch')
                                 this.props.navigation.navigate('Photo')
                             }}>
-                                <View style={{margin: 10}}>
-                                    <View style={{ flex: 0.8, justifyContent: 'center', alignItems: 'center'}}>
-                                        <Image source={require('../../img/rice.png')} style={{ width: 64, height: 64 }} />
+                                <View style={{padding: 5}}>
+                                    <View style={{ flex: 0.7, justifyContent: 'center', alignItems: 'center'}}>
+                                        <Image source={require('../../img/rice.png')} style={{ width:48, height: 48 }} />
                                     </View>
-                                    <View style={{ flex: 0.2, flexDirection: 'row',  justifyContent: 'center', alignItems: 'center'}}>
+                                    <View style={{ flex: 0.3, flexDirection: 'row',  justifyContent: 'center', alignItems: 'center'}}>
                                         <Image source={require('../../img/add.png')} style={{ width: 16, height: 16, marginLeft: 5, marginRight: 5 }} />
                                         <Text>Lunch</Text>
                                     </View>
@@ -508,11 +588,11 @@ export default class MainScreen extends React.Component {
                                 this.props.setMealTimeToAdd('dinner')
                                 this.props.navigation.navigate('Photo')
                             }}>
-                                <View style={{padding: 10}}>
-                                     <View style={{ flex: 0.8, justifyContent: 'center', alignItems: 'center'}}>
-                                        <Image source={require('../../img/fish.png')} style={{ width: 64, height: 64 }} />
+                                <View style={{padding: 5}}>
+                                     <View style={{ flex: 0.7, justifyContent: 'center', alignItems: 'center'}}>
+                                        <Image source={require('../../img/fish.png')} style={{ width: 48, height: 48 }} />
                                     </View>
-                                    <View style={{ flex: 0.2, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                                    <View style={{ flex: 0.3, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                                         <Image source={require('../../img/add.png')} style={{ width: 16, height: 16, marginLeft: 5, marginRight: 5 }} />
                                         <Text>Dinner</Text>
                                     </View>
@@ -522,19 +602,21 @@ export default class MainScreen extends React.Component {
                         </View>
                     </View>
 
-                    <FlatList
-                        data={this.props.main.downloadImageURL}
-                        ItemSeparatorComponent={this.FlatlistItem}
-                        style={styles.FlatListStyle}
-                        renderItem={({ item, index }) =>
-                            (this.renderItemFlatlist(item, index))
-                        }
-                        keyExtractor={(item, index) => index.toString()}
-                        ListEmptyComponent={this.ListEmptyView}
-                        extraData={this.props}
-                        onRefresh={() => this.onRefresh()}
-                        refreshing={this.state.refreshing}
-                    />
+                    <View style={{flex: 0.80}}>
+                        <FlatList
+                            data={this.props.main.downloadImageURL}
+                            ItemSeparatorComponent={this.FlatlistItem}
+                            style={styles.FlatListStyle}
+                            renderItem={({ item, index }) =>
+                                (this.renderItemFlatlist(item, index))
+                            }
+                            keyExtractor={(item, index) => index.toString()}
+                            ListEmptyComponent={this.ListEmptyView}
+                            extraData={this.props}
+                            onRefresh={() => this.onRefresh()}
+                            refreshing={this.state.refreshing}
+                        />
+                    </View>
                 </View>
 
             </View>

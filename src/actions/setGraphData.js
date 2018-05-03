@@ -37,6 +37,7 @@ export default function setGraphdata() {
         date = date + 1
         console.log(day)
         queryday.on('value', function (snapshot) {
+        queryday.on('value', (snapshot) => {
             if (snapshot.val() == null) {
                 data.push(0)
             }

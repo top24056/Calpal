@@ -202,7 +202,7 @@ export default class ImageScreen extends React.Component{
     }
 
 
-    NormalSaveToStorageFirebase(name,namefood,cal){
+    NormalSaveToStorageFirebase(name, namefood, cal){
         let userId = firebase.auth().currentUser.uid;
         let imagePath = this.props.camera.image_food
         let ref = firebase.storage().ref(userId).child(day).child(name).child(this.state.random);

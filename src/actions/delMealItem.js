@@ -33,22 +33,28 @@ export default function delMealItem(index, meal){
 
                 let sumcalint = 0
                 sumcalRef.once('value', (snapshot2) => {
-                    console.log('fetch sumcal: ', snapshot2.val())
+                    console.log('fetch sumcal: ', snapshot2.val().sumcal)
                 }).then((snapshot3) => {
-                    let sumcalRes = snapshot3.val() - snapshot.val()[i].cal
-                    console.log(snapshot3.val(), '-', snapshot.val()[i].cal, '=', sumcalRes)
+                    let sumcalRes = snapshot3.val().sumcal - snapshot.val()[i].cal
+                    console.log(snapshot3.val().sumcal, '-', snapshot.val()[i].cal, '=', sumcalRes)
                     sumcalRef.update({
                         sumcal : sumcalRes
                     })
                 })
+
+                break
             }
         }
     })
 
-    return dispatch =>{
+    return (dispatch, getState) =>{
+
+        let FlatListMeals = getState().main.downloadImageURL
+        FlatListMeals.splice(index, 1)
+
         dispatch({
             type : DEL_MEAL_ITEM,
-            payload : index
+            payload : FlatListMeals
         })
     }
 }

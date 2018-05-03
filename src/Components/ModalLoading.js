@@ -122,6 +122,7 @@ export default class ModalLoading extends React.Component{
             type: 'image/jpeg'
         });
         fetch('http://745c827f.ngrok.io/predict',{
+        fetch('http:/158.108.122.46:5000/predict',{
             method : 'post',
             body : formdata
         }).then(res =>{

@@ -232,13 +232,12 @@ export default class ProfileScreen extends React.Component {
 
     render() {
 
-
         const weightinput = (
             <TextInput
                 style={{ color: '#0094ff', fontSize: 17 }}
                 placeholder={'Weight'}
-                placeholderTextColor={'#0094ff'}
-                underlineColorAndroid={'#0094ff'}
+                placeholderTextColor={'#636363'}
+                underlineColorAndroid={'#4c4c4c'}
                 selectionColor={'#0094ff'}
                 keyboardType='numeric'
                 onChangeText={(text) => {
@@ -256,8 +255,8 @@ export default class ProfileScreen extends React.Component {
             <TextInput
                 style={{ color: '#0094ff', fontSize: 17 }}
                 placeholder={'Height'}
-                placeholderTextColor={'#0094ff'}
-                underlineColorAndroid={'#0094ff'}
+                placeholderTextColor={'#636363'}
+                underlineColorAndroid={'#4c4c4c'}
                 selectionColor={'#0094ff'}
                 keyboardType="numeric"
                 onChangeText={(text) => {
@@ -276,9 +275,8 @@ export default class ProfileScreen extends React.Component {
             <TextInput
                 style={{ color: '#0094ff', fontSize: 17 }}
                 placeholder={'Age'}
-                placeholderTextColor={'#0094ff'}
-                underlineColorAndroid={'#0094ff'}
-                selectionColor={'#0094ff'}
+                placeholderTextColor={'#636363'}
+                selectionColor={'#4c4c4c'}
                 keyboardType="numeric"
                 onChangeText={(text) => {
                     let informationcopy = JSON.parse(JSON.stringify(this.state.information))
@@ -401,7 +399,7 @@ export default class ProfileScreen extends React.Component {
                                     selectedValue={this.state.information.gender}
                                     itemStyle={{ color: '#0094ff' }}
                                     mode={'dropdown'}
-                                    style={{ color: '#0094ff' }}
+                                    style={{ color: '#636363' }}
                                     onValueChange={(itemValue, itemIndex) => {
                                         let informationcopy = JSON.parse(JSON.stringify(this.state.information))
                                         informationcopy.gender = itemValue

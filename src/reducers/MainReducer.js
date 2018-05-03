@@ -36,7 +36,8 @@ export default function (state = initState, action){
             })
         case DEL_MEAL_ITEM:
             return Object.assign({}, state, {
-                action_type : action.type
+                action_type : action.type,
+                downloadImageURL : action.payload
             })
         default : 
             return state;

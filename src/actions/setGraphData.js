@@ -32,7 +32,7 @@ export default function setGraphdata() {
         forquery.push(queryday)
         datequ = datequ + 1
         date = date + 1
-        queryday.once('value', function (snapshot) {
+        queryday.on('value', (snapshot) => {
             if (snapshot.val() == null) {
                 data.push(0)
             }

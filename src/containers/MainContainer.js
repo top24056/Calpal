@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import MainScreen from '../Components/MainScreen';
 import GetFBAccessTokenAction from '../actions/GetFBAccessTokenAction.js'
 import GetFBDataAction from '../actions/GetFBDataAction'
-import GetUserFirebaseAction from '../actions/GetUserFirebaseAction.js'
+
 import setMealTimeToAdd from '../actions/setMealTimeToAdd.js'
 import setGraphData from '../actions/setGraphData';
 import setImageDownloadURLAction from '../actions/setImageDownloadURLAction.js'
@@ -34,7 +34,7 @@ function mapStateToProps(state){
 export default connect(mapStateToProps,{
     GetFBAccessTokenAction,
     GetFBDataAction,
-    GetUserFirebaseAction,
+
     setMealTimeToAdd,
     setImageDownloadURLAction,
     setGraphData,

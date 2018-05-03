@@ -301,7 +301,7 @@ export default class MainScreen extends React.Component {
                 </View> */}
                 <View style={{ flexDirection: 'row' }}>
                     <View style={styles.boximg}>
-                        <Image source={{ uri: item.path }} style={{ width: 64, height: 64, borderRadius: 30 }} />
+                        <Image source={{ uri: item.path }} style={{ width: 64, height: 64, borderRadius: 30}} resize />
                     </View>
                     <View style={styles.boxtext}>
                         <View style={{ flex: 1, flexDirection: 'row'}}>

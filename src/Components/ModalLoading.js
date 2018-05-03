@@ -86,9 +86,6 @@ export default class ModalLoading extends React.Component{
 
         this.props.ResponeServerAction(temp_name)
 
-        console.log('foodOptions: ', foodOptions)
-        console.log('temp_name',temp_name)
-
         this.setState({
             visible : false
         })
@@ -124,7 +121,7 @@ export default class ModalLoading extends React.Component{
             name: '1.jpg',
             type: 'image/jpeg'
         });
-        fetch('http://17d7ed36.ngrok.io/predict',{
+        fetch('http://745c827f.ngrok.io/predict',{
             method : 'post',
             body : formdata
         }).then(res =>{

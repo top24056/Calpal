@@ -52,8 +52,8 @@ const styles = StyleSheet.create({
     framecamera : {
         borderColor : 'white',
         borderWidth : 1,
-        height : 250,
-        width : 250,
+        height : 300,
+        width : 300,
     }
 })
 
@@ -82,8 +82,8 @@ export default class PhotoScreen extends React.Component{
         if(this.camera){
             const options = {
                 quality : 1,
-                width : 1000,
-                height : 1000,
+                width : 500,
+                height : 500,
                 fixOrientation : true,
                 base64 : true
             };

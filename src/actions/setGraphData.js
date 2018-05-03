@@ -8,8 +8,6 @@ export default function setGraphdata() {
 
     let tempdate = new Date();
     tempdate.setDate(tempdate.getDate() - 6)
-
-    console.log('month ' + (tempdate.getMonth() + 1))
     let date = tempdate.getDate()
     let datequ = tempdate.getDate()
     let month = tempdate.getMonth() + 1
@@ -17,27 +15,37 @@ export default function setGraphdata() {
     let year = new Date().getFullYear();
     let data = []
     let dataday = []
-    let forquery = []
+    let test = []
+    // let forquery = []
     let userId = firebase.auth().currentUser.uid
     let ref = firebase.database().ref('users/' + userId)
     roundloop = 7
     let wait = true
+    console.log('before loop tempdate',tempdate)
+    console.log('before loop date',date)
+    console.log('before loop datequ',datequ)
     while (roundloop > 0) {
         let strdate = datequ.toString();
         let strmonth = newmonth.toString();
         let stryear = year.toString();
         let day = strdate + "-" + strmonth + "-" + stryear
+        console.log('in loop',day)
         dataday.push(date)
         let queryday = ref.child("food").child(day).child("sumcal")
-        forquery.push(queryday)
+        // forquery.push(queryday)
         datequ = datequ + 1
         date = date + 1
-        queryday.once('value', function (snapshot) {
+        console.log(day)
+        queryday.on('value', function (snapshot) {
             if (snapshot.val() == null) {
                 data.push(0)
             }
             else {
                 data.push(snapshot.val())
+                // test.push({
+                //     'day': day,
+                //     'cal' : snapshot.val()
+                // })
             }
         // }).then((snapshot) => {
         //     if (snapshot.val() == null) {
@@ -45,21 +53,22 @@ export default function setGraphdata() {
         //     }
         //     else {
         //         data.push(snapshot.val())
+        //         test.push({
+        //             'day': day,
+        //             'cal': snapshot.val()
+        //         })
         //     }
         })
-
-
-
 
         if (month === 1 || month === 3 || month === 5 || month === 7 || month === 8 || month === 10 || month === 12) {
             if (date >= 32) {
                 datequ -= 31
                 if (month >= 12) {
-                    month = 1
+                    newmonth = 1
                     year = year + 1
                 }
                 else {
-                    month = month + 1
+                    newmonth = newmonth + 1
                 }
             }
         }

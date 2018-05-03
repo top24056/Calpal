@@ -17,9 +17,6 @@ export default SwitchNavigator(
         Main : {
             screen : TabNav
         },
-        Profile : {
-            screen : ProfileContainer
-        }
     },
     {
         initialRouteName : 'Login'

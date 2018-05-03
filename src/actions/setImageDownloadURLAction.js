@@ -24,10 +24,12 @@ export default function setImageDownloadURLAction() {
     //breakfast new query path gen key from firebase
     let tempbreakfast = []
     let querybreakfast = ref.child('food').child(day).child('breakfast')
-    querybreakfast.once('value', function (snapshot) {
+    querybreakfast.once('value',(snapshot) => {
+
+    }).then((snapshot) => {
         for (let i in snapshot._childKeys) {
             let childpath = querybreakfast.child(snapshot._childKeys[i])
-            childpath.once('value', function (childsnapshot) {
+            childpath.once('value', (childsnapshot) => {
                 let image;
                 let refstorage = firebase.storage().ref(childsnapshot.val().pathimage)
                 refstorage.getDownloadURL().then((url) => {
@@ -40,20 +42,19 @@ export default function setImageDownloadURLAction() {
                     }
                     tempimage.push(temppathimage)
                 })
-               
             })
         }
     })
 
-
-
     //lunch new query path gen key from firebase
     let templunch = []
     let querylunch = ref.child('food').child(day).child('lunch')
-    querylunch.once('value', function (snapshot) {
+    querylunch.once('value', (snapshot) => {
+
+    }).then((snapshot) => {
         for (let i in snapshot._childKeys) {
             let childpath = querylunch.child(snapshot._childKeys[i])
-            childpath.once('value', function (childsnapshot) {
+            childpath.once('value', (childsnapshot) => {
                 let image;
                 let refstorage = firebase.storage().ref(childsnapshot.val().pathimage)
                 refstorage.getDownloadURL().then((url) => {
@@ -66,20 +67,19 @@ export default function setImageDownloadURLAction() {
                     }
                     tempimage.push(temppathimage)
                 })
-               
             })
         }
     })
 
-
-
     //Dinner new query path gen key from firebase
     let tempdinner = []
     let querydinner = ref.child('food').child(day).child('dinner')
-    querydinner.once('value', function (snapshot) {
+    querydinner.once('value', (snapshot) => {
+
+    }).then((snapshot) => {
         for (let i in snapshot._childKeys) {
             let childpath = querydinner.child(snapshot._childKeys[i])
-            childpath.once('value', function (childsnapshot) {
+            childpath.once('value', (childsnapshot) => {
                 let image;
                 let refstorage = firebase.storage().ref(childsnapshot.val().pathimage)
                 refstorage.getDownloadURL().then((url) => {
@@ -92,11 +92,9 @@ export default function setImageDownloadURLAction() {
                     }
                     tempimage.push(temppathimage)
                 })
-               
             })
         }
     })
-
 
     return dispatch => {
         dispatch({

@@ -28,7 +28,7 @@ export default function (state = initState, action){
             })
         case SET_IMG_DL_URL:
             return Object.assign({}, state,{
-                mealDataArr : action.payload
+                downloadImageURL : action.payload
             })
         case SET_REFRESH :
             return Object.assign({} ,state,{
@@ -36,7 +36,8 @@ export default function (state = initState, action){
             })
         case DEL_MEAL_ITEM:
             return Object.assign({}, state, {
-                action_type : action.type
+                action_type : action.type,
+                downloadImageURL : action.payload
             })
         default : 
             return state;

@@ -12,6 +12,12 @@ python 3 && javascript
     npm install
 ```
 
+## Build project
+
+```
+    react-native run-android
+```
+
 ## Member
 - Peerapon Chunpongthong
 - Ukrit Tiankaew

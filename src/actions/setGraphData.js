@@ -35,30 +35,13 @@ export default function setGraphdata() {
         // forquery.push(queryday)
         datequ = datequ + 1
         date = date + 1
-        console.log(day)
-        queryday.on('value', function (snapshot) {
         queryday.on('value', (snapshot) => {
             if (snapshot.val() == null) {
                 data.push(0)
             }
             else {
                 data.push(snapshot.val())
-                // test.push({
-                //     'day': day,
-                //     'cal' : snapshot.val()
-                // })
             }
-        // }).then((snapshot) => {
-        //     if (snapshot.val() == null) {
-        //         data.push(0)
-        //     }
-        //     else {
-        //         data.push(snapshot.val())
-        //         test.push({
-        //             'day': day,
-        //             'cal': snapshot.val()
-        //         })
-        //     }
         })
 
         if (month === 1 || month === 3 || month === 5 || month === 7 || month === 8 || month === 10 || month === 12) {

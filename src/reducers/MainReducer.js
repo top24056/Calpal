@@ -3,7 +3,9 @@ import {
     SET_MEAL_TIME,
     SET_IMG_DL_URL,
     SET_REFRESH,
-    DEL_MEAL_ITEM
+    DEL_MEAL_ITEM,
+    SET_SUMCAL_CIRCLE,
+    SET_FLATLIST_IS_EMPTY
 } from './../actions/ActionTypes';
 
 
@@ -12,8 +14,11 @@ const initState = {
     Selected_Meal_Time : '',
     login_press : false,
     downloadImageURL : null,
-    refresh : false,
-    action_type: ''
+    refreshing : false,
+    action_type: '',
+    sumcal: 0,
+    sumcalCircle: 0,
+    flatListIsEmpty: true
 }
 
 export default function (state = initState, action){
@@ -28,7 +33,8 @@ export default function (state = initState, action){
             })
         case SET_IMG_DL_URL:
             return Object.assign({}, state,{
-                downloadImageURL : action.payload
+                downloadImageURL : action.payload,
+                refreshing: action.payload2
             })
         case SET_REFRESH :
             return Object.assign({} ,state,{
@@ -38,6 +44,17 @@ export default function (state = initState, action){
             return Object.assign({}, state, {
                 action_type : action.type,
                 downloadImageURL : action.payload
+            })
+        case SET_SUMCAL_CIRCLE:
+            return Object.assign({}, state, {
+                action_type : action.type,
+                sumcal : action.payload2,
+                sumcalCircle : action.payload
+            })
+        case SET_FLATLIST_IS_EMPTY:
+            return Object.assign({}, state, {
+                action_type : action.type,
+                flatListIsEmpty : action.payload
             })
         default : 
             return state;

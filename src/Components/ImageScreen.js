@@ -39,11 +39,11 @@ const styles = StyleSheet.create({
         backgroundColor : '#f4f9f9',
     },
     boxtext : {
-        height : 70,
+        height : 60,
         backgroundColor : 'white',
         justifyContent : 'center',
         alignItems : 'center',
-        padding : 20
+        
     },
     circle : {
         width : 60,
@@ -110,7 +110,7 @@ export default class ImageScreen extends React.Component{
         let ref = firebase.database().ref('users/' + userId);
         let self = this;
         let food = ref.child('food').orderByKey().child(day)
-        food.on('value',function(data){
+        food.once('value',function(data){
             if(data.val() != null){
                 if( data.val().sumcal != 'undefined'){
                     self.setState({
@@ -211,6 +211,8 @@ export default class ImageScreen extends React.Component{
         let user = firebase.database().ref('users/' + userId);
         let fndate = user.child('food').child(day).child(name)
         let newlist = fndate.push()
+        console.log('cal ', cal)
+        console.log('namefood ', namefood)
         newlist.set({
             'cal' : cal,
             'namefood' : namefood,
@@ -269,13 +271,14 @@ export default class ImageScreen extends React.Component{
                         if(hour >= 5 && hour <= 10){
                             this.NormalSaveToStorageFirebase('breakfast',this.props.server.data_server[i],this.props.server.calories[i])
                         }
-                        else if(hour >= 11 && hour <= 3){
+                        else if(hour >= 11 && hour <= 15){
                             this.NormalSaveToStorageFirebase('lunch',this.props.server.data_server[i],this.props.server.calories[i])
                         }
                         else{
                             this.NormalSaveToStorageFirebase('dinner',this.props.server.data_server[i],this.props.server.calories[i])
                         }
                     }
+                    this.props.setMealTimeToAdd('')
                     this.props.navigation.dispatch(resetAction)
                     this.props.navigation.navigate("Main");
                     let allcal = this.state.sumcal + this.props.server.calories[i]
@@ -287,10 +290,10 @@ export default class ImageScreen extends React.Component{
 
                 }}>
                     <View style = {styles.boxtext}>
-                        <Text style = {{fontSize : 13}}>
-                            <Text>{this.props.server.data_server[i]} </Text>
-                            <Text> : {this.props.server.calories[i]} Calrories</Text>
-                        </Text>
+                        <View style = {{flex: 0.98, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', alignSelf: 'center', padding: 5}}>
+                            <Text>{this.props.server.data_server[i]} : {this.props.server.calories[i]} kilocalories</Text>
+                        </View>
+                        <View style = {{flex: 0.02, width: '100%', backgroundColor: '#ededed', alignSelf: 'center'}}></View>
                     </View>
                 </TouchableOpacity>
             )
@@ -317,6 +320,9 @@ export default class ImageScreen extends React.Component{
 
 
                 <View style = {styles.boxcontent}>
+                    <Text style={{ color: '#0094ff', fontWeight: 'bold', padding: 10}}>
+                        Please select your food
+                    </Text>
                     {boxnamefood}
                     <TouchableOpacity onPress = {() => {
                         this._toggleModal();

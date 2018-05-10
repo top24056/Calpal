@@ -12,7 +12,7 @@ const day = date+'-'+month+'-'+year;
 
 export default function setPercentAction(bmr = 0){
     console.log('in action')
-
+    let percent
     let Bmr = bmr
     let sumcal = 0
     let userId = firebase.auth().currentUser.uid
@@ -28,22 +28,19 @@ export default function setPercentAction(bmr = 0){
                 sumcal = data.val().sumcal
             }
         }
-    })
-    pathprofile.once('value', function (data) {
-        if (data.val() === null) {
-
-        }
-        else {
-            if (data.val().BMR) {
-                bmr = data.val().BMR
+    }).then(function(data){
+        pathprofile.once('value', function (data) {
+            if (data.val() === null) {}
+            else {
+                if (data.val().BMR) {
+                    bmr = data.val().BMR
+                }
+                percent = (sumcal/Bmr) * 100
             }
-            // console.log("inaction bmr"+bmr)
-            // console.log("in action sumcal" + sumcal)
-            let percent = (sumcal/Bmr) * 100
-        }
+        })
+        percent = (sumcal/Bmr) * 100
     })
-
-    let percent = (sumcal/Bmr) * 100
+    
 
     return (dispatch) =>{
         dispatch({

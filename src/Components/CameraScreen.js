@@ -82,8 +82,8 @@ export default class PhotoScreen extends React.Component{
         if(this.camera){
             const options = {
                 quality : 1,
-                width : 500,
-                height : 500,
+                width : 480,
+                height : 480,
                 fixOrientation : true,
                 base64 : true
             };

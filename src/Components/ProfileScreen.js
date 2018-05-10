@@ -231,6 +231,7 @@ export default class ProfileScreen extends React.Component {
     }
 
     render() {
+        // TextInput color: '#0094ff'
 
         const weightinput = (
             <TextInput

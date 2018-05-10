@@ -2,6 +2,7 @@ import {
     SET_IMG_DL_URL
 } from './ActionTypes';
 import firebase from 'react-native-firebase';
+// import setFlatListIsEmpty from './setFlatListIsEmpty';
 
 
 
@@ -30,18 +31,20 @@ export default function setImageDownloadURLAction() {
         for (let i in snapshot._childKeys) {
             let childpath = querybreakfast.child(snapshot._childKeys[i])
             childpath.once('value', (childsnapshot) => {
-                let image;
-                let refstorage = firebase.storage().ref(childsnapshot.val().pathimage)
-                refstorage.getDownloadURL().then((url) => {
-                    // console.log(url)
-                    let temppathimage = {
-                        meal : 'breakfast',
-                        namefood: childsnapshot.val().namefood,
-                        path: url,
-                        cal: childsnapshot.val().cal
-                    }
-                    tempimage.push(temppathimage)
-                })
+                if(childsnapshot.val() != null){
+                    let refstorage = firebase.storage().ref(childsnapshot.val().pathimage)
+                    refstorage.getDownloadURL().then((url) => {
+                        let temppathimage = {
+                            meal : 'breakfast',
+                            namefood: childsnapshot.val().namefood,
+                            path: url,
+                            cal: childsnapshot.val().cal
+                        }
+                        tempimage.push(temppathimage)
+                    })
+                    // setFlatListIsEmpty(false)
+                    console.log('BREAKFAST SET IMAGE ACTION')
+                }
             })
         }
     })
@@ -55,18 +58,21 @@ export default function setImageDownloadURLAction() {
         for (let i in snapshot._childKeys) {
             let childpath = querylunch.child(snapshot._childKeys[i])
             childpath.once('value', (childsnapshot) => {
-                let image;
-                let refstorage = firebase.storage().ref(childsnapshot.val().pathimage)
-                refstorage.getDownloadURL().then((url) => {
-                    // console.log(url)
-                    let temppathimage = {
-                        meal : 'lunch',
-                        namefood: childsnapshot.val().namefood,
-                        path: url,
-                        cal: childsnapshot.val().cal
-                    }
-                    tempimage.push(temppathimage)
-                })
+                if (childsnapshot.val() != null) {
+                    let refstorage = firebase.storage().ref(childsnapshot.val().pathimage)
+                    refstorage.getDownloadURL().then((url) => {
+                        let temppathimage = {
+                            meal: 'lunch',
+                            namefood: childsnapshot.val().namefood,
+                            path: url,
+                            cal: childsnapshot.val().cal
+                        }
+                        tempimage.push(temppathimage)
+                    })
+                    // setFlatListIsEmpty(false)
+                    console.log('LUNCH SET IMAGE ACTION')
+
+                }
             })
         }
     })
@@ -80,26 +86,43 @@ export default function setImageDownloadURLAction() {
         for (let i in snapshot._childKeys) {
             let childpath = querydinner.child(snapshot._childKeys[i])
             childpath.on('value', (childsnapshot) => {
-                let image;
-                let refstorage = firebase.storage().ref(childsnapshot.val().pathimage)
-                refstorage.getDownloadURL().then((url) => {
-                    // console.log(url)
-                    let temppathimage = {
-                        meal : 'dinner',
-                        namefood: childsnapshot.val().namefood,
-                        path: url,
-                        cal: childsnapshot.val().cal
-                    }
-                    tempimage.push(temppathimage)
-                })
+                if(childsnapshot.val() != null){
+                    let refstorage = firebase.storage().ref(childsnapshot.val().pathimage)
+                    refstorage.getDownloadURL().then((url) => {
+                        let temppathimage = {
+                            meal : 'dinner',
+                            namefood: childsnapshot.val().namefood,
+                            path: url,
+                            cal: childsnapshot.val().cal
+                        }
+                        tempimage.push(temppathimage)
+                    })
+                    // setFlatListIsEmpty(false)
+                    console.log('DINNER SET IMAGE ACTION')
+                }
             })
         }
     })
 
+    let refreshing
+
+
+    // if(tempimage){
+    //     setFlatListIsEmpty(false)
+    //     console.log('SET TIMEOUT 1')
+    //     refreshing = true
+    // }
+    // else{
+    //     setFlatListIsEmpty(true)
+    //     console.log('SET TIMEOUT 2')
+    //     refreshing = false
+    //     }
+    
     return dispatch => {
         dispatch({
             type: SET_IMG_DL_URL,
-            payload: tempimage
+            payload: tempimage,
+            paylaod2: refreshing
         })
     }
 }

@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#E8EAF6'
+        // backgroundColor: 'lightblue'
     },
     circle: {
         flex: 0.4,
@@ -52,6 +53,8 @@ const styles = StyleSheet.create({
     content2: {
         flex: 1,
         flexDirection: 'column',
+        // backgroundColor: 'rgba(0,0,0,.05)',
+        // backgroundColor: 'lightpink',
         alignItems: 'center',
         justifyContent: 'center',
         alignSelf: 'center'
@@ -61,7 +64,8 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         marginLeft: 10,
         marginRight: 10,
-        marginTop: 10,
+        marginTop: 5,
+        marginBottom: 5,
         // marginBottom: 10,
         backgroundColor: 'white',
         shadowOpacity: 0.54,
@@ -206,16 +210,12 @@ export default class MainScreen extends React.Component {
                 },
             ],
             dailyMealData : [],
-            refreshing : false,
             flatListIsEmpty : true,
         }
     }
 
     componentWillMount() {
         let self = this
-        this.setState({
-            foodup: this.props.main.downloadImageURL
-        })
         this.props.setGraphData();
         let userId = firebase.auth().currentUser.uid
 
@@ -225,42 +225,42 @@ export default class MainScreen extends React.Component {
             let food = ref.child('food').child(day)
             let pathprofile = ref.child('profile')
 
-            food.on('value', function (data) {
-                if (data.val() === null) {
-                    console.log('No food photo on this day (', day, ') yet.')
-                    self.setState({
-                        flatListIsEmpty : true
-                    })
-                }
-                else {
-                    if (data.val().sumcal != null) {
-                        self.setState({
-                            curcal: data.val().sumcal
-                        })
-                    }
-                    self.setState({
-                        flatListIsEmpty : false
-                    })
-                }
-            })
-            pathprofile.on('value', function (data) {
-                if (data.val() === null) {
+            // food.once('value', function (data) {
+            //     if (data.val() === null) {
+            //         console.log('No food photo on this day (', day, ') yet.')
+            //         self.setState({
+            //             flatListIsEmpty : true
+            //         })
+            //     }
+            //     else {
+            //         if (data.val().sumcal != null) {
+            //             self.setState({
+            //                 curcal: data.val().sumcal
+            //             })
+            //         }
+            //         self.setState({
+            //             flatListIsEmpty : false
+            //         })
+            //     }
+            // })
+            // pathprofile.on('value', function (data) {
+            //     if (data.val() === null) {
 
-                }
-                else {
-                    if (data.val().BMR) {
-                        self.setState({
-                            BMR: data.val().BMR
-                        })
-                    }
-                }
+            //     }
+            //     else {
+            //         if (data.val().BMR) {
+            //             self.setState({
+            //                 BMR: data.val().BMR
+            //             })
+            //         }
+            //     }
 
-            })
+            // })
         }
 
-        setTimeout(function () {
+        // setTimeout(function () {
 
-        }, 1500)
+        // }, 1500)
 
 
     }
@@ -281,47 +281,58 @@ export default class MainScreen extends React.Component {
             name: this.props.fb.data_profile.name,
             email: this.props.fb.data_profile.email,
         });
-        food.on('value', function (data) {
+        food.on('value', (data) => {
             if (data.val() != null) {
                 self.setState({
-                    curcal: data.val().sumcal,
-                    flatListIsEmpty : true
+                    curcal: data.val().sumcal
                 })
-            }
-        })
-
-        pathprofile.on('value', function (data) {
-            if (data.val() === null) {
-
+                this.props.setSumcalCircle(data.val().sumcal, self.state.BMR)
+                // this.props.setFlatListIsEmpty(false)
             }
             else {
+                // this.props.setFlatListIsEmpty(true)
+            }
+
+
+            // let p = (self.state.curcal / self.state.BMR) * 100
+            // if (p >= 100) {
+            //     p = 100
+            // }
+            // self.setState({
+            //     percentCircle: p
+            // })
+        })
+
+        pathprofile.on('value', (data) => {
+            if (data.val() != null) {
                 if (data.val().BMR) {
                     self.setState({
                         BMR: data.val().BMR
                     })
                 }
             }
-
         })
 
 
 
+        setTimeout(() => {
+            this.forceUpdate()
+        }, 2500)
 
 
 
 
 
+        // setTimeout(function () {
 
-        setTimeout(function () {
-
-            let p = (self.state.curcal / self.state.BMR) * 100
-            if (p >= 100) {
-                p = 100
-            }
-            self.setState({
-                percentCircle: p
-            })
-        }, 3000)
+        //     let p = (self.state.curcal / self.state.BMR) * 100
+        //     if (p >= 100) {
+        //         p = 100
+        //     }
+        //     self.setState({
+        //         percentCircle: p
+        //     })
+        // }, 3000)
     }
 
     FlatlistItem = () => {
@@ -341,12 +352,9 @@ export default class MainScreen extends React.Component {
         let mealselect = item.meal == 'breakfast' ? 'Breakfast' :
             item.meal == 'lunch' ? 'Lunch' : 'Dinner'
 
-
+        
         return (
             <View style={styles.box}>
-                {/* <View style={{ flex: 0.5, paddingLeft: 10, paddingTop: 5, }}>
-                    <Text style={{ color: 'black', fontSize: 18 }}>{mealselect}</Text>
-                </View> */}
                 <View style={{ flexDirection: 'row' }}>
                     <View style={styles.boximg}>
                         <Image source={{ uri: item.path }} style={{ width: 64, height: 64, borderRadius: 30}} resize />
@@ -364,7 +372,6 @@ export default class MainScreen extends React.Component {
                     </View>
                     <View style={styles.boxdel}>
                         <TouchableOpacity onPress={() => {
-                            console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXXx ', index)
                             this.props.delMealItem(index, item)
                             this.onRefresh()
                         }}>
@@ -387,102 +394,29 @@ export default class MainScreen extends React.Component {
             </View>
         )
 
-        if (this.state.flatListIsEmpty) {
-            ListEmptyView = (
-                <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                    <Text style={styles.ListEmptyViewText1}>No photo for today yet.</Text>
-                    <Text style={styles.ListEmptyViewText2}>Press one of three icons above to add some food photo.</Text>
-                </View>
-            )
-        } else {
-            ListEmptyView = (
-                <ActivityIndicator animating hidesWhenStopped size='large' color='#1c73ff' style={styles.actIndic}/>
-            )
-        }
+        // if (this.props.main.flatListIsEmpty) {
+        //     ListEmptyView = (
+        //         <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+        //             <Text style={styles.ListEmptyViewText1}>No photo for today yet.</Text>
+        //             <Text style={styles.ListEmptyViewText2}>Press one of three icons above to add some food photo.</Text>
+        //         </View>
+        //     )
+        // }
+        // else {
+        //     ListEmptyView = (
+        //         <ActivityIndicator animating hidesWhenStopped size='large' color='#1c73ff' style={styles.actIndic}/>
+        //     )
+        // }
 
         return (
             <View style={styles.container}>
                 <View style={styles.content2}>
-                    {ListEmptyView}
-
-                    {/* <View style={styles.box}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <View style={styles.boximg}>
-                                <Image source={require('../../img/breakfast.png')} style={{ width: 64, height: 64 }} />
-                            </View>
-                            <View style={styles.boxtext}>
-                                <View style={{ flexDirection: 'row', flex: 1, alignItems: 'flex-end' }}>
-                                    <Text style={{ color: '#858787', fontSize: 18 }}>{this.state.food[0].namefood}</Text>
-                                </View>
-                                <View style={{ flexDirection: 'row', flex: 1 }}>
-                                    <Text style={{ color: '#858787', fontSize: 12 }}>{this.state.food[1].cal} KCal</Text>
-                                </View>
-
-                            </View>
-
-                            <View style={styles.boxadd}>
-                                <TouchableOpacity onPress={() => {
-                                    this.props.setMealTimeToAdd('breakfast')
-                                    this.props.navigation.navigate('Photo')
-                                }}>
-                                    <View style={{ justifyContent: 'center', alignItems: 'center', padding: 20 }}>
-                                        <Image source={require('../../img/add.png')} style={{ width: 16, height: 16 }} />
-                                    </View>
-
-                                </TouchableOpacity>
-                            </View>
-
-                        </View>
+                    <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                        <Text style={styles.ListEmptyViewText1}>No photo for today yet.</Text>
+                        <Text style={styles.ListEmptyViewText2}>Press one of three icons above to add some food photo.</Text>
                     </View>
-
-
-                    <View style={styles.box}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <View style={styles.boximg}>
-                                <Image source={require('../../img/rice.png')} style={{ width: 64, height: 64 }} />
-                            </View>
-                            <View style={styles.boxtext}>
-                                <Text style={{ color: '#858787', fontSize: 18 }}>{this.state.food[1].namefood}</Text>
-                                <Text style={{ color: '#858787', fontSize: 12 }}>{this.state.food[1].cal} KCal</Text>
-                            </View>
-                            <View style={styles.boxadd}>
-                                <TouchableOpacity onPress={() => {
-                                    this.props.setMealTimeToAdd('lunch')
-                                    this.props.navigation.navigate('Photo')
-                                }}>
-                                    <View style={{ justifyContent: 'center', alignItems: 'center', padding: 20 }}>
-                                        <Image source={require('../../img/add.png')} style={{ width: 16, height: 16 }} />
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    </View>
-
-
-                    <View style={styles.box}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <View style={styles.boximg}>
-                                <Image source={require('../../img/fish.png')} style={{ width: 64, height: 64 }} />
-                            </View>
-                            <View style={styles.boxtext}>
-                                <Text style={{ color: '#858787', fontSize: 18 }}>{this.state.food[2].namefood}</Text>
-                                <Text style={{ color: '#858787', fontSize: 12 }}>{this.state.food[2].cal} KCal</Text>
-                            </View>
-                            <View style={styles.boxadd}>
-                                <TouchableOpacity onPress={() => {
-                                    this.props.setMealTimeToAdd('dinner')
-                                    this.props.navigation.navigate('Photo')
-                                }}>
-                                    <View style={{ justifyContent: 'center', alignItems: 'center', padding: 20 }}>
-                                        <Image source={require('../../img/add.png')} style={{ width: 16, height: 16 }} />
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    </View> */}
                 </View>
             </View>
-
         );
     }
 
@@ -496,6 +430,7 @@ export default class MainScreen extends React.Component {
                     refreshing: false
                 })
             }
+            this.forceUpdate()
         })
     }
 
@@ -524,9 +459,6 @@ export default class MainScreen extends React.Component {
             <View style={styles.container}>
 
                 <StatusBar backgroundColor="#0094ff" barstyle="light-content" />
-
-
-
                 <View style={styles.circle}>
                     <View style={styles.boxname}>
                         <Image source={require('../../img/Name.png')} />
@@ -534,14 +466,13 @@ export default class MainScreen extends React.Component {
                     <View style={styles.boxcircle}>
                         <PercentageCircle
                             radius={65}
-                            percent={this.state.percentCircle}
+                            percent={this.props.main.sumcalCircle}
                             color={circleColor}
                             borderWidth={4}
                             bgcolor={"#0094ff"}
                             innerColor={'#23a0ff'}
                             duration={500}
                         >
-
                             <Text style={{ color: 'white' }}>
                                 <Text style={{ fontSize: 24 }}>{this.state.curcal} / </Text><Text style={{ fontSize: 14 }}>{this.state.BMR}</Text>
                             </Text>
@@ -611,14 +542,13 @@ export default class MainScreen extends React.Component {
                                 (this.renderItemFlatlist(item, index))
                             }
                             keyExtractor={(item, index) => index.toString()}
-                            ListEmptyComponent={this.ListEmptyView}
+                            // ListEmptyComponent={this.ListEmptyView}
                             extraData={this.props}
                             onRefresh={() => this.onRefresh()}
                             refreshing={this.state.refreshing}
                         />
                     </View>
                 </View>
-
             </View>
         );
     }

@@ -121,8 +121,7 @@ export default class ModalLoading extends React.Component{
             name: '1.jpg',
             type: 'image/jpeg'
         });
-        fetch('http://745c827f.ngrok.io/predict',{
-        fetch('http:/158.108.122.46:5000/predict',{
+        fetch('http://158.108.122.46:5000/predict',{
             method : 'post',
             body : formdata
         }).then(res =>{
@@ -140,7 +139,7 @@ export default class ModalLoading extends React.Component{
     render(){
         return(
             <View style = {styles.container}>
-                <Spinner visible={this.state.visible} textContent={"Loading..."} textStyle={{color: '#FFF'}} />
+                <Spinner visible={this.state.visible} textContent={"Processing image..."} textStyle={{color: '#FFF'}} />
             </View>
         );
     }

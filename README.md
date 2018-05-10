@@ -1,4 +1,4 @@
-# My Senior Project from Kasetsart University
+# Senior Project && Kasetsart University
 
 Application take a picture thai food for calories counter
 Use React-native Framework

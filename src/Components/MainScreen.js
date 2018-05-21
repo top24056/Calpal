@@ -26,9 +26,9 @@ import {
 import UUIDGenerator from 'react-native-uuid-generator';
 import FCM, {
     FCMEvent,
-    RemoteNotificationResult,
-    WillPresentNotificationResult,
-    NotificationType
+    // RemoteNotificationResult,
+    // WillPresentNotificationResult,
+    // NotificationType
 } from 'react-native-fcm';
 
 

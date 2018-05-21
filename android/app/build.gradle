@@ -162,7 +162,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:23.0.1"
     compile "com.facebook.react:react-native:+"  // From node_modules
     compile project(':react-native-fcm')
-    compile project(':reactnativenotifications')
+    // compile project(':reactnativenotifications')
     compile (project(':react-native-camera')) {
         exclude group: "com.google.android.gms"
         compile 'com.android.support:exifinterface:27.+'
